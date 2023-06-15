@@ -6,6 +6,7 @@ x-app: &app
   volumes:
     - .:/var/www/farma
     - bundle_path:/bundle
+    - /dev/shm:/dev/shm
   tmpfs:
     - /tmp
   depends_on:
@@ -47,8 +48,6 @@ services:
       RAILS_ENV: test
       DATABASE_URL: postgres://postgres@db
     shm_size: "2gb" #set shared memory
-    volumes:
-      - /dev/shm:/dev/shm
     depends_on:
       - db
 
