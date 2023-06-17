@@ -1,0 +1,6 @@
+no_browser: true
+minimum_score: 94
+paths: # Files to analyse.
+  - "app"
+  - "lib"
+  - "config"

@@ -109,7 +109,7 @@ RUN mkdir -p $APP \
   && mkdir -p $BUNDLE_PATH
 
 # Change current user
-USER ${_USER}:${_USER}
+# USER ${_USER}:${_USER}
 
 # Set working directory
 WORKDIR $APP
