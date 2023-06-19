@@ -3,7 +3,7 @@ class TeamsController < ApplicationController
     teams = [
       { name: 'Diego Marczal' },
       { name: 'Alex Sandro De Castilho' },
-      { name: 'Isabela Taques Vitek' }
+      { name: 'Isabela Taques Vitek' },
       { name: 'Eleandro Maschio' }
     ]
 
