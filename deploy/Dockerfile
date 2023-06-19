@@ -17,7 +17,7 @@ RUN apt-get update -qq && \
   vim
 
 # Set working directory
-WORKDIR app
+WORKDIR /app
 
 # copy Gemfile and Gemfile.lock and install gems before copying rest of the application
 # so the steps will be cached until there won't be any changes in Gemfile

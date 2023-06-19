@@ -33,7 +33,6 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
             cd /home/deployer/apps/farma/api
-            ls
-            #echo $CR_PAT | docker login ghcr.io -u marczalTSIGP --password-stdin
-            #docker-compose pull api
-            #docker-compose up -d --no-deps
+            echo $CR_PAT | docker login ghcr.io -u marczalTSIGP --password-stdin
+            docker compose pull api
+            docker-compose up -d --no-deps
