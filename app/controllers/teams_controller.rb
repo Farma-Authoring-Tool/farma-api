@@ -4,6 +4,7 @@ class TeamsController < ApplicationController
       { name: 'Diego Marczal' },
       { name: 'Alex Sandro De Castilho' },
       { name: 'Isabela Taques Vitek' },
+      { name: 'Jefferson Ramos' },
       { name: 'Eleandro Maschio' }
     ]
 
