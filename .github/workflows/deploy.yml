@@ -1,0 +1,38 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - deploy
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+          with:
+            ref: deploy
+      -
+        name: Login to GitHub Container Registry
+        run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u marczalTSIGP --password-stdin
+      -
+        name: Pull image to use as a cache
+        run: docker pull ghcr.io/marczalTSIGP/farma_api:latest || exit 0
+      -
+        name: Build Docker image
+        run: docker build . --cache-from ghcr.io/marczalTSIGP/farma_api:latest --tag ghcr.io/marczalTSIGP/farma_api:latest
+      -
+        name: Push the image to GitHub Container Registry
+        run: docker push ghcr.io/marczalTSIGP/farma_api:latest
+      -
+        name: VPS - pull image and run app containters
+        uses: appleboy/ssh-action@master
+        with:
+          host: 159.203.186.242
+          username: deployer
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            cd /home/deployer/apps/farma/api
+            echo $CR_PAT | docker login ghcr.io -u marczalTSIGP --password-stdin
+            docker-compose pull api
+            docker-compose up -d --no-deps

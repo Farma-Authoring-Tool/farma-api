@@ -1,55 +1,36 @@
 version: "3.8"
-x-app: &app
-  build:
-    context: .
-    dockerfile: Dockerfile
-  volumes:
-    - .:/var/www/farma
-    - bundle_path:/bundle
-    - /dev/shm:/dev/shm
-  tmpfs:
-    - /tmp
-  depends_on:
-    - db
-  networks:
-    - app-network
-  stdin_open: true
-  tty: true
-
 services:
   api:
-    <<: *app
+    restart: always
+    image: rails_api
     command: >
       bash -c "
         rm -f tmp/pids/server.pid &&
         bundle exec rails s -p 3000 -b '0.0.0.0'
         " # Removing server.pid is technically a cleanup script
     ports:
-      - 3000:3000
-    environment:
-      RAILS_ENV: development
-
-  db:
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_HOST_AUTH_METHOD: trust
+      - 3001:3000
+    env_file: .env    
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    networks:
-      - app-network
-
-  api-tests:
-    <<: *app
-    environment:
-      RAILS_ENV: test
-      DATABASE_URL: postgres://postgres@db
-    shm_size: "2gb" #set shared memory
+      - ./storage:/app/storage
+      - ./log:/app/log
+      - /dev/shm:/dev/shm
+    tmpfs:
+      - /tmp
     depends_on:
       - db
+    networks:
+      - farma-network
+    stdin_open: true
+    tty: true
+        
+  db:
+    image: postgres
+    env_file: .env  
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - farma-network
 
 volumes:
   pgdata:
@@ -57,5 +38,5 @@ volumes:
   bundle_path:
 
 networks:
-  app-network:
+  farma-network:
     driver: bridge
