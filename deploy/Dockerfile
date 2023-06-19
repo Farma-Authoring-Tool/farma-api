@@ -26,6 +26,6 @@ RUN bundle install
 
 COPY . .
 
-ENTRYPOINT [ "./config/docker-entrypoint.sh" ]
+ENTRYPOINT [ "./deploy/docker-entrypoint.sh" ]
 
 CMD bundle exec rails s -p 3000 -b '0.0.0.0'
