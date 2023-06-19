@@ -10,8 +10,8 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-          with:
-            ref: deploy
+        with:
+          ref: deploy
       -
         name: Login to GitHub Container Registry
         run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u marczalTSIGP --password-stdin
