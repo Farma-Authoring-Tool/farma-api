@@ -8,7 +8,6 @@
 tmp
 log
 test
-deploy
 public/packs
 public/packs-test
 coverage/
