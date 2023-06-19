@@ -26,7 +26,7 @@ jobs:
         run: docker push ghcr.io/marczaltsigp/farma_api:latest
       -
         name: VPS - pull image and run app containters
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: 159.203.186.242
           username: deployer
