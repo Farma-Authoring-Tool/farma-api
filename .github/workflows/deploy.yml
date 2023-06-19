@@ -17,13 +17,13 @@ jobs:
         run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u marczalTSIGP --password-stdin
       -
         name: Pull image to use as a cache
-        run: docker pull ghcr.io/marczalTSIGP/farma_api:latest || exit 0
+        run: docker pull ghcr.io/marczaltsigp/farma_api:latest || exit 0
       -
         name: Build Docker image
-        run: docker build . --cache-from ghcr.io/marczalTSIGP/farma_api:latest --tag ghcr.io/marczalTSIGP/farma_api:latest
+        run: docker build . --cache-from ghcr.io/marczaltsigp/farma_api:latest --tag ghcr.io/marczaltsigp/farma_api:latest
       -
         name: Push the image to GitHub Container Registry
-        run: docker push ghcr.io/marczalTSIGP/farma_api:latest
+        run: docker push ghcr.io/marczaltsigp/farma_api:latest
       -
         name: VPS - pull image and run app containters
         uses: appleboy/ssh-action@master
