@@ -20,7 +20,7 @@ jobs:
         run: docker pull ghcr.io/marczaltsigp/farma_api:latest || exit 0
       -
         name: Build Docker image
-        run: docker build . -f deploy/Dockerfile ghcr.io/marczaltsigp/farma_api:latest --tag ghcr.io/marczaltsigp/farma_api:latest
+        run: docker build . ghcr.io/marczaltsigp/farma_api:latest --tag ghcr.io/marczaltsigp/farma_api:latest -f deploy/Dockerfile
       -
         name: Push the image to GitHub Container Registry
         run: docker push ghcr.io/marczalTSIGP/farma_api:latest
