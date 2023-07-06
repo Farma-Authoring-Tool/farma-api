@@ -8,6 +8,6 @@ on:
 
 jobs:
   tests:
-    uses: ./.github/workflows/reusable/tests.yml
+    uses: ./.github/workflows/_tests.yml
   linters:
-    uses: ./.github/workflows/reusable/linters.yml
+    uses: ./.github/workflows/_linters.yml
