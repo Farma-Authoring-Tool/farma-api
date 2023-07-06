@@ -1,5 +1,8 @@
 name: Tests
 
+on:
+  workflow_call:
+
 jobs:
   code_quality:
     runs-on: ubuntu-latest
