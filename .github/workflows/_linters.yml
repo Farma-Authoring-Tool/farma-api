@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  code_quality:
+  linters:
     runs-on: ubuntu-latest
     container:
       image: ruby:3.2

@@ -9,5 +9,7 @@ on:
 jobs:
   tests:
     uses: ./.github/workflows/_tests.yml
-  linters:
+    secrets: ${{ secrets.RAILS_MASTER_KEY_TEST }}
+
+  code_quality:
     uses: ./.github/workflows/_linters.yml

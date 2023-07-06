@@ -2,9 +2,12 @@ name: Tests
 
 on:
   workflow_call:
+    secrets:
+      RAILS_MASTER_KEY_TEST:
+        required: true
 
 jobs:
-  tests:
+  run-tests:
     runs-on: ubuntu-latest
     container:
       image: ruby:3.2.2
