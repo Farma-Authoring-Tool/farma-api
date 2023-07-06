@@ -1,0 +1,13 @@
+.DS_Store
+.bin
+.git
+.gitignore
+.bundleignore
+.bundle
+.byebug_history
+tmp
+log
+test
+public/packs
+public/packs-test
+coverage/
