@@ -4,8 +4,7 @@ class TeamsController < ApplicationController
       { name: 'Diego Marczal' },
       { name: 'Alex Sandro De Castilho' },
       { name: 'Isabela Taques Vitek' },
-      { name: 'Amanda Carolyne de Lima' },
-      { name: 'Denis Lucas Silva' }
+      { name: 'Amanda Carolyne de Lima' }
     ]
 
     render json: teams
