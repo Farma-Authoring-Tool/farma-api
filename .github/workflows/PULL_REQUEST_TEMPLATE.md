@@ -1,6 +1,10 @@
 ## PR Template
 
-<!--- Provide a general summary of your changes in the Title above. It should contain the issue number and can have the same title -->
+<!--- Provide a general summary of your changes in the Title above. -->
+
+<!-- Autolinked issue URL -->
+
+Issue: #**ISSUE_NUMBER**
 
 ### Description
 
@@ -23,9 +27,15 @@
 
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] fix: A bug fix
+- [ ] feat: A new feature
+- [ ] refactor: A code change that neither fixes a bug nor adds a feature
+- [ ] test: Adding missing tests or correcting existing tests
+- [ ] perf: A code change that improves performance
+- [ ] docs: Documentation only changes
+- [ ] style: Changes that do not affect the meaning of the code (e.g. prettier format)
+- [ ] ci: Changes to our CI configuration files and scripts
+- [ ] chore: Changes to the build process or auxiliary tools and librariesfunctionality to not work as expected)
 
 ### Checklist:
 
@@ -35,3 +45,7 @@
 - [ ] My code follows the code style of this project.
 - [ ] My change requires a change to the documentation.
 - [ ] I have updated the documentation accordingly.
+
+---
+
+Hours Required:
