@@ -1,0 +1,42 @@
+name: Deploy to Staging
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tests:
+    uses: ./.github/workflows/_tests.yml
+    secrets:
+      RAILS_MASTER_KEY_TEST: ${{ secrets.RAILS_MASTER_KEY_TEST }}
+
+  code_quality:
+    uses: ./.github/workflows/_linters.yml
+
+  deploy:
+    name: "Deploy"
+    needs: [tests, code_quality]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to GitHub Container Registry
+        run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u marczalTSIGP --password-stdin
+      - name: Pull image to use as a cache
+        run: docker pull ghcr.io/marczaltsigp/farma_api:latest || exit 0
+      - name: Build Docker image
+        run: docker build -f deploy/Dockerfile . --cache-from ghcr.io/marczaltsigp/farma_api:latest --tag ghcr.io/marczaltsigp/farma_api:latest
+      - name: Push the image to GitHub Container Registry
+        run: docker push ghcr.io/marczaltsigp/farma_api:latest
+      - name: VPS - pull image and run app containters
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ vars.REMOTE_HOST }}
+          username: ${{ vars.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ vars.REMOTE_TARGET }}
+            echo $CR_PAT | docker login ghcr.io -u marczalTSIGP --password-stdin
+            docker compose pull api
+            docker compose up -d --no-deps
