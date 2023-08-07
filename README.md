@@ -1,24 +1,23 @@
-# README
+[![My Skills](https://skills.thijs.gg/icons?i=git,docker,postgres,ruby,rails&theme=light)](https://skills.thijs.gg)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# FARMA
 
-Things you may want to cover:
+Authoring Tool for Remediation of Errors with Mobile in Learning. (From portuguese Brazil: Ferramenta de Autoria para a Remediação de Erros com Mobilidade na Aprendizagem)
 
-* Ruby version
+## What is the FARMA?
 
-* System dependencies
+FARMA is a tool that allows the creation of learning objects for math learning intuitively and without the need for prior knowledge in programming.
 
-* Configuration
+### Maintainers
 
-* Database creation
+- Diego Marczal (https://github.com/dmarczal)
 
-* Database initialization
+### Contributors
 
-* How to run the test suite
+- Isabela Taques Vitek (https://github.com/isabela-tvitek)
 
-* Services (job queues, cache servers, search engines, etc.)
+### License
 
-* Deployment instructions
+MIT License. Copyright 2023 FARMA.
 
-* ...
+You are not granted rights or licenses to the trademarks of the FARMA, including without limitation the FARMA name or logo.
