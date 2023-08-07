@@ -6,14 +6,10 @@
 
 <!--- Describe your changes in detail -->
 
-....
-
 ### Motivation and Context
 
 <!--- Why is this change required? What problem does it solve? -->
 <!--- If it fixes an open issue, please link to the issue here. -->
-
-....
 
 ### How has this been tested?
 
@@ -21,11 +17,7 @@
 <!--- Include details of your testing environment, tests ran to see how -->
 <!--- your change affects other areas of the code, etc. -->
 
-....
-
 ### Screenshots (if appropriate):
-
-....
 
 ### Types of changes
 
