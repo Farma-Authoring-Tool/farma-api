@@ -1,45 +1,56 @@
 class LosController < ApplicationController
   def index
-    @los = Lo.all
+    render json: Lo.all
   end
 
   def show
-    @los = Lo.find(params[:id])
-  end
-
-  def new
-    @los = Lo.new
-  end
-
-  def edit
-    @los = Lo.find(params[:id])
+    render json: Lo.find(params[:id])
   end
 
   def create
-    @los = Lo.new(los_params)
-    if @los.save
-      redirect_to @los
+    lo = Lo.new(lo_params)
+    if lo.save
+      render json: lo, status: :created
     else
-      render :new
+      render json: { lo: lo, errors: lo.errors}, status: :unprocessable_entity
     end
   end
 
   def update
-    if @los.update(los_params)
-      redirect_to @los
+    lo = Lo.new(lo_params)
+    if lo.update(lo_params)
+      render json: lo, status: :update
     else
-      render :edit
+      render json: { lo: lo, errors: lo.errors}, status: :unprocessable_entity
     end
   end
 
+  def update
+    lo = Lo.find(params[:id])
+    if lo.update!(lo_params)
+      render json: lo, status: :update
+    else
+      render json: { lo: lo, errors: lo.errors}, status: :unprocessable_entity
+    end
+  end
+
+  # def destroy
+  #   lo = Lo.new(lo_params)
+  #   if lo.destroy(lo_params)
+  #     render json: lo, status: :destroy
+  #   else
+  #     render json: { lo: lo, errors: lo.errors}, status: :unprocessable_entity
+  #   end
+  # end
+
   def destroy
-    @los.destroy
-    redirect_to los_url
+    Lo.find(params[:id]).destroy
+    head :no_content
   end
 
   private
 
-  def los_params
-    params.permit(:title, :description, :image)
+  def lo_params
+    params.require(:lo).permit(:title, :description, :image)
   end
 end
