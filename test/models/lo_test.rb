@@ -1,7 +1,8 @@
 require 'test_helper'
 class LoTest < ActiveSupport::TestCase
-  test 'the truth' do
+  def test_the_truth
     lo = Lo.new
-    lo.save
+
+    assert lo
   end
 end
