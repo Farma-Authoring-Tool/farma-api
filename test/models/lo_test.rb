@@ -1,8 +1,7 @@
 require 'test_helper'
 class LoTest < ActiveSupport::TestCase
-  def test_the_truth
-    lo = Lo.new
-
-    assert lo
+  context 'validations' do
+    should validate_presence_of(:title)
+    should validate_presence_of(:description)
   end
 end
