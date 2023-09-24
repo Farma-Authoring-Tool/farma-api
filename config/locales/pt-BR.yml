@@ -1,0 +1,14 @@
+pt-BR:
+  activerecord:
+    models:
+      Lo:
+        one: Objeto de Aprendizagem
+        other: Objetos de Aprendizagem
+    attributes:
+      attribute_commons: &commons
+        created_at: Criado em
+        updated_at: Atualizado em
+      admin:
+        title: Título
+        description: Descrição
+        <<: *commons

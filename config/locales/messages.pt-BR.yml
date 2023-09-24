@@ -1,0 +1,19 @@
+pt-BR:
+  messages:
+    actions:
+      update:
+        m: "%{entity} atualizado com sucesso!"
+        f: "%{entity} atualizada com sucesso!"
+      create:
+        m: "%{entity} criado com sucesso!"
+        f: "%{entity} criada com sucesso!"
+      destroy:
+        m: "%{entity} removido com sucesso!"
+        f: "%{entity} removida com sucesso!"
+        not_found:
+          m: "%{entity} não encontrado!"
+          f: "%{entity} não encontrada!"
+        bond: "Não é possível remover %{resource_name} com vínculos!"
+      errors: "Alguns erros foram encontrados, por favor verifique:"
+    not_authorized: "Acesso não autorizado!"
+    not_found_page: "Recurso não encontrado!"
