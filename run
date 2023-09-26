@@ -85,6 +85,10 @@ function test {
   _dc_ api-tests rails test "${@}"
 }
 
+function test:coverage {
+  docker compose exec -e COVERAGE=true api-tests rails test "${@}"
+}
+
 # -----------------------------------------------------------------------------
 # Shell functions
 # -----------------------------------------------------------------------------
