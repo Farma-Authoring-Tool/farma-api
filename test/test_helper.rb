@@ -7,6 +7,7 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
   include BulletHelper
+  include ActionsMessages
 
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
@@ -21,5 +22,18 @@ class ActiveSupport::TestCase
 
   parallelize_teardown do |_worker|
     SimpleCov.result if ENV['COVERAGE']
+  end
+end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :minitest
+    with.library :rails
+  end
+end
+
+module RESPONSE
+  module Type
+    JSON = 'application/json; charset=utf-8'.freeze
   end
 end

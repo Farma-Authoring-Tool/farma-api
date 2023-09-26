@@ -1,3 +1,7 @@
 Rails.application.routes.draw do
-  get 'teams', to: 'teams#index', as: :teams
+  namespace :api do
+    namespace :professors do
+      resources :los
+    end
+  end
 end

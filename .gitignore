@@ -33,3 +33,6 @@
 /config/credentials/test.key
 
 coverage/*
+
+# Ignore editor config.
+/.vscode

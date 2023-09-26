@@ -7,7 +7,6 @@ set -o pipefail
 DC="${DC:-exec}"
 
 # If we're running in CI we need to disable TTY allocation for docker compose
-# commands that enable it by default, such as exec and run.
 TTY=""
 if [[ ! -t 1 ]]; then
   TTY="-T"
@@ -18,56 +17,105 @@ fi
 # -----------------------------------------------------------------------------
 
 function _dc {
+  docker compose "${@}"
+}
+
+function _dc_ {
   docker compose "${DC}" ${TTY} "${@}"
 }
 
-function _build_run_down {
-  docker compose build
-  docker compose run ${TTY} "${@}"
-  docker compose down
+# -----------------------------------------------------------------------------
+# Docker functions
+# -----------------------------------------------------------------------------
+function ps {
+  _dc ps
+}
+
+function up {
+  _dc up -d
+}
+
+function down {
+  _dc down
+}
+
+function dcr {
+  # Run any command you want in the api container
+  _dc run --rm "${@}"
+}
+
+function dc {
+  # Run any command you want in the api container
+  _dc_ api "${@}"
 }
 
 # -----------------------------------------------------------------------------
-
-function cmd {
-  # Run any command you want in the web container
-  _dc api "${@}"
+# Rails functions
+# -----------------------------------------------------------------------------
+function bundle {
+  dc bundle "${@}"
 }
 
 function rails {
-  # Run any Rails commands
-  cmd rails "${@}"
+  dc rails "${@}"
+}
+
+function rubocop {
+  dc bundle exec rubocop --parallel "${@}"
+}
+
+function brakeman {
+  dc bundle exec brakeman --ignore-config config/brakeman.ignore
+}
+
+function rubycritic {
+  dc bundle exec rubycritic --no-browser
 }
 
 function linters {
-  # Run any Rails commands
-  cmd bundle exec rubocop --parallel
-  cmd bundle exec brakeman --ignore-config config/brakeman.ignore
-  cmd bundle exec rubycritic --no-browser
+  rubocop
+  brakeman
+  rubycritic
 }
 
+# -----------------------------------------------------------------------------
+# Test functions
+# -----------------------------------------------------------------------------
 function test {
-  _dc api-tests rails test
+  _dc_ api-tests rails test "${@}"
 }
 
+function test:coverage {
+  docker compose exec -e COVERAGE=true api-tests rails test "${@}"
+}
+
+# -----------------------------------------------------------------------------
+# Shell functions
+# -----------------------------------------------------------------------------
 function shell {
-  # Start a shell session in the web container
-  cmd bash "${@}"
+  # Start a shell session in the api container
+  dc bash "${@}"
 }
 
+# -----------------------------------------------------------------------------
+# Database functions
+# -----------------------------------------------------------------------------
 function psql {
   # Connect to PostgreSQL with psql
   # shellcheck disable=SC1091
- _dc db psql -U postgres "${@}"
+  _dc_ db psql -U postgres "${@}"
 }
 
+# -----------------------------------------------------------------------------
+# Help
+# -----------------------------------------------------------------------------
 function help {
   printf "%s <task> [args]\n\nTasks:\n" "${0}"
 
   compgen -A function | grep -v "^_" | cat -n
 
   printf "\nExtended help:\n  Each task has comments for general usage\n"
-}
+} 
 
 # This idea is heavily inspired by: https://github.com/adriancooney/Taskfile
 TIMEFORMAT=$'\nTask completed in %3lR'
