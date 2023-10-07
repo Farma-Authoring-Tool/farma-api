@@ -1,14 +1,17 @@
 class Api::Professors::IntroductionsController < ApplicationController
+
+  before_action :find_lo
+
   def index
-    render json: Introduction.all
+    render json: @lo.introductions
   end
 
   def show
-    render json: Introduction.find(params[:id])
+    render json: @lo.introductions.find(params[:id])
   end
 
   def create
-    introduction = Introduction.new(introduction_params)
+    introduction = @lo.introductions.new(introduction_params)
 
     if introduction.save
       render json: { message: success_create_message, introduction: introduction }, status: :created
@@ -38,5 +41,9 @@ class Api::Professors::IntroductionsController < ApplicationController
 
   def introduction_params
     params.require(:introduction).permit(:title, :description, :public, :position, :oa_id)
+  end
+
+  def find_lo
+    @lo ||= current_user.los.find(lo_id_param)
   end
 end

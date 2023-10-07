@@ -20,7 +20,7 @@ class Api::Professors::IntroductionsControllerDestroyTest < ActionDispatch::Inte
 
     context 'with invalid params' do
       should 'be unsuccessfully' do
-        delete api_professors_lo_path(-1), as: :json
+        delete api_professors_introduction_path(-1), as: :json
 
         assert_response :unprocessable_entity
         assert_equal RESPONSE::Type::JSON, response.content_type

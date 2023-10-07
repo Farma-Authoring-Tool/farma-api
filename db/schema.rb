@@ -16,12 +16,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_01_182839) do
 
   create_table "introductions", force: :cascade do |t|
     t.string "title"
-    t.string "description"
-    t.boolean "public"
-    t.integer "position"
-    t.integer "oa_id"
+    t.text "description"
+    t.boolean "public", default: true
+    t.integer "position", default: 1
+    t.bigint "lo_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["lo_id"], name: "index_introductions_on_lo_id"
     t.index ["title"], name: "index_introductions_on_title", unique: true
   end
 
