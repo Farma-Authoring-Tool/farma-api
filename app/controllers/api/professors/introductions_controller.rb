@@ -1,9 +1,11 @@
 class Api::Professors::IntroductionsController < ApplicationController
-
-  before_action :find_lo
+  before_action :find_lo, only: [:create]
+  before_action :find_introduction, except: [:create]
 
   def index
-    render json: @lo.introductions
+    introductions = @lo.introductions
+
+    render json: introductions
   end
 
   def show
@@ -16,7 +18,11 @@ class Api::Professors::IntroductionsController < ApplicationController
     if introduction.save
       render json: { message: success_create_message, introduction: introduction }, status: :created
     else
-      render json: { message: error_message, introduction: introduction, errors: introduction.errors }, status: :unprocessable_entity
+      render json: {
+        message: error_message,
+        introduction: introduction,
+        errors: introduction.errors
+      }, status: :unprocessable_entity
     end
   end
 
@@ -26,7 +32,11 @@ class Api::Professors::IntroductionsController < ApplicationController
     if introduction.update(introduction_params)
       render json: { message: success_update_message, introduction: introduction }, status: :accepted
     else
-      render json: { message: error_message, introduction: introduction, errors: introduction.errors }, status: :unprocessable_entity
+      render json: {
+        message: error_message,
+        introduction: introduction,
+        errors: introduction.errors
+      }, status: :unprocessable_entity
     end
   end
 
@@ -40,10 +50,15 @@ class Api::Professors::IntroductionsController < ApplicationController
   private
 
   def introduction_params
-    params.require(:introduction).permit(:title, :description, :public, :position, :oa_id)
+    params.require(:introduction).permit(:title, :description, :public, :position, :lo_id)
   end
 
   def find_lo
-    @lo ||= current_user.los.find(lo_id_param)
+    @lo = Lo.find(params[:lo_id])
+  end
+
+  def find_introduction
+    find_lo
+    @introduction = @lo.introductions.find(params[:id])
   end
 end

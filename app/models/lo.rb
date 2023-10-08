@@ -1,5 +1,6 @@
 class Lo < ApplicationRecord
-  validates :title, :description, presence: true
-  validates :title, uniqueness: true
-  has_many :introductions
+  validates :title, presence: true, uniqueness: true
+  validates :description, presence: true
+
+  has_many :introductions, dependent: :destroy
 end
