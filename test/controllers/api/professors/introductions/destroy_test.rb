@@ -18,14 +18,5 @@ class Api::Professors::IntroductionsControllerDestroyTest < ActionDispatch::Inte
         assert_equal success_destroy_message(model: Introduction), data['message']
       end
     end
-
-    # context 'with invalid params' do
-    #   should 'be unsuccessfully' do
-    #     invalid_introduction_id = -1
-
-    #     delete api_professors_lo_introduction_path(@lo, invalid_introduction_id), as: :json
-    #     assert_response :not_found
-    #   end
-    # end
   end
 end

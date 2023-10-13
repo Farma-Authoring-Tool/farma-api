@@ -1,6 +1,6 @@
 class Api::Professors::IntroductionsController < ApplicationController
-  before_action :find_lo, only: [:create]
-  before_action :find_introduction, except: [:create]
+  before_action :find_lo
+  before_action :find_introduction, except: [:create, :index]
 
   def index
     introductions = @lo.introductions
@@ -58,7 +58,6 @@ class Api::Professors::IntroductionsController < ApplicationController
   end
 
   def find_introduction
-    find_lo
     @introduction = @lo.introductions.find(params[:id])
   end
 end
