@@ -1,28 +1,34 @@
 require 'test_helper'
 
-class Api::Professors::ExercisesControllerCreateTest < ActionDispatch::IntegrationTest
-  setup do
-    @lo = FactoryBot.create(:lo)
-  end
+class Api::Professors::ExercisesControllerUpdateTest < ActionDispatch::IntegrationTest
+  context 'update' do
+    setup do
+      @lo = FactoryBot.create(:lo)
+      @exercise = FactoryBot.create(:exercise, lo: @lo)
+    end
 
-  context 'create' do
     context 'with valid params' do
       should 'be successfully' do
-        exercise_attributes = FactoryBot.attributes_for(:exercise, lo: @lo)
-        post api_professors_lo_exercises_path(@lo), params: { exercise: exercise_attributes }, as: :json
+        exercise_attributes = {
+          description: 'new description',
+          public: true,
+          position: 1,
+          lo_id: @lo.id
+        }
 
-        assert_response :created
+        patch api_professors_lo_exercise_path(@lo, @exercise), params: {
+          exercise: exercise_attributes
+        }, as: :json
+
+        assert_response :accepted
         assert_equal RESPONSE::Type::JSON, response.content_type
         data = response.parsed_body
 
-        exercise = Exercise.last
-
-        assert_equal success_create_message(model: exercise), data['message']
+        assert_equal success_update_message(model: @exercise), data['message']
         assert_equal exercise_attributes[:description], data['exercise']['description']
         assert_equal exercise_attributes[:public], data['exercise']['public']
         assert_equal exercise_attributes[:position], data['exercise']['position']
         assert_equal @lo.id, data['exercise']['lo_id']
-        assert_not_nil data['exercise']['id']
       end
     end
 
@@ -32,12 +38,14 @@ class Api::Professors::ExercisesControllerCreateTest < ActionDispatch::Integrati
           :exercise,
           lo: @lo,
           description: '',
-          public: '',
-          position: '',
-          lo_id: @lo
+          public: true,
+          position: 1,
+          lo_id: @lo.id
         )
 
-        post api_professors_lo_exercises_path(@lo), params: { exercise: exercise_attributes }, as: :json
+        patch api_professors_lo_exercise_path(@lo, @exercise), params: {
+          exercise: exercise_attributes
+        }, as: :json
 
         assert_response :unprocessable_entity
         assert_equal RESPONSE::Type::JSON, response.content_type

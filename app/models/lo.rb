@@ -3,4 +3,5 @@ class Lo < ApplicationRecord
   validates :description, presence: true
 
   has_many :introductions, dependent: :destroy
+  has_many :exercises, dependent: :destroy
 end
