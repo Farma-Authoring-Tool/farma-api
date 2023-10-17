@@ -3,10 +3,11 @@ require 'test_helper'
 class IntroductionTest < ActiveSupport::TestCase
   context 'validations' do
     should validate_presence_of(:title)
-    should validate_presence_of(:description)
-    # should validate_presence_of(:public)
-    # should validate_presence_of(:position)
-    # should validate_presence_of(:lo_id)
     should validate_uniqueness_of(:title)
+    should validate_presence_of(:description)
+    should allow_value(true).for(:public)
+    should allow_value(false).for(:public)
+    should_not allow_value(nil).for(:public)
+    should_not allow_value('').for(:public)
   end
 end
