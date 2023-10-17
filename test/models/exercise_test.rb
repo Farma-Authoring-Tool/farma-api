@@ -12,6 +12,6 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   context 'relationships' do
-    should belong_to(:lo).class_name('Lo')
+    should belong_to(:lo)
   end
 end
