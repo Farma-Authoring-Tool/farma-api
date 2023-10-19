@@ -3,20 +3,20 @@ class Api::Professors::IntroductionsController < ApplicationController
   before_action :find_introduction, except: [:create, :index]
 
   def index
-    introductions = @lo.introductions
+    introductions = find_introduction
 
     render json: introductions
   end
 
   def show
-    render json: @lo.introductions.find(params[:id])
+    render json: find_introduction
   end
 
   def create
-    introduction = @lo.introductions.new(introduction_params)
+    introduction = find_introduction.new(introduction_params)
 
     if introduction.save
-      render json: { message: success_create_message, introduction: introduction }, status: :created
+      render json: { message: feminine_success_create_message, introduction: introduction }, status: :created
     else
       render json: {
         message: error_message,
@@ -27,10 +27,10 @@ class Api::Professors::IntroductionsController < ApplicationController
   end
 
   def update
-    introduction = Introduction.find(params[:id])
+    introduction = find_introduction
 
     if introduction.update(introduction_params)
-      render json: { message: success_update_message, introduction: introduction }, status: :accepted
+      render json: { message: feminine_success_update_message, introduction: introduction }, status: :accepted
     else
       render json: {
         message: error_message,
@@ -41,16 +41,16 @@ class Api::Professors::IntroductionsController < ApplicationController
   end
 
   def destroy
-    Introduction.find(params[:id]).destroy
-    render json: { message: success_destroy_message }, status: :accepted
+    find_introduction.destroy
+    render json: { message: feminine_success_destroy_message }, status: :accepted
   rescue StandardError
-    render json: { message: unsuccess_destroy_message }, status: :unprocessable_entity
+    render json: { message: feminine_unsuccess_destroy_message }, status: :unprocessable_entity
   end
 
   private
 
   def introduction_params
-    params.require(:introduction).permit(:title, :description, :public, :position, :lo_id)
+    params.require(:introduction).permit(:title, :description, :public)
   end
 
   def find_lo
