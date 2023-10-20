@@ -41,6 +41,10 @@ class Api::Professors::IntroductionsController < ApplicationController
   end
 
   def destroy
+    unless @introduction.lo == @lo
+      render json: { message: feminine_unsuccess_destroy_message }, status: :unprocessable_entity
+      return
+    end
     @introduction.destroy
     render json: { message: feminine_success_destroy_message }, status: :accepted
   rescue StandardError
