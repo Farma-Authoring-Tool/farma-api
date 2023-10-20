@@ -12,9 +12,7 @@ class Api::Professors::IntroductionsControllerUpdateTest < ActionDispatch::Integ
         introduction_attributes = {
           title: 'new title',
           description: 'new description',
-          public: true,
-          position: 1,
-          lo_id: @lo.id
+          public: true
         }
 
         patch api_professors_lo_introduction_path(@lo, @introduction), params: {
@@ -25,12 +23,10 @@ class Api::Professors::IntroductionsControllerUpdateTest < ActionDispatch::Integ
         assert_equal RESPONSE::Type::JSON, response.content_type
         data = response.parsed_body
 
-        assert_equal success_update_message(model: @introduction), data['message']
+        assert_equal feminine_success_update_message(model: @introduction), data['message']
         assert_equal introduction_attributes[:title], data['introduction']['title']
         assert_equal introduction_attributes[:description], data['introduction']['description']
         assert_equal introduction_attributes[:public], data['introduction']['public']
-        assert_equal introduction_attributes[:position], data['introduction']['position']
-        assert_equal @lo.id, data['introduction']['lo_id']
       end
     end
 
@@ -38,12 +34,9 @@ class Api::Professors::IntroductionsControllerUpdateTest < ActionDispatch::Integ
       should 'be unsuccessfully' do
         introduction_attributes = FactoryBot.attributes_for(
           :introduction,
-          lo: @lo,
           title: '',
           description: '',
-          public: true,
-          position: 1,
-          lo_id: @lo.id
+          public: true
         )
 
         patch api_professors_lo_introduction_path(@lo, @introduction), params: {
@@ -66,9 +59,7 @@ class Api::Professors::IntroductionsControllerUpdateTest < ActionDispatch::Integ
           :introduction,
           title: introduction.title,
           description: '',
-          public: true,
-          position: 1,
-          lo_id: @lo.id
+          public: true
         )
 
         patch api_professors_lo_introduction_path(@lo, @introduction), params: {

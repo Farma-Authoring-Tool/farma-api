@@ -10,4 +10,8 @@ class IntroductionTest < ActiveSupport::TestCase
     should_not allow_value(nil).for(:public)
     should_not allow_value('').for(:public)
   end
+
+  context 'relationships' do
+    should belong_to(:lo).class_name('Lo')
+  end
 end
