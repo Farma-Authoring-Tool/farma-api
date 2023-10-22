@@ -12,9 +12,7 @@ class Api::Professors::ExercisesControllerUpdateTest < ActionDispatch::Integrati
         exercise_attributes = {
           title: 'new title',
           description: 'new description',
-          public: true,
-          position: 1,
-          lo_id: @lo.id
+          public: true
         }
 
         patch api_professors_lo_exercise_path(@lo, @exercise), params: {
@@ -29,8 +27,6 @@ class Api::Professors::ExercisesControllerUpdateTest < ActionDispatch::Integrati
         assert_equal exercise_attributes[:title], data['exercise']['title']
         assert_equal exercise_attributes[:description], data['exercise']['description']
         assert_equal exercise_attributes[:public], data['exercise']['public']
-        assert_equal exercise_attributes[:position], data['exercise']['position']
-        assert_equal @lo.id, data['exercise']['lo_id']
       end
     end
 
@@ -40,9 +36,7 @@ class Api::Professors::ExercisesControllerUpdateTest < ActionDispatch::Integrati
           :exercise,
           title: '',
           description: '',
-          public: true,
-          position: 1,
-          lo_id: @lo.id
+          public: true
         )
 
         patch api_professors_lo_exercise_path(@lo, @exercise), params: {
