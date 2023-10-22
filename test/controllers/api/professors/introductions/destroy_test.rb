@@ -20,16 +20,12 @@ class Api::Professors::IntroductionsControllerDestroyTest < ActionDispatch::Inte
       end
     end
 
-    # context 'when trying to delete introduction from another LO' do
-    #   should 'not be allowed' do
-    #     delete api_professors_lo_introduction_path(@another_lo, @introduction), as: :json
-
-    #     assert_response :unprocessable_entity
-    #     assert_equal RESPONSE::Type::JSON, response.content_type
-    #     data = response.parsed_body
-
-    #     assert_equal feminine_unsuccess_destroy_message, data['message']
-    #   end
-    # end
+    context 'when trying to delete introduction from another LO' do
+      should 'raise a RecordNotFound error' do
+        assert_raises(ActiveRecord::RecordNotFound) do
+          delete api_professors_lo_introduction_path(@another_lo, @introduction), as: :json
+        end
+      end
+    end
   end
 end

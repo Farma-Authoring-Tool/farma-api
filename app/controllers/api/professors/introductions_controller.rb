@@ -3,9 +3,7 @@ class Api::Professors::IntroductionsController < ApplicationController
   before_action :find_introduction, except: [:create, :index]
 
   def index
-    introductions = @lo.introductions
-
-    render json: introductions
+    render json: @lo.introductions
   end
 
   def show
@@ -27,24 +25,18 @@ class Api::Professors::IntroductionsController < ApplicationController
   end
 
   def update
-    introduction = @introduction
-
-    if introduction.update(introduction_params)
-      render json: { message: feminine_success_update_message, introduction: introduction }, status: :accepted
+    if @introduction.update(introduction_params)
+      render json: { message: feminine_success_update_message, introduction: @introduction }, status: :accepted
     else
       render json: {
         message: error_message,
-        introduction: introduction,
-        errors: introduction.errors
+        introduction: @introduction,
+        errors: @introduction.errors
       }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    unless @introduction.lo == @lo
-      render json: { message: feminine_unsuccess_destroy_message }, status: :unprocessable_entity
-      return
-    end
     @introduction.destroy
     render json: { message: feminine_success_destroy_message }, status: :accepted
   rescue StandardError
