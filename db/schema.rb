@@ -15,6 +15,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_14_210307) do
   enable_extension "plpgsql"
 
   create_table "exercises", force: :cascade do |t|
+    t.string "title"
     t.text "description"
     t.boolean "public", default: true, null: false
     t.integer "position", default: 1
@@ -22,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_14_210307) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["lo_id"], name: "index_exercises_on_lo_id"
+    t.index ["title"], name: "index_exercises_on_title", unique: true
   end
 
   create_table "introductions", force: :cascade do |t|

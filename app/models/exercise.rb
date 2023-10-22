@@ -1,6 +1,8 @@
 class Exercise < ApplicationRecord
-  validates :description, presence: true
+  validates :title, :description, presence: true
+  validates :title, uniqueness: true
   validates :public, inclusion: { in: [true, false] }
+
   belongs_to :lo
 
   before_create :set_position

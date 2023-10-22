@@ -1,29 +1,41 @@
 require 'test_helper'
 
-class Api::Professors::LosControllerCreateTest < ActionDispatch::IntegrationTest
+class Api::Professors::ExercisesControllerCreateTest < ActionDispatch::IntegrationTest
+  setup do
+    @lo = FactoryBot.create(:lo)
+  end
+
   context 'create' do
     context 'with valid params' do
       should 'be successfully' do
-        lo_attributes = FactoryBot.attributes_for(:lo)
+        exercise_attributes = FactoryBot.attributes_for(:exercise)
 
-        post api_professors_los_path, params: { lo: lo_attributes }, as: :json
+        post api_professors_lo_exercises_path(@lo), params: { exercise: exercise_attributes }, as: :json
 
         assert_response :created
         assert_equal RESPONSE::Type::JSON, response.content_type
         data = response.parsed_body
 
-        assert_equal success_create_message(model: Lo), data['message']
-        assert_equal lo_attributes[:title],       data['lo']['title']
-        assert_equal lo_attributes[:description], data['lo']['description']
-        assert_not_nil data['lo']['id']
+        exercise = Exercise.last
+
+        assert_equal success_create_message(model: exercise), data['message']
+        assert_equal exercise_attributes[:title], data['exercise']['title']
+        assert_equal exercise_attributes[:description], data['exercise']['description']
+        assert_equal exercise_attributes[:public], data['exercise']['public']
+        assert_not_nil data['exercise']['id']
       end
     end
 
     context 'with invalid params' do
       should 'be unsuccessfully' do
-        lo_attributes = FactoryBot.attributes_for(:lo, title: '', description: '')
+        exercise_attributes = FactoryBot.attributes_for(
+          :exercise,
+          title: '',
+          description: '',
+          public: ''
+        )
 
-        post api_professors_los_path, params: { lo: lo_attributes }, as: :json
+        post api_professors_lo_exercises_path(@lo), params: { exercise: exercise_attributes }, as: :json
 
         assert_response :unprocessable_entity
         assert_equal RESPONSE::Type::JSON, response.content_type
@@ -35,11 +47,16 @@ class Api::Professors::LosControllerCreateTest < ActionDispatch::IntegrationTest
       end
 
       should 'be unsuccessfully when title already taken' do
-        lo = FactoryBot.create(:lo)
+        exercise = FactoryBot.create(:exercise, lo: @lo)
 
-        lo_attributes = FactoryBot.attributes_for(:lo, title: lo.title, description: '')
+        exercise_attributes = FactoryBot.attributes_for(
+          :exercise,
+          title: exercise.title,
+          description: '',
+          public: ''
+        )
 
-        post api_professors_los_path, params: { lo: lo_attributes }, as: :json
+        post api_professors_lo_exercises_path(@lo), params: { exercise: exercise_attributes }, as: :json
 
         assert_response :unprocessable_entity
         assert_equal RESPONSE::Type::JSON, response.content_type
