@@ -7,6 +7,6 @@ class LoTest < ActiveSupport::TestCase
   end
 
   context 'relationships' do
-    should have_many(:introductions).class_name('Introduction')
+    should have_many(:introductions)
   end
 end
