@@ -5,4 +5,9 @@ class LoTest < ActiveSupport::TestCase
     should validate_presence_of(:description)
     should validate_uniqueness_of(:title)
   end
+
+  context 'relationships' do
+    should have_many(:introductions)
+    should have_many(:introductions).dependent(:destroy)
+  end
 end
