@@ -9,5 +9,7 @@ class LoTest < ActiveSupport::TestCase
   context 'relationships' do
     should have_many(:introductions)
     should have_many(:introductions).dependent(:destroy)
+    should have_many(:exercises)
+    should have_many(:exercises).dependent(:destroy)
   end
 end
