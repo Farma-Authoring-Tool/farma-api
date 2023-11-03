@@ -4,7 +4,9 @@ Rails.application.routes.draw do
       resources :los do
         resources :introductions
         resources :exercises do
-          resources :solution_steps
+          resources :solution_steps do
+            resources :tips
+          end
         end
       end
     end
