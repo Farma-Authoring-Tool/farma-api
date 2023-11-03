@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_14_210307) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_31_021853) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,10 +41,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_14_210307) do
   create_table "los", force: :cascade do |t|
     t.string "title"
     t.string "description"
-    t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["title"], name: "index_los_on_title", unique: true
+  end
+
+  create_table "solution_steps", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.text "response"
+    t.integer "decimal_digits"
+    t.boolean "public", default: true, null: false
+    t.integer "position", default: 1
+    t.bigint "exercise_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exercise_id"], name: "index_solution_steps_on_exercise_id"
+    t.index ["title"], name: "index_solution_steps_on_title", unique: true
   end
 
 end
