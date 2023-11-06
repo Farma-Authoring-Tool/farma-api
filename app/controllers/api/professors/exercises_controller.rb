@@ -39,8 +39,6 @@ class Api::Professors::ExercisesController < ApplicationController
   def destroy
     @exercise.destroy
     render json: { message: success_destroy_message }, status: :accepted
-  rescue StandardError
-    render json: { message: unsuccess_destroy_message }, status: :unprocessable_entity
   end
 
   private
@@ -51,6 +49,8 @@ class Api::Professors::ExercisesController < ApplicationController
 
   def find_lo
     @lo = Lo.find(params[:lo_id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { message: unsuccess_destroy_message(model: Lo) }, status: :unprocessable_entity
   end
 
   def find_exercise

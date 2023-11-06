@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ExerciseTest < ActiveSupport::TestCase
+class SolutionStepTest < ActiveSupport::TestCase
   context 'validations' do
     should validate_presence_of(:title)
     should validate_uniqueness_of(:title)
@@ -12,8 +12,6 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   context 'relationships' do
-    should belong_to(:lo)
-    should have_many(:solution_steps)
-    should have_many(:solution_steps).dependent(:destroy)
+    should belong_to(:exercise)
   end
 end

@@ -1,10 +1,9 @@
-class Exercise < ApplicationRecord
+class SolutionStep < ApplicationRecord
   validates :title, :description, presence: true
   validates :title, uniqueness: true
   validates :public, inclusion: { in: [true, false] }
 
-  belongs_to :lo
-  has_many :solution_steps, dependent: :destroy
+  belongs_to :exercise
 
   before_create :set_position
 
