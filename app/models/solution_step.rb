@@ -4,6 +4,7 @@ class SolutionStep < ApplicationRecord
   validates :public, inclusion: { in: [true, false] }
 
   belongs_to :exercise
+  has_many :tips, dependent: :destroy
 
   before_create :set_position
 
