@@ -1,6 +1,7 @@
 class Api::Professors::TipsController < ApplicationController
   before_action :find_solution_step
   before_action :find_tip, except: [:create, :index]
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
 
   def index
     render json: @solution_step.tips

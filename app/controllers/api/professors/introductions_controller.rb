@@ -1,6 +1,7 @@
 class Api::Professors::IntroductionsController < ApplicationController
   before_action :find_lo
   before_action :find_introduction, except: [:create, :index]
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
 
   def index
     render json: @lo.introductions

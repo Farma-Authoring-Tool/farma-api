@@ -28,5 +28,7 @@ module Farma
     config.time_zone = 'America/Sao_Paulo'
 
     config.api_only = true
+
+    config.session_store :cookie_store, key: '_farma_app_session'
   end
 end

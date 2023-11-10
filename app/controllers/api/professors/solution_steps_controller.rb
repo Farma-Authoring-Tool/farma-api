@@ -1,6 +1,7 @@
 class Api::Professors::SolutionStepsController < ApplicationController
   before_action :find_exercise
   before_action :find_solution_step, except: [:create, :index]
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
 
   def index
     render json: @exercise.solution_steps

@@ -22,6 +22,9 @@ gem 'bootsnap', require: false
 gem 'rack-cors'
 gem 'rails-i18n', '~> 7.0.0' # For 7.0.0
 
+gem 'devise'
+gem 'devise-jwt'
+
 group :development do
   gem 'brakeman'
   gem 'rubocop', require: false

@@ -1,4 +1,7 @@
 class Api::Professors::LosController < ApplicationController
+
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
+
   def index
     render json: Lo.all
   end
