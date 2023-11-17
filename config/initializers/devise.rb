@@ -14,8 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '70e824fdb6fd91d68736dac310afef3a0e4ac90d1211452c50b4
-  #                      4c34ac29a032e9f424c52470414e66f4d362567544f465d5247a452c5b20d41669b9b9f6054c'
+  # config.secret_key = 'e0235ec286a374b9a8ece341c13d4ccb13a8f5322ba4fc1033d64f6fdae99957758a5ecff1e86249cc540cd2fa3452b46a9af92247eb3d2b5a4c13a536b626eb'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -127,8 +126,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '2442079fac703611b2fe2e2c3be827c6953252b98059bebe234dbdd1
-  #                  d5218b80abf7e14e81f83acb7ba13f008d5b6a20b797e3eabab4ddd618b91b5804a4f6a9'
+  # config.pepper = 'f30de264a37f6871dfca343a95a350a13ca953206ca0da224af003e05a2c834103c5184538da9305138313deee7564b9c9259a4f64b91fdf6f4d492cec51e457'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -266,6 +264,7 @@ Devise.setup do |config|
   #
   # The "*/*" below is required to match Internet Explorer requests.
   # config.navigational_formats = ['*/*', :html, :turbo_stream]
+  config.navigational_formats = []
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
@@ -312,4 +311,18 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+  config.warden do |warden|
+    warden.scope_defaults :user, store: false
+  end
+
+  config.jwt do |jwt|
+    jwt.secret = Rails.application.credentials.fetch(:secret_key_base)
+    jwt.dispatch_requests = [
+      ['POST', %r{^/login$}]
+    ]
+    jwt.revocation_requests = [
+      ['DELETE', %r{^/logout$}]
+    ]
+    jwt.expiration_time = 30.minutes.to_i
+  end
 end
