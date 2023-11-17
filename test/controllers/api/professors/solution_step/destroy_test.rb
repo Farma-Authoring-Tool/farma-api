@@ -1,8 +1,12 @@
 require 'test_helper'
 
 class Api::Professors::SolutionStepsControllerDestroyTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   context 'destroy' do
     setup do
+      @user = FactoryBot.create(:user)
+      sign_in @user
       @lo = FactoryBot.create(:lo)
       @exercise = FactoryBot.create(:exercise, lo: @lo)
       @another_exercise = FactoryBot.create(:exercise, lo: @lo)

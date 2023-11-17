@@ -1,6 +1,13 @@
 require 'test_helper'
 
 class Api::Professors::LosControllerShowTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
+  def setup
+    @user = FactoryBot.create(:user)
+    sign_in @user
+  end
+
   test 'should return lo' do
     lo = FactoryBot.create(:lo)
     get api_professors_lo_path(lo)

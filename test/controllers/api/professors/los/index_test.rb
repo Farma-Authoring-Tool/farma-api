@@ -1,6 +1,13 @@
 require 'test_helper'
 
 class Api::Professors::LosControllerIndexTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
+  def setup
+    @user = FactoryBot.create(:user)
+    sign_in @user
+  end
+
   test 'should return all los' do
     los = FactoryBot.create_list(:lo, 3)
 
