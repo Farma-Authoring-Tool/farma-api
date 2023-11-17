@@ -21,7 +21,6 @@ Rails.application.routes.draw do
               resources :tips do
                 post 'duplicate', on: :member
               end
-              resources :tips
             end
           end
         end

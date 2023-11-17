@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class Api::Professors::TipsControllerShowTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   test 'should return tip' do
     @user = FactoryBot.create(:user)
     sign_in @user

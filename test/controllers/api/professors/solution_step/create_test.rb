@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class Api::Professors::SolutionStepsControllerCreateTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   def setup
     @user = FactoryBot.create(:user)
     sign_in @user
