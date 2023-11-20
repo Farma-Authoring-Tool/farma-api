@@ -10,7 +10,6 @@ class Users::SessionsControllerTest < ActionDispatch::IntegrationTest
   test 'should log in user and return JWT token' do
     post user_session_path, params: { user: { email: @user.email, password: @user.password } }, as: :json
 
-    
     assert_response :success
 
     jwt = response.headers['Authorization'].last || json_response['jwt']

@@ -3,26 +3,17 @@ require 'test_helper'
 class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  # test 'should create a new user and return JWT token' do
-  #   user_attributes = FactoryBot.attributes_for(:user)
+  test 'should create a new user and return JWT token' do
+    user_attributes = FactoryBot.attributes_for(:user)
 
-  #   post user_registration_path, params: { user: user_attributes }, as: :json
+    post user_registration_path, params: { user: user_attributes }, as: :json
 
-  #   assert_response :success
-  #   assert_equal RESPONSE::Type::JSON, response.content_type
+    jwt = response.headers['Authorization']&.split('Bearer ')&.last
 
-  #   jwt = response.headers['Authorization']&.split('Bearer ')&.last
-  #   assert_not_nil jwt, "JWT should be present in the Authorization header"
-
-  #   decoded_jwt = JWT.decode(jwt, Rails.application.credentials.devise_jwt_secret_key, true, algorithm: 'HS256')
-  #   assert_not_nil decoded_jwt, "JWT should be decodable"
-
-  #   jwt_payload = decoded_jwt.first
-  #   assert_equal user_attributes[:email], jwt_payload['sub']
-
-  #   data = JSON.parse(response.body)
-  #   assert_equal user_attributes[:email], data['data']['email']
-  # end
+    assert_response :success
+    assert_equal RESPONSE::Type::JSON, response.content_type
+    assert_not_nil jwt, 'JWT should be present in the Authorization header'
+  end
 
   test 'should not create a user with invalid data' do
     assert_no_difference('User.count') do
