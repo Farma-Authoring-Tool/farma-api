@@ -43,9 +43,7 @@ class Api::Professors::TipsController < ApplicationController
 
   def duplicate
     original_tip = Tip.find(params[:id])
-    duplicated_tip = original_tip.dup
-    duplicated_tip.number_attempts = original_tip.number_attempts
-    duplicated_tip.position = original_tip.position
+    duplicated_tip = original_tip.duplicate
 
     if duplicated_tip.save
       render json: { message: 'Dica duplicada com sucesso', tip: duplicated_tip }, status: :created
