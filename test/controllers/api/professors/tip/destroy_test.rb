@@ -10,6 +10,7 @@ class Api::Professors::TipsControllerDestroyTest < ActionDispatch::IntegrationTe
       @lo = FactoryBot.create(:lo)
       @exercise = FactoryBot.create(:exercise, lo: @lo)
       @solution_step = FactoryBot.create(:solution_step, exercise: @exercise)
+      @another_solution_step = FactoryBot.create(:solution_step, exercise: @exercise)
       @tip = FactoryBot.create(:tip, solution_step: @solution_step)
     end
 
@@ -26,16 +27,15 @@ class Api::Professors::TipsControllerDestroyTest < ActionDispatch::IntegrationTe
     end
 
     context 'when trying to delete tip from another solution step' do
-      should 'raise a RecordNotFound error' do
-        another_solution_step = FactoryBot.create(:solution_step, exercise: @exercise)
-        assert_raises(ActiveRecord::RecordNotFound) do
-          delete api_professors_lo_exercise_solution_step_tip_path(
-            @lo,
-            @exercise,
-            another_solution_step,
-            @tip
-          ), as: :json
-        end
+      should 'respond with not found status' do
+        delete api_professors_lo_exercise_solution_step_tip_path(
+          @lo,
+          @exercise,
+          @another_solution_step,
+          @tip
+        ), as: :json
+
+        assert_response :not_found
       end
     end
   end
