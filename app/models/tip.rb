@@ -15,12 +15,6 @@ class Tip < ApplicationRecord
     duplicated_tip
   end
 
-  private
-
-  def set_position
-    self.position = Time.now.to_i
-  end
-
   def generate_duplicated_description
     copy_number = 1
     new_description = "#{description} (cópia - #{copy_number})"
@@ -31,5 +25,11 @@ class Tip < ApplicationRecord
     end
 
     new_description
+  end
+
+  private
+
+  def set_position
+    self.position = Time.now.to_i
   end
 end
