@@ -43,6 +43,20 @@ class Api::Professors::SolutionStepsController < ApplicationController
     render json: { message: unsuccess_destroy_message }, status: :unprocessable_entity
   end
 
+  def duplicate
+    duplicated_solution_step = @solution_step.duplicate
+
+    if duplicated_solution_step.persisted?
+      render json: {
+        message: 'Passo de solução duplicado com sucesso', solutionStep: duplicated_solution_step
+      }, status: :created
+    else
+      render json: {
+        message: 'Erro ao duplicar o passo de solução', errors: duplicated_solution_step.errors
+      }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def solution_steps_params
@@ -54,6 +68,7 @@ class Api::Professors::SolutionStepsController < ApplicationController
   end
 
   def find_solution_step
-    @solution_step = @exercise.solution_steps.find(params[:id])
+    @solution_step = SolutionStep.find_by(id: params[:id], exercise_id: params[:exercise_id])
+    render json: { message: 'Passo de solução não encontrado.' }, status: :not_found unless @solution_step
   end
 end

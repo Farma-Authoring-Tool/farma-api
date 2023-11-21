@@ -8,7 +8,34 @@ class SolutionStep < ApplicationRecord
 
   before_create :set_position
 
+  def duplicate
+    duplicated_solution_step = dup
+    duplicated_solution_step.title = generate_duplicated_title
+
+    if duplicated_solution_step.save
+      tips.each do |tip|
+        duplicated_tip = tip.duplicate
+        duplicated_tip.solution_step = duplicated_solution_step
+        duplicated_tip.save
+      end
+    end
+
+    duplicated_solution_step
+  end
+
   private
+
+  def generate_duplicated_title
+    copy_number = 1
+    new_title = "#{title} (cópia - #{copy_number})"
+
+    while self.class.exists?(title: new_title)
+      copy_number += 1
+      new_title = "#{title} (cópia - #{copy_number})"
+    end
+
+    new_title
+  end
 
   def set_position
     self.position = Time.now.to_i
