@@ -8,4 +8,31 @@ class TipTest < ActiveSupport::TestCase
   context 'relationships' do
     should belong_to(:solution_step)
   end
+
+  context 'duplicate' do
+    setup do
+      @solution_step = FactoryBot.create(:solution_step)
+      @tip = FactoryBot.create(:tip, solution_step: @solution_step, description: "Original Tip")
+    end
+
+    should 'create a duplicate with the same attributes except id and description' do
+      duplicated_tip = @tip.duplicate
+      assert_not_nil duplicated_tip
+      assert_not_equal duplicated_tip.id, @tip.id
+      assert_equal duplicated_tip.number_attempts, @tip.number_attempts
+      assert_equal duplicated_tip.position, @tip.position
+      refute_equal duplicated_tip.description, @tip.description
+      assert_match(/Original Tip \(cópia - \d+\)/, duplicated_tip.description)
+    end
+
+    should 'increment copy number for each duplication' do
+      first_copy = @tip.duplicate
+      first_copy.save!
+      second_copy = @tip.duplicate
+      second_copy.save!
+
+      assert_match(/Original Tip \(cópia - 1\)/, first_copy.description)
+      assert_match(/Original Tip \(cópia - 2\)/, second_copy.description)
+    end
+  end
 end
