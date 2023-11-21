@@ -43,6 +43,20 @@ class Api::Professors::IntroductionsController < ApplicationController
     render json: { message: feminine_unsuccess_destroy_message }, status: :unprocessable_entity
   end
 
+  def duplicate
+    duplicated_introduction = @introduction.duplicate
+
+    if duplicated_introduction.save
+      render json: {
+        message: 'Introdução duplicada com sucesso', introduction: duplicated_introduction
+      }, status: :created
+    else
+      render json: {
+        message: 'Erro ao duplicar a introdução', errors: duplicated_introduction.errors
+      }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def introduction_params
