@@ -23,6 +23,15 @@ class Exercise < ApplicationRecord
     duplicated_exercise
   end
 
+  def reorder_solution_steps(steps_ids)
+    transaction do
+      steps_ids.each_with_index do |id, index|
+        step = solution_steps.find(id)
+        step.update(position: index + 1)
+      end
+    end
+  end
+
   private
 
   def generate_duplicated_title

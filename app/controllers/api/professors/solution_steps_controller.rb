@@ -1,6 +1,6 @@
 class Api::Professors::SolutionStepsController < ApplicationController
   before_action :find_exercise
-  before_action :find_solution_step, except: [:create, :index]
+  before_action :find_solution_step, except: [:create, :index, :reorder]
 
   def index
     render json: @exercise.solution_steps
@@ -55,6 +55,14 @@ class Api::Professors::SolutionStepsController < ApplicationController
         message: 'Erro ao duplicar o passo de solução', errors: duplicated_solution_step.errors
       }, status: :unprocessable_entity
     end
+  end
+
+  def reorder
+    @exercise.reorder_solution_steps(params[:solution_steps_ids])
+
+    head :ok
+  rescue StandardError => e
+    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   private
