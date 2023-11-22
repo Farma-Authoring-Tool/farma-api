@@ -16,6 +16,21 @@ class Lo < ApplicationRecord
     duplicated_lo
   end
 
+  def reorder_items(items)
+    exercises = items.select { |item| item[:type] == 'exercise' }
+    introductions = items.select { |item| item[:type] == 'introduction' }
+
+    exercises.sort_by! { |exercise| exercise[:position] }
+    introductions.sort_by! { |introduction| introduction[:position] }
+
+    ordered_items = exercises + introductions
+
+    ordered_items.each_with_index do |item, index|
+      item_to_update = item[:type].constantize.find(item[:id])
+      item_to_update.update(position: index + 1)
+    end
+  end
+
   private
 
   def generate_duplicated_title
