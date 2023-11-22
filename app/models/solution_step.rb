@@ -23,6 +23,15 @@ class SolutionStep < ApplicationRecord
     duplicated_solution_step
   end
 
+  def reorder_tips(tips_ids)
+    transaction do
+      tips_ids.each_with_index do |id, index|
+        tip = tips.find(id)
+        tip.update(position: index + 1)
+      end
+    end
+  end
+
   private
 
   def generate_duplicated_title

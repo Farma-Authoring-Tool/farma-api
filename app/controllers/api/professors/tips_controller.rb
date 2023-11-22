@@ -1,6 +1,6 @@
 class Api::Professors::TipsController < ApplicationController
   before_action :find_solution_step
-  before_action :find_tip, except: [:create, :index]
+  before_action :find_tip, except: [:create, :index, :reorder]
 
   def index
     render json: @solution_step.tips
@@ -50,6 +50,14 @@ class Api::Professors::TipsController < ApplicationController
     else
       render json: { message: 'Erro ao duplicar a dica', errors: duplicated_tip.errors }, status: :unprocessable_entity
     end
+  end
+
+  def reorder
+    @solution_step.reorder_tips(params[:tips_ids])
+
+    head :ok
+  rescue StandardError => e
+    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   private
