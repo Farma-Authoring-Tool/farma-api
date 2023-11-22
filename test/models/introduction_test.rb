@@ -14,4 +14,27 @@ class IntroductionTest < ActiveSupport::TestCase
   context 'relationships' do
     should belong_to(:lo)
   end
+
+  context 'duplicating an introduction' do
+    setup do
+      @lo = FactoryBot.create(:lo)
+      @introduction = FactoryBot.create(:introduction, lo: @lo, title: 'Original Introduction', public: true)
+    end
+
+    should 'create a new introduction with a modified title' do
+      duplicated_introduction = @introduction.duplicate
+      duplicated_introduction.save
+
+      assert_not_nil duplicated_introduction
+      assert_match(/Original Introduction \(cópia - \d+\)/, duplicated_introduction.title)
+    end
+
+    should 'duplicate with the same description, public status, and position' do
+      duplicated_introduction = @introduction.duplicate
+
+      assert_equal @introduction.description, duplicated_introduction.description
+      assert_equal @introduction.public, duplicated_introduction.public
+      assert_equal @introduction.position, duplicated_introduction.position
+    end
+  end
 end
