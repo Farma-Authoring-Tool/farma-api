@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     namespace :api do
       namespace :professors do
         resources :los do
+          post 'duplicate', on: :member
           resources :introductions do
             post 'duplicate', on: :member
           end

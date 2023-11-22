@@ -34,6 +34,20 @@ class Api::Professors::LosController < ApplicationController
     render json: { message: unsuccess_destroy_message }, status: :unprocessable_entity
   end
 
+  def duplicate
+    original_lo = Lo.find(params[:id])
+    duplicated_lo = original_lo.duplicate
+
+    if duplicated_lo.persisted?
+      render json: { message: 'Objeto de aprendizagem duplicado com sucesso', lo: duplicated_lo }, status: :created
+    else
+      render json: {
+        message: 'Erro ao duplicar o objeto de aprendizagem',
+        errors: duplicated_lo.errors
+      }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def lo_params
