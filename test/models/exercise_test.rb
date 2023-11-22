@@ -16,4 +16,32 @@ class ExerciseTest < ActiveSupport::TestCase
     should have_many(:solution_steps)
     should have_many(:solution_steps).dependent(:destroy)
   end
+
+  context 'duplicating an exercise' do
+    setup do
+      Bullet.enable = false
+      @lo = FactoryBot.create(:lo)
+      @exercise = FactoryBot.create(:exercise, lo: @lo, title: 'Original Exercise')
+      @solution_steps = FactoryBot.create_list(:solution_step, 2, exercise: @exercise)
+      @solution_steps.each do |step|
+        FactoryBot.create_list(:tip, 2, solution_step: step)
+      end
+    end
+
+    should 'create a new exercise with a modified title' do
+      duplicated_exercise = @exercise.duplicate
+
+      assert_not_nil duplicated_exercise
+      assert_match(/Original Exercise \(cópia - \d+\)/, duplicated_exercise.title)
+    end
+
+    should 'duplicate all associated solution steps' do
+      duplicated_exercise = @exercise.duplicate
+
+      assert_equal @solution_steps.count, duplicated_exercise.solution_steps.count
+      @solution_steps.zip(duplicated_exercise.solution_steps).each do |original, duplicate|
+        assert_equal original.tips.count, duplicate.tips.count
+      end
+    end
+  end
 end
