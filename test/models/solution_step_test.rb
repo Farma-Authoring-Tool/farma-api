@@ -21,7 +21,7 @@ class SolutionStepTest < ActiveSupport::TestCase
     setup do
       @exercise = FactoryBot.create(:exercise)
       @solution_step = FactoryBot.create(:solution_step, exercise: @exercise, title: 'Introduction to simple equations')
-      FactoryBot.create(:tip, solution_step: @solution_step, description: 'Learning about equations')
+      @tip = FactoryBot.create(:tip, solution_step: @solution_step, description: 'Learning about equations')
     end
 
     should 'create a new solution step with a modified title' do
@@ -39,7 +39,7 @@ class SolutionStepTest < ActiveSupport::TestCase
       duplicated_tip = duplicated_step.tips.first
 
       assert_equal 1, duplicated_step.tips.count
-      assert_match(/Learning about equations \(cópia - \d+\)/, duplicated_tip.description)
+      assert_equal "Cópia 1 - #{@tip.description}", duplicated_tip.description
     end
   end
 end
