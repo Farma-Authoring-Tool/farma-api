@@ -42,6 +42,17 @@ services:
     networks:
       - app-network
 
+  minio:
+    image: minio/minio
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: miniostorage
+      MINIO_SECRET_KEY: miniostorage
+    command: server /data
+
   api-tests:
     <<: *app
     environment:
@@ -55,6 +66,7 @@ volumes:
   pgdata:
     driver: local
   bundle_path:
+  minio_data:
 
 networks:
   app-network:

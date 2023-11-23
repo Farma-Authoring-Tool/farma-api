@@ -37,6 +37,6 @@ class Api::Professors::LosController < ApplicationController
   private
 
   def lo_params
-    params.require(:lo).permit(:title, :description)
+    params.require(:lo).permit(:title, :description, :image)
   end
 end
