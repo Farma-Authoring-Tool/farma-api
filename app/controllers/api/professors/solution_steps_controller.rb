@@ -65,6 +65,14 @@ class Api::Professors::SolutionStepsController < ApplicationController
     render json: { error: e.message }, status: :unprocessable_entity
   end
 
+  def config_tip_display_mode
+    if @solution_step.config_display_mode(params[:mode])
+      render json: { message: 'Modo de exibição configurado com sucesso' }
+    else
+      render json: { message: 'Erro ao configurar o modo de exibição', errors: @solution_step.errors }
+    end
+  end
+
   private
 
   def solution_steps_params

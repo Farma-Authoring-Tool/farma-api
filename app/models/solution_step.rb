@@ -8,6 +8,18 @@ class SolutionStep < ApplicationRecord
 
   before_create :set_position
 
+  enum display_mode: { sequencial: 'sequencial', todas: 'todas' }
+
+  def config_display_mode(mode)
+    if SolutionStep.display_modes.include?(mode)
+      update(display_mode: mode)
+      true
+    else
+      self.display_mode = nil
+      false
+    end
+  end
+
   def duplicate
     duplicated_solution_step = dup
     duplicated_solution_step.title = generate_duplicated_title
