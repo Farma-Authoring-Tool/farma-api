@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class Api::Professors::IntroductionsControllerDestroyTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   context 'destroy' do
     setup do
       @user = FactoryBot.create(:user)

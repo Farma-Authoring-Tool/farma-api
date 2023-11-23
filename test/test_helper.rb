@@ -8,6 +8,7 @@ require 'rails/test_help'
 class ActiveSupport::TestCase
   include BulletHelper
   include ActionsMessages
+  include Devise::Test::IntegrationHelpers
 
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
