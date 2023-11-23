@@ -1,5 +1,6 @@
 class Api::Professors::TipsController < ApplicationController
-  before_action :find_solution_step
+  include FindResources
+
   before_action :find_tip, except: [:create, :index]
 
   def index
@@ -41,17 +42,20 @@ class Api::Professors::TipsController < ApplicationController
     render json: { message: feminine_success_destroy_message }, status: :accepted
   end
 
+  def duplicate
+    duplicated_tip = @tip.duplicate
+    render json: { message: feminine_success_duplicate_message(model: Tip), tip: duplicated_tip }, status: :created
+  end
+
   private
 
   def tips_params
     params.require(:tip).permit(:description, :number_attempts)
   end
 
-  def find_solution_step
-    @solution_step = SolutionStep.find(params[:solution_step_id])
-  end
-
   def find_tip
     @tip = @solution_step.tips.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end
