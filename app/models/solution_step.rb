@@ -13,6 +13,7 @@ class SolutionStep < ApplicationRecord
   def duplicate
     duplicated_solution_step = dup
     duplicated_solution_step.title = dup_value_for_attribute(:title)
+    duplicated_solution_step.tips_count = 0
     duplicated_solution_step.save!
 
     tips.each do |tip|

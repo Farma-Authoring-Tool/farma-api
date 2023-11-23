@@ -35,7 +35,7 @@ class SolutionStepTest < ActiveSupport::TestCase
       duplicated_step = @solution_step.duplicate
       duplicated_tip = duplicated_step.tips.first
 
-      assert_equal 1, duplicated_step.tips.count
+      assert_equal @solution_step.tips.size, duplicated_step.tips.size
       assert_equal "Cópia 1 - #{@tip.description}", duplicated_tip.description
     end
   end

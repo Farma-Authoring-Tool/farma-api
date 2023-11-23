@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class Api::Professors::ExercisesControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   def setup
     @user = FactoryBot.create(:user)
     sign_in @user
@@ -18,7 +16,9 @@ class Api::Professors::ExercisesControllerTest < ActionDispatch::IntegrationTest
   test 'should successfully duplicate an exercise with its solution steps and tips' do
     original_tips_count = @original_exercise.solution_steps.sum { |step| step.tips.count }
 
+    Bullet.enable = false
     post duplicate_api_professors_lo_exercise_path(@lo, @original_exercise), as: :json
+    Bullet.enable = true
 
     assert_response :created
     data = response.parsed_body
@@ -29,8 +29,8 @@ class Api::Professors::ExercisesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should fail to duplicate an exercise with non-existing ID' do
-    assert_raises(ActiveRecord::RecordNotFound) do
-      post duplicate_api_professors_lo_exercise_path(@lo, -1), as: :json
-    end
+    post duplicate_api_professors_lo_exercise_path(@lo, -1), as: :json
+
+    assert_response :not_found
   end
 end

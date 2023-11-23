@@ -1,5 +1,5 @@
 class Api::Professors::ExercisesController < ApplicationController
-  before_action :find_lo
+  include FindResources
   before_action :find_exercise, except: [:create, :index]
 
   def index
@@ -49,16 +49,8 @@ class Api::Professors::ExercisesController < ApplicationController
 
   def duplicate
     duplicated_exercise = @exercise.duplicate
-
-    if duplicated_exercise.save
-      duplicated_exercise = Exercise.find(duplicated_exercise.id)
-      render json: { message: 'Exercício duplicado com sucesso', exercise: duplicated_exercise }, status: :created
-    else
-      render json: {
-        message: 'Erro ao duplicar o exercício',
-        errors: duplicated_exercise.errors
-      }, status: :unprocessable_entity
-    end
+    render json: { message: feminine_success_duplicate_message(model: Exercise),
+                   exercise: duplicated_exercise }, status: :created
   end
 
   private
@@ -67,16 +59,9 @@ class Api::Professors::ExercisesController < ApplicationController
     params.require(:exercise).permit(:title, :description, :public)
   end
 
-  def find_lo
-    @lo = Lo.find(params[:lo_id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { message: unsuccess_destroy_message(model: Lo) }, status: :unprocessable_entity
-  end
-
   def find_exercise
     @exercise = @lo.exercises.find(params[:id])
-    return unless @exercise.nil?
-
-    render json: { message: 'Exercício não encontrado.' }, status: :unprocessable_entity
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end

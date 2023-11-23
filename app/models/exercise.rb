@@ -1,41 +1,31 @@
 class Exercise < ApplicationRecord
-  validates :title, :description, presence: true
-  validates :title, uniqueness: true
-  validates :public, inclusion: { in: [true, false] }
+  include Duplicate
 
   belongs_to :lo
   has_many :solution_steps, dependent: :destroy
+
+  validates :title, :description, presence: true
+  validates :title, uniqueness: true
+  validates :public, inclusion: { in: [true, false] }
 
   before_create :set_position
 
   def duplicate
     duplicated_exercise = dup
-    duplicated_exercise.title = generate_duplicated_title
+    duplicated_exercise.title = dup_value_for_attribute(:title)
+    duplicated_exercise.solution_steps_count = 0
+    duplicated_exercise.save!
 
-    if duplicated_exercise.save
-      solution_steps.includes(:tips).find_each do |solution_step|
-        duplicated_step = solution_step.duplicate
-        duplicated_step.exercise = duplicated_exercise
-        duplicated_step.save
-      end
+    solution_steps.each do |solution_step|
+      duplicated_step = solution_step.duplicate
+      duplicated_step.exercise = duplicated_exercise
+      duplicated_step.save
     end
 
     duplicated_exercise
   end
 
   private
-
-  def generate_duplicated_title
-    copy_number = 1
-    new_title = "#{title} (cópia - #{copy_number})"
-
-    while self.class.exists?(title: new_title)
-      copy_number += 1
-      new_title = "#{title} (cópia - #{copy_number})"
-    end
-
-    new_title
-  end
 
   def set_position
     self.position = Time.now.to_i

@@ -47,7 +47,7 @@ class Api::Professors::SolutionStepsController < ApplicationController
   def duplicate
     duplicated_solution_step = @solution_step.duplicate
     render json: { message: feminine_success_duplicate_message(model: SolutionStep),
-                   tip: duplicated_solution_step }, status: :created
+                   solution_step: duplicated_solution_step }, status: :created
   end
 
   private
