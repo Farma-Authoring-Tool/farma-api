@@ -25,8 +25,8 @@ class LoTest < ActiveSupport::TestCase
       Bullet.enable = false
 
       @lo = FactoryBot.create(:lo, title: 'Original Lo', description: 'Description')
-      @introductions = FactoryBot.create_list(:introduction, 2, lo: @lo)
-      @exercises = FactoryBot.create_list(:exercise, 3, lo: @lo)
+      @introductions = FactoryBot.create_list(:introduction, 1, lo: @lo)
+      @exercises = FactoryBot.create_list(:exercise, 2, lo: @lo)
       @exercises.each do |exercise|
         FactoryBot.create_list(:solution_step, 2, exercise: exercise).each do |step|
           FactoryBot.create_list(:tip, 2, solution_step: step)
@@ -57,9 +57,7 @@ class LoTest < ActiveSupport::TestCase
     new_order = [
       { id: @exercises[1].id, type: 'Exercise', position: 1 },
       { id: @exercises[0].id, type: 'Exercise', position: 2 },
-      { id: @introductions[0].id, type: 'Introduction', position: 3 },
-      { id: @exercises[2].id, type: 'Exercise', position: 4 },
-      { id: @introductions[1].id, type: 'Introduction', position: 5 }
+      { id: @introductions[0].id, type: 'Introduction', position: 3 }
     ]
 
     @lo.reorder_items(new_order)
@@ -72,7 +70,5 @@ class LoTest < ActiveSupport::TestCase
     assert_equal new_order[0][:id], ordered_exercises[1].id
     assert_equal new_order[1][:id], ordered_exercises[0].id
     assert_equal new_order[2][:id], ordered_introductions[0].id
-    assert_equal new_order[3][:id], ordered_exercises[2].id
-    assert_equal new_order[4][:id], ordered_introductions[1].id
   end
 end

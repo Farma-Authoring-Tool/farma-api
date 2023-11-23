@@ -17,21 +17,28 @@ class Lo < ApplicationRecord
   end
 
   def reorder_items(items)
+    reorder_exercises_and_introductions(items)
+    update_positions
+  end
+
+  private
+
+  def reorder_exercises_and_introductions(items)
     exercises = items.select { |item| item[:type] == 'exercise' }
     introductions = items.select { |item| item[:type] == 'introduction' }
 
     exercises.sort_by! { |exercise| exercise[:position] }
     introductions.sort_by! { |introduction| introduction[:position] }
 
-    ordered_items = exercises + introductions
+    @ordered_items = exercises + introductions
+  end
 
-    ordered_items.each_with_index do |item, index|
+  def update_positions
+    @ordered_items.each_with_index do |item, index|
       item_to_update = item[:type].constantize.find(item[:id])
       item_to_update.update(position: index + 1)
     end
   end
-
-  private
 
   def generate_duplicated_title
     copy_number = 1

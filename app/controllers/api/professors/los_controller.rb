@@ -51,12 +51,12 @@ class Api::Professors::LosController < ApplicationController
   def reorder_items
     lo = Lo.find(params[:id])
     items = params.require(:items)
-  
+
     lo.reorder_items(items)
 
     render json: { message: 'Itens reordenados com sucesso' }
   end
-  
+
   private
 
   def lo_params
