@@ -11,7 +11,8 @@ class Api::Professors::ExercisesController < ApplicationController
   end
 
   def create
-    exercise = @lo.exercises.new(exercise_params)
+    exercise =   include Duplicate
+    @lo.exercises.new(exercise_params)
 
     if exercise.save
       render json: { message: success_create_message, exercise: exercise }, status: :created

@@ -34,6 +34,12 @@ class Api::Professors::LosController < ApplicationController
     render json: { message: unsuccess_destroy_message }, status: :unprocessable_entity
   end
 
+  def duplicate
+    duplicated_lo = @lo.duplicate
+    render json: { message: feminine_success_duplicate_message(model: Lo),
+                   lo: duplicated_lo }, status: :created
+  end
+
   private
 
   def lo_params
