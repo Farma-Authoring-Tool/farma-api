@@ -9,11 +9,13 @@ pt-BR:
         f: "%{entity} criada com sucesso!"
       destroy:
         m: "%{entity} removido com sucesso!"
-        f: "%{entity} removida com sucesso!"
+        f: 
         not_found:
           m: "%{entity} não encontrado!"
           f: "%{entity} não encontrada!"
         bond: "Não é possível remover %{resource_name} com vínculos!"
+      resource:
+        not_found: "Recurso %{entity} não encontrado!"
       errors: "Alguns erros foram encontrados, por favor verifique:"
     not_authorized: "Acesso não autorizado!"
     not_found_page: "Recurso não encontrado!"
