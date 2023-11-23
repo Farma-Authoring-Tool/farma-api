@@ -18,6 +18,6 @@ class Api::Professors::TipsControllerTest < ActionDispatch::IntegrationTest
     assert_equal RESPONSE::Type::JSON, response.content_type
     data = response.parsed_body
 
-    assert_equal feminine_success_destroy_message(model: Tip), data['message']
+    assert_equal feminine_success_duplicate_message(model: Tip), data['message']
   end
 end
