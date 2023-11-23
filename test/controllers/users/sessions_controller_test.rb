@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class Users::SessionsControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   setup do
     @user = FactoryBot.create(:user)
   end
@@ -11,7 +9,6 @@ class Users::SessionsControllerTest < ActionDispatch::IntegrationTest
     post user_session_path, params: { user: { email: @user.email, password: @user.password } }, as: :json
 
     assert_response :success
-
     jwt = response.headers['Authorization'].last || json_response['jwt']
 
     assert_not_nil jwt
@@ -24,8 +21,10 @@ class Users::SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should log out user' do
-    sign_in @user
-    delete destroy_user_session_path, as: :json
+    post user_session_path, params: { user: { email: @user.email, password: @user.password } }, as: :json
+
+    headers = { 'Authorization' => response.headers['Authorization'] }
+    delete destroy_user_session_path, headers: headers
 
     assert_response :success
   end

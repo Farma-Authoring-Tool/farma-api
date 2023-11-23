@@ -33,24 +33,20 @@ module ActionsMessages
     success_destroy_message(gender: 'f', model: model)
   end
 
-  # def success_duplicate_message(gender: 'm', model: nil)
-  #   I18n.t("messages.actions.duplicate.#{gender}", entity: model_human(model))
-  # end
+  def success_duplicate_message(gender: 'm', model: nil)
+    I18n.t("messages.actions.duplicate.#{gender}", entity: model_human(model))
+  end
 
-  # def feminine_success_duplicate_message(model: nil)
-  #   success_duplicate_message(gender: 'f', model: model)
-  # end
-
-  # def unsuccess_duplicate_message(gender: 'm', model: nil)
-  #   I18n.t("messages.actions.duplicate.not_found.#{gender}", entity: model_human(model))
-  # end
-
-  # def feminine_unsuccess_duplicate_message(model: nil)
-  #   success_duplicate_message(gender: 'f', model: model)
-  # end
+  def feminine_success_duplicate_message(model: nil)
+    success_duplicate_message(gender: 'f', model: model)
+  end
 
   def destroy_bond_message(model: nil)
     I18n.t('messages.actions.destroy.bond', entity: model_human(model))
+  end
+
+  def resource_not_found_message(model: nil)
+    I18n.t('messages.actions.resource.not_found', entity: model_human(model))
   end
 
   def error_message
@@ -61,6 +57,7 @@ module ActionsMessages
 
   def model_human(model)
     model ||= controller_name.classify.constantize
+    model = model.constantize if model.is_a?(String)
     model.model_name.human
   end
 end

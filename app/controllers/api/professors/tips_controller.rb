@@ -1,5 +1,6 @@
 class Api::Professors::TipsController < ApplicationController
-  before_action :find_solution_step
+  include FindResources
+
   before_action :find_tip, except: [:create, :index]
 
   def index
@@ -42,14 +43,8 @@ class Api::Professors::TipsController < ApplicationController
   end
 
   def duplicate
-    original_tip = Tip.find(params[:id])
-    duplicated_tip = original_tip.duplicate
-
-    if duplicated_tip.save
-      render json: { message: 'Dica duplicada com sucesso', tip: duplicated_tip }, status: :created
-    else
-      render json: { message: 'Erro ao duplicar a dica', errors: duplicated_tip.errors }, status: :unprocessable_entity
-    end
+    duplicated_tip = @tip.duplicate
+    render json: { message: feminine_success_duplicate_message(model: Tip), tip: duplicated_tip }, status: :created
   end
 
   private
@@ -58,13 +53,9 @@ class Api::Professors::TipsController < ApplicationController
     params.require(:tip).permit(:description, :number_attempts)
   end
 
-  def find_solution_step
-    @solution_step = SolutionStep.find(params[:solution_step_id])
-  end
-
   def find_tip
     @tip = @solution_step.tips.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { message: 'Dica não encontrada.' }, status: :not_found
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end
