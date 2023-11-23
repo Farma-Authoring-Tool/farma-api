@@ -54,8 +54,12 @@ class SolutionStepTest < ActiveSupport::TestCase
     end
 
     should 'not set display mode to an invalid value' do
-      assert_not @solution_step.config_display_mode('invalid_mode')
-      assert_nil @solution_step.display_mode
+      original_mode = @solution_step.display_mode
+
+      result = @solution_step.config_display_mode('invalid_mode')
+
+      assert_not result
+      assert_equal original_mode, @solution_step.reload.display_mode
     end
   end
 end

@@ -66,10 +66,15 @@ class Api::Professors::SolutionStepsController < ApplicationController
   end
 
   def config_tip_display_mode
-    if @solution_step.config_display_mode(params[:mode])
-      render json: { message: 'Modo de exibição configurado com sucesso' }
+    mode = params[:mode]
+
+    if @solution_step.config_display_mode(mode)
+      render json: { message: 'Modo de exibição atualizado com sucesso' }, status: :ok
     else
-      render json: { message: 'Erro ao configurar o modo de exibição', errors: @solution_step.errors }
+      render json: {
+        message: 'Modo de exibição inválido',
+        errors: @solution_step.errors.full_messages
+      }, status: :unprocessable_entity
     end
   end
 
