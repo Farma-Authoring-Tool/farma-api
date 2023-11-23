@@ -1,5 +1,6 @@
 class Api::Professors::IntroductionsController < ApplicationController
-  before_action :find_lo
+  include FindResources
+
   before_action :find_introduction, except: [:create, :index]
 
   def index
@@ -43,17 +44,23 @@ class Api::Professors::IntroductionsController < ApplicationController
     render json: { message: feminine_unsuccess_destroy_message }, status: :unprocessable_entity
   end
 
+  def duplicate
+    duplicated_introduction = @introduction.duplicate
+    render json: {
+      message: feminine_success_duplicate_message(model: Introduction),
+      introduction: duplicated_introduction
+    }, status: :created
+  end
+
   private
 
   def introduction_params
     params.require(:introduction).permit(:title, :description, :public)
   end
 
-  def find_lo
-    @lo = Lo.find(params[:lo_id])
-  end
-
   def find_introduction
     @introduction = @lo.introductions.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end
