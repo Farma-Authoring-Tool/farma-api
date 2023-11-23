@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class Users::RegistrationsControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   test 'should create a new user and return JWT token' do
     user_attributes = FactoryBot.attributes_for(:user)
 
