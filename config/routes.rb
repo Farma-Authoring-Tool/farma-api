@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         resources :los do
           resources :introductions
           resources :exercises do
+            post 'duplicate', on: :member
             resources :solution_steps do
               post 'duplicate', on: :member
               resources :tips do

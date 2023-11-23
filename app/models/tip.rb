@@ -1,7 +1,7 @@
 class Tip < ApplicationRecord
   include Duplicate
 
-  belongs_to :solution_step
+  belongs_to :solution_step, counter_cache: true
 
   validates :description, presence: true
 

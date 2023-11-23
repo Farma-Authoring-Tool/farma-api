@@ -1,5 +1,5 @@
 class Api::Professors::ExercisesController < ApplicationController
-  before_action :find_lo
+  include FindResources
   before_action :find_exercise, except: [:create, :index]
 
   def index
@@ -37,8 +37,20 @@ class Api::Professors::ExercisesController < ApplicationController
   end
 
   def destroy
-    @exercise.destroy
-    render json: { message: success_destroy_message }, status: :accepted
+    @exercise = Exercise.find_by(id: params[:id], lo_id: params[:lo_id])
+
+    if @exercise
+      @exercise.destroy
+      render json: { message: success_destroy_message }, status: :accepted
+    else
+      render json: { message: 'Exercício não encontrado.' }, status: :not_found
+    end
+  end
+
+  def duplicate
+    duplicated_exercise = @exercise.duplicate
+    render json: { message: feminine_success_duplicate_message(model: Exercise),
+                   exercise: duplicated_exercise }, status: :created
   end
 
   private
@@ -47,13 +59,9 @@ class Api::Professors::ExercisesController < ApplicationController
     params.require(:exercise).permit(:title, :description, :public)
   end
 
-  def find_lo
-    @lo = Lo.find(params[:lo_id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { message: unsuccess_destroy_message(model: Lo) }, status: :unprocessable_entity
-  end
-
   def find_exercise
     @exercise = @lo.exercises.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end

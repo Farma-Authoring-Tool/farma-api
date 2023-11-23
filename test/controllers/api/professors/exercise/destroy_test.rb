@@ -23,10 +23,10 @@ class Api::Professors::ExercisesControllerDestroyTest < ActionDispatch::Integrat
     end
 
     context 'when trying to delete exercise from another LO' do
-      should 'raise a RecordNotFound error' do
-        assert_raises(ActiveRecord::RecordNotFound) do
-          delete api_professors_lo_exercise_path(@another_lo, @exercise), as: :json
-        end
+      should 'return not_found' do
+        delete api_professors_lo_exercise_path(@another_lo, @exercise), as: :json
+
+        assert_response :not_found
       end
     end
   end
