@@ -3,6 +3,8 @@ require 'test_helper'
 class Api::Professors::IntroductionsControllerUpdateTest < ActionDispatch::IntegrationTest
   context 'update' do
     setup do
+      @user = FactoryBot.create(:user)
+      sign_in @user
       @lo = FactoryBot.create(:lo)
       @introduction = FactoryBot.create(:introduction, lo: @lo)
     end

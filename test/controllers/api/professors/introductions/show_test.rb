@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class Api::Professors::IntroductionsControllerShowTest < ActionDispatch::IntegrationTest
+  def setup
+    @user = FactoryBot.create(:user)
+    sign_in @user
+  end
+
   test 'should return introduction' do
     @lo = FactoryBot.create(:lo)
     @introduction = FactoryBot.create(:introduction, lo: @lo)

@@ -3,6 +3,8 @@ require 'test_helper'
 class Api::Professors::IntroductionsControllerDestroyTest < ActionDispatch::IntegrationTest
   context 'destroy' do
     setup do
+      @user = FactoryBot.create(:user)
+      sign_in @user
       @lo = FactoryBot.create(:lo)
       @another_lo = FactoryBot.create(:lo)
       @introduction = FactoryBot.create(:introduction, lo: @lo)

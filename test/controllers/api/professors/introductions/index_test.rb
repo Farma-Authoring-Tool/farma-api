@@ -1,7 +1,11 @@
 require 'test_helper'
 
 class Api::Professors::IntroductionsControllerIndexTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   def setup
+    @user = FactoryBot.create(:user)
+    sign_in @user
     @lo = FactoryBot.create(:lo)
     @introductions = FactoryBot.create_list(:introduction, 3, lo: @lo)
   end

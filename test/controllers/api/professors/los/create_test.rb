@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class Api::Professors::LosControllerCreateTest < ActionDispatch::IntegrationTest
+  def setup
+    @user = FactoryBot.create(:user)
+    sign_in @user
+  end
+
   context 'create' do
     context 'with valid params' do
       should 'be successfully' do

@@ -18,6 +18,7 @@ AllCops:
     - "config/initializers/backtrace_silencers.rb"
     - "config/initializers/content_security_policy.rb"
     - "config/environments/production.rb"
+    - "config/initializers/devise.rb"
 
 Style/Documentation:
   Enabled: false
@@ -39,3 +40,4 @@ Metrics/BlockLength:
   Exclude:
     - "config/environments/development.rb"
     - "config/routes.rb"
+    - "config/environments/devise.rb"

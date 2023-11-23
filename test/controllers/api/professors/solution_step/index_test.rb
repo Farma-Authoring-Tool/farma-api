@@ -2,6 +2,8 @@ require 'test_helper'
 
 class Api::Professors::SolutionStepsControllerIndexTest < ActionDispatch::IntegrationTest
   def setup
+    @user = FactoryBot.create(:user)
+    sign_in @user
     @lo = FactoryBot.create(:lo)
     @exercise = FactoryBot.create(:exercise, lo: @lo)
     @solution_steps = FactoryBot.create_list(:solution_step, 3, exercise: @exercise)
