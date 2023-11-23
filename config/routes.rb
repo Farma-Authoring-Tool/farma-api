@@ -15,7 +15,9 @@ Rails.application.routes.draw do
     namespace :api do
       namespace :professors do
         resources :los do
-          resources :introductions
+          resources :introductions do
+            post 'duplicate', on: :member
+          end
           resources :exercises do
             resources :solution_steps do
               post 'duplicate', on: :member

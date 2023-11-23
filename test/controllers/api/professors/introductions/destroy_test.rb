@@ -5,9 +5,9 @@ class Api::Professors::IntroductionsControllerDestroyTest < ActionDispatch::Inte
     setup do
       @user = FactoryBot.create(:user)
       sign_in @user
-      @lo = FactoryBot.create(:lo)
+      @introduction = FactoryBot.create(:introduction)
+      @lo = @introduction.lo
       @another_lo = FactoryBot.create(:lo)
-      @introduction = FactoryBot.create(:introduction, lo: @lo)
     end
 
     context 'with valid params' do
@@ -24,9 +24,9 @@ class Api::Professors::IntroductionsControllerDestroyTest < ActionDispatch::Inte
 
     context 'when trying to delete introduction from another LO' do
       should 'raise a RecordNotFound error' do
-        assert_raises(ActiveRecord::RecordNotFound) do
-          delete api_professors_lo_introduction_path(@another_lo, @introduction), as: :json
-        end
+        delete api_professors_lo_introduction_path(@another_lo, @introduction), as: :json
+
+        assert_response :not_found
       end
     end
   end
