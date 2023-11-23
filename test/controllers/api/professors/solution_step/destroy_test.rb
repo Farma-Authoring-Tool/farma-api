@@ -24,10 +24,10 @@ class Api::Professors::SolutionStepsControllerDestroyTest < ActionDispatch::Inte
     end
 
     context 'when trying to delete solution_step from another exercise' do
-      should 'raise a RecordNotFound error' do
-        assert_raises(ActiveRecord::RecordNotFound) do
-          delete api_professors_lo_exercise_solution_step_path(@lo, @another_exercise, @solution_step), as: :json
-        end
+      should 'respond with not found status' do
+        delete api_professors_lo_exercise_solution_step_path(@lo, @another_exercise, @solution_step), as: :json
+
+        assert_response :not_found
       end
     end
   end

@@ -16,4 +16,27 @@ class SolutionStepTest < ActiveSupport::TestCase
     should have_many(:tips)
     should have_many(:tips).dependent(:destroy)
   end
+
+  context 'duplicating a solution step' do
+    setup do
+      @tip = FactoryBot.create(:tip)
+      @solution_step = @tip.solution_step
+    end
+
+    should 'create a new solution step with a modified title' do
+      duplicated_step = @solution_step.duplicate
+
+      assert_not_nil duplicated_step
+      assert_not_equal duplicated_step.id, @solution_step.id
+      assert_equal "Cópia 1 - #{@solution_step.title}", duplicated_step.title
+    end
+
+    should 'duplicate associated tip with a modified description' do
+      duplicated_step = @solution_step.duplicate
+      duplicated_tip = duplicated_step.tips.first
+
+      assert_equal 1, duplicated_step.tips.count
+      assert_equal "Cópia 1 - #{@tip.description}", duplicated_tip.description
+    end
+  end
 end

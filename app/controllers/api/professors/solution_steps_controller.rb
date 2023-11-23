@@ -1,5 +1,6 @@
 class Api::Professors::SolutionStepsController < ApplicationController
-  before_action :find_exercise
+  include FindResources
+
   before_action :find_solution_step, except: [:create, :index]
 
   def index
@@ -43,17 +44,21 @@ class Api::Professors::SolutionStepsController < ApplicationController
     render json: { message: unsuccess_destroy_message }, status: :unprocessable_entity
   end
 
+  def duplicate
+    duplicated_solution_step = @solution_step.duplicate
+    render json: { message: feminine_success_duplicate_message(model: SolutionStep),
+                   tip: duplicated_solution_step }, status: :created
+  end
+
   private
 
   def solution_steps_params
     params.require(:solutionStep).permit(:title, :description, :response, :decimal_digits, :public)
   end
 
-  def find_exercise
-    @exercise = Exercise.find(params[:exercise_id])
-  end
-
   def find_solution_step
     @solution_step = @exercise.solution_steps.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end
