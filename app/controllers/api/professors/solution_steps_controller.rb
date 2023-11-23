@@ -1,5 +1,6 @@
 class Api::Professors::SolutionStepsController < ApplicationController
-  before_action :find_exercise
+  include FindResources
+
   before_action :find_solution_step, except: [:create, :index]
 
   def index
@@ -45,16 +46,8 @@ class Api::Professors::SolutionStepsController < ApplicationController
 
   def duplicate
     duplicated_solution_step = @solution_step.duplicate
-
-    if duplicated_solution_step.persisted?
-      render json: {
-        message: 'Passo de solução duplicado com sucesso', solutionStep: duplicated_solution_step
-      }, status: :created
-    else
-      render json: {
-        message: 'Erro ao duplicar o passo de solução', errors: duplicated_solution_step.errors
-      }, status: :unprocessable_entity
-    end
+    render json: { message: feminine_success_duplicate_message(model: SolutionStep),
+                   tip: duplicated_solution_step }, status: :created
   end
 
   private
@@ -63,12 +56,9 @@ class Api::Professors::SolutionStepsController < ApplicationController
     params.require(:solutionStep).permit(:title, :description, :response, :decimal_digits, :public)
   end
 
-  def find_exercise
-    @exercise = Exercise.find(params[:exercise_id])
-  end
-
   def find_solution_step
-    @solution_step = SolutionStep.find_by(id: params[:id], exercise_id: params[:exercise_id])
-    render json: { message: 'Passo de solução não encontrado.' }, status: :not_found unless @solution_step
+    @solution_step = @exercise.solution_steps.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end
