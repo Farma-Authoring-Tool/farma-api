@@ -12,7 +12,6 @@ class TipTest < ActiveSupport::TestCase
   context 'duplicate' do
     setup do
       @tip = FactoryBot.create(:tip)
-      @solution_step = @tip.solution_step
     end
 
     should 'create a duplicate with the same attributes except id and description' do
@@ -24,15 +23,13 @@ class TipTest < ActiveSupport::TestCase
       assert_equal duplicated_tip.number_attempts, @tip.number_attempts
       assert_equal duplicated_tip.position, @tip.position
 
-      assert_match(/Cópia 1 - /, duplicated_tip.description)
+      assert_equal "Cópia 1 - #{@tip.description}", duplicated_tip.description
     end
 
     should 'increment copy number for each duplication' do
-      first_copy = @tip.duplicate
-      second_copy = @tip.duplicate
-
-      assert_match(/Cópia 1 - /, first_copy.description)
-      assert_match(/Cópia 1 - /, second_copy.description)
+      assert_match(/Cópia 1 - /, @tip.duplicate.description)
+      assert_match(/Cópia 2 - /, @tip.duplicate.description)
+      assert_match(/Cópia 3 - /, @tip.duplicate.description)
     end
   end
 end

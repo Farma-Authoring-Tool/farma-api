@@ -1,7 +1,7 @@
 pt-BR:
   activerecord:
     models:
-      Lo:
+      lo:
         one: Objeto de Aprendizagem
         other: Objetos de Aprendizagem
     attributes:

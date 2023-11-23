@@ -44,7 +44,7 @@ class Api::Professors::TipsController < ApplicationController
 
   def duplicate
     duplicated_tip = @tip.duplicate
-    render json: { message: feminine_success_destroy_message(model: Tip), tip: duplicated_tip }, status: :created
+    render json: { message: feminine_success_duplicate_message(model: Tip), tip: duplicated_tip }, status: :created
   end
 
   private
