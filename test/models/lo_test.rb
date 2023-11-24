@@ -49,22 +49,21 @@ class LoTest < ActiveSupport::TestCase
     end
   end
 
+  test '#pages' do
+    pages = (@introductions + @exercises).sort_by(&:position)
+
+    assert_equal @lo.pages.pluck(:id), pages.pluck(:id)
+  end
+
   test 'should correctly reorder items within a learning object' do
-    new_order = [
-      { id: @exercises[1].id, type: 'Exercise', position: 1 },
-      { id: @exercises[0].id, type: 'Exercise', position: 2 },
-      { id: @introductions[0].id, type: 'Introduction', position: 3 }
-    ]
+    pages = @exercises + @introductions
+    pages = pages.shuffle
+    new_order = pages.map do |page|
+      { id: page.id, class: page.class.to_s }
+    end
 
-    @lo.reorder_items(new_order)
+    @lo.pages.sort_by!(new_order)
 
-    @lo.reload
-
-    ordered_exercises = @lo.exercises.order(:position)
-    ordered_introductions = @lo.introductions.order(:position)
-
-    assert_equal new_order[0][:id], ordered_exercises[1].id
-    assert_equal new_order[1][:id], ordered_exercises[0].id
-    assert_equal new_order[2][:id], ordered_introductions[0].id
+    assert_equal @lo.pages.pluck(:id), pages.pluck(:id)
   end
 end

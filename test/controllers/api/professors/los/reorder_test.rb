@@ -10,21 +10,15 @@ class Api::Professors::LosControllerReorderTest < ActionDispatch::IntegrationTes
   end
 
   test 'should correctly reorder items within a learning object' do
-    new_order = [
-      { id: @introductions[0].id, type: 'Introduction', position: 1 },
-      { id: @exercises[0].id, type: 'Exercise', position: 2 },
-      { id: @introductions[1].id, type: 'Introduction', position: 3 }
-    ]
+    pages = @exercises + @introductions
+    pages = pages.shuffle
+    new_order = pages.map do |page|
+      { id: page.id, class: page.class.to_s }
+    end
 
-    post reorder_items_api_professors_lo_path(@lo), params: { items: new_order }, as: :json
-
+    post sort_pages_api_professors_lo_path(@lo), params: { order: new_order }, as: :json
     @lo.reload
 
-    ordered_exercises = @lo.exercises.order(:position)
-    ordered_introductions = @lo.introductions.order(:position)
-
-    assert_equal new_order[0][:id], ordered_introductions[0].id
-    assert_equal new_order[1][:id], ordered_exercises[0].id
-    assert_equal new_order[2][:id], ordered_introductions[1].id
+    assert_equal @lo.pages.pluck(:id), pages.pluck(:id)
   end
 end

@@ -41,3 +41,7 @@ Metrics/BlockLength:
     - "config/environments/development.rb"
     - "config/routes.rb"
     - "config/environments/devise.rb"
+
+Naming/MethodParameterName:
+  Exclude:
+    - "app/models/logics/lo/pages.rb"

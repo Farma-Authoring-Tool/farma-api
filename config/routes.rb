@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       namespace :professors do
         resources :los do
           post 'duplicate', on: :member
-          post 'reorder_items', on: :member
+          post 'sort_pages', on: :member
 
           resources :introductions do
             post 'duplicate', on: :member

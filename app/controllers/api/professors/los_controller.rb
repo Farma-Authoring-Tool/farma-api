@@ -37,12 +37,8 @@ class Api::Professors::LosController < ApplicationController
     render json: { message: success_duplicate_message(model: Lo), lo: duplicated_lo }, status: :created
   end
 
-  def reorder_items
-    lo = Lo.find(params[:id])
-    items = params.require(:items)
-
-    lo.reorder_items(items)
-
+  def sort_pages
+    @lo.pages.sort_by!(params[:order])
     render json: { message: success_reorder_message(model: Lo) }, status: :ok
   end
 
