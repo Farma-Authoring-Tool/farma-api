@@ -58,7 +58,7 @@ class Api::Professors::SolutionStepsController < ApplicationController
   private
 
   def solution_steps_params
-    params.require(:solutionStep).permit(:title, :description, :response, :decimal_digits, :public)
+    params.require(:solution_step).permit(:title, :description, :response, :decimal_digits, :public, :tips_display_mode)
   end
 
   def find_solution_step

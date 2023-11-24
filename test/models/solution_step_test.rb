@@ -5,6 +5,7 @@ class SolutionStepTest < ActiveSupport::TestCase
     should validate_presence_of(:title)
     should validate_uniqueness_of(:title)
     should validate_presence_of(:description)
+
     should allow_value(true).for(:public)
     should allow_value(false).for(:public)
     should_not allow_value(nil).for(:public)
@@ -15,6 +16,12 @@ class SolutionStepTest < ActiveSupport::TestCase
     should belong_to(:exercise)
     should have_many(:tips)
     should have_many(:tips).dependent(:destroy)
+  end
+
+  context 'enums' do
+    should define_enum_for(:tips_display_mode)
+      .with_values([:by_number_of_errors, :sequentially, :all_at_once])
+      .with_prefix(:tips)
   end
 
   context 'duplicating a solution step' do
@@ -56,6 +63,36 @@ class SolutionStepTest < ActiveSupport::TestCase
 
         assert_equal index + 1, tip.position, "Tip with ID #{id} should be at position #{index + 1}"
       end
+    end
+  end
+
+  context 'setting display mode' do
+    setup do
+      @solution_step = FactoryBot.create(:solution_step)
+    end
+
+    should 'have the default display mode' do
+      assert_predicate @solution_step, :tips_by_number_of_errors?
+    end
+
+    should 'set display mode to sequencial' do
+      @solution_step.update(tips_display_mode: :sequentially)
+
+      assert_predicate @solution_step, :tips_sequentially?
+    end
+
+    should 'set display mode to todas' do
+      @solution_step.update(tips_display_mode: :all_at_once)
+
+      assert_predicate @solution_step, :tips_all_at_once?
+    end
+
+    should 'not set display mode to an invalid value' do
+      assert_raises(ArgumentError) do
+        @solution_step.update(tips_display_mode: :not_exists)
+      end
+
+      assert_predicate @solution_step, :tips_by_number_of_errors?
     end
   end
 end

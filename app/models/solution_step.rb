@@ -1,6 +1,11 @@
 class SolutionStep < ApplicationRecord
   include Duplicate
 
+  enum :tips_display_mode,
+       [:by_number_of_errors, :sequentially, :all_at_once],
+       default: :by_number_of_errors,
+       prefix: :tips
+
   belongs_to :exercise, counter_cache: true
   has_many :tips, dependent: :destroy
 

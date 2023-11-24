@@ -16,7 +16,7 @@ class Api::Professors::SolutionStepsControllerCreateTest < ActionDispatch::Integ
         post api_professors_lo_exercise_solution_steps_path(
           @lo,
           @exercise
-        ), params: { solutionStep: solution_step_attributes }, as: :json
+        ), params: { solution_step: solution_step_attributes }, as: :json
 
         assert_response :created
         assert_equal RESPONSE::Type::JSON, response.content_type
@@ -48,7 +48,7 @@ class Api::Professors::SolutionStepsControllerCreateTest < ActionDispatch::Integ
         post api_professors_lo_exercise_solution_steps_path(
           @lo,
           @exercise
-        ), params: { solutionStep: solution_step_attributes }, as: :json
+        ), params: { solution_step: solution_step_attributes }, as: :json
 
         assert_response :unprocessable_entity
         assert_equal RESPONSE::Type::JSON, response.content_type
@@ -74,7 +74,7 @@ class Api::Professors::SolutionStepsControllerCreateTest < ActionDispatch::Integ
         post api_professors_lo_exercise_solution_steps_path(
           @lo,
           @exercise
-        ), params: { solutionStep: solution_step_attributes }, as: :json
+        ), params: { solution_step: solution_step_attributes }, as: :json
 
         assert_response :unprocessable_entity
         assert_equal RESPONSE::Type::JSON, response.content_type

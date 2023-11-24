@@ -21,7 +21,7 @@ class Api::Professors::SolutionStepsControllerUpdateTest < ActionDispatch::Integ
         }
 
         patch api_professors_lo_exercise_solution_step_path(@lo, @exercise, @solution_step), params: {
-          solutionStep: solution_step_attributes
+          solution_step: solution_step_attributes
         }, as: :json
 
         assert_response :accepted
@@ -49,7 +49,7 @@ class Api::Professors::SolutionStepsControllerUpdateTest < ActionDispatch::Integ
         )
 
         patch api_professors_lo_exercise_solution_step_path(@lo, @exercise, @solution_step), params: {
-          solutionStep: solution_step_attributes
+          solution_step: solution_step_attributes
         }, as: :json
 
         assert_response :unprocessable_entity
@@ -74,7 +74,7 @@ class Api::Professors::SolutionStepsControllerUpdateTest < ActionDispatch::Integ
         )
 
         patch api_professors_lo_exercise_solution_step_path(@lo, @exercise, @solution_step), params: {
-          solutionStep: solution_step_attributes
+          solution_step: solution_step_attributes
         }, as: :json
 
         assert_response :unprocessable_entity

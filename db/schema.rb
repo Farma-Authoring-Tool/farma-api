@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_24_000538) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "tips_count"
+    t.integer "tips_display_mode", default: 0
     t.index ["exercise_id"], name: "index_solution_steps_on_exercise_id"
     t.index ["title"], name: "index_solution_steps_on_title", unique: true
   end
