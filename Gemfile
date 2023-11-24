@@ -16,13 +16,14 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'bootsnap', require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem 'image_processing', '~> 1.2'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'devise'
 gem 'devise-jwt'
 gem 'rack-cors'
 gem 'rails-i18n', '~> 7.0.0' # For 7.0.0
+gem 'aws-sdk-s3', require: false
 
 group :development do
   gem 'brakeman'

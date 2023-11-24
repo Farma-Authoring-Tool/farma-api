@@ -3,6 +3,7 @@ class Lo < ApplicationRecord
 
   has_many :introductions, dependent: :destroy
   has_many :exercises, dependent: :destroy
+  has_one_attached :image
 
   validates :title, presence: true, uniqueness: true
   validates :description, presence: true

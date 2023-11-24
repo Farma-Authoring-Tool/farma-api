@@ -13,7 +13,9 @@ class Api::Professors::LosController < ApplicationController
     lo = Lo.new(lo_params)
 
     if lo.save
-      render json: { message: success_create_message, lo: lo }, status: :created
+      lo.image.attach(lo_params[:image]) if lo_params[:image].present?
+      image_url = lo.image.attached? ? url_for(lo.image) : nil
+      render json: { message: success_create_message, lo: lo, image_url: image_url }, status: :created
     else
       render json: { message: error_message, lo: lo, errors: lo.errors }, status: :unprocessable_entity
     end
@@ -45,7 +47,7 @@ class Api::Professors::LosController < ApplicationController
   private
 
   def lo_params
-    params.require(:lo).permit(:title, :description)
+    params.require(:lo).permit(:title, :description, :image)
   end
 
   def find_lo

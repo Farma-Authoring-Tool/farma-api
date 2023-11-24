@@ -51,10 +51,22 @@ services:
     depends_on:
       - db
 
+  minio:
+    image: minio/minio
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ROOT_USER: miniostorage
+      MINIO_ROOT_PASSWORD: miniostorage
+    command: server /data
+
 volumes:
   pgdata:
     driver: local
   bundle_path:
+  minio_data:
 
 networks:
   app-network:
