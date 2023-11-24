@@ -1,7 +1,7 @@
 class Exercise < ApplicationRecord
   include Duplicate
 
-  belongs_to :lo
+  belongs_to :lo, counter_cache: true
   has_many :solution_steps, dependent: :destroy
 
   validates :title, :description, presence: true
@@ -11,18 +11,7 @@ class Exercise < ApplicationRecord
   before_create :set_position
 
   def duplicate
-    duplicated_exercise = dup
-    duplicated_exercise.title = dup_value_for_attribute(:title)
-    duplicated_exercise.solution_steps_count = 0
-    duplicated_exercise.save!
-
-    solution_steps.each do |solution_step|
-      duplicated_step = solution_step.duplicate
-      duplicated_step.exercise = duplicated_exercise
-      duplicated_step.save
-    end
-
-    duplicated_exercise
+    ExerciseDuplicator.new(self).perform
   end
 
   private
