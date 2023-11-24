@@ -58,4 +58,31 @@ class SolutionStepTest < ActiveSupport::TestCase
       end
     end
   end
+
+  context 'setting display mode' do
+    setup do
+      @solution_step = FactoryBot.create(:solution_step)
+    end
+
+    should 'set display mode to sequencial' do
+      @solution_step.config_display_mode('sequencial')
+
+      assert_equal 'sequencial', @solution_step.display_mode
+    end
+
+    should 'set display mode to todas' do
+      @solution_step.config_display_mode('todas')
+
+      assert_equal 'todas', @solution_step.display_mode
+    end
+
+    should 'not set display mode to an invalid value' do
+      original_mode = @solution_step.display_mode
+
+      result = @solution_step.config_display_mode('invalid_mode')
+
+      assert_not result
+      assert_equal original_mode, @solution_step.reload.display_mode
+    end
+  end
 end
