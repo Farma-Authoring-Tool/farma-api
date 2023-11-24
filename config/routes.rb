@@ -24,6 +24,7 @@ Rails.application.routes.draw do
             resources :solution_steps do
               post 'duplicate', on: :member
               resources :tips do
+                post 'reorder', on: :collection
                 post 'duplicate', on: :member
               end
             end

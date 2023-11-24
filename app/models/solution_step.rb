@@ -14,6 +14,14 @@ class SolutionStep < ApplicationRecord
     SolutionStepDuplicator.new(self).perform
   end
 
+  def reorder_tips(tips_ids)
+    transaction do
+      tips_ids.each_with_index do |id, index|
+        tips.find(id).update(position: index + 1)
+      end
+    end
+  end
+
   private
 
   def set_position
