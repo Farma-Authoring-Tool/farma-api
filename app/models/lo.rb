@@ -8,6 +8,12 @@ class Lo < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validates :description, presence: true
 
+  def attach_image(image_param)
+    return if image_param.blank?
+
+    image.attach(image_param)
+  end
+
   def duplicate
     LoDuplicator.new(self).perform
   end

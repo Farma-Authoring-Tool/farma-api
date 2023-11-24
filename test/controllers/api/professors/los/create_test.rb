@@ -1,10 +1,24 @@
 require 'test_helper'
 
 class Api::Professors::LosControllerCreateTest < ActionDispatch::IntegrationTest
+  include ActionDispatch::TestProcess::FixtureFile
+
   def setup
     @user = FactoryBot.create(:user)
     sign_in @user
   end
+
+  # test "can create Lo with image" do
+  #   lo_attributes = FactoryBot.attributes_for(:lo)
+  #   image = fixture_file_upload('image.png', 'image/png')
+  
+  #   post api_professors_los_path, params: { 
+  #     lo: lo_attributes.merge(image: image)
+  #   }, as: :json
+  
+  #   assert_response :created
+  #   assert lo.image.attached?
+  # end
 
   context 'create' do
     context 'with valid params' do

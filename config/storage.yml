@@ -7,15 +7,6 @@ local:
   root: <%= Rails.root.join("storage") %>
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
-minio:
-  service: S3
-  access_key_id: minio
-  secret_access_key: miniostorage
-  region: us-east-1
-  endpoint: http://minio:9000
-  bucket: your_own_bucket-<%= Rails.env %>
-  force_path_style: true
-
 # amazon:
 #   service: S3
 #   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>

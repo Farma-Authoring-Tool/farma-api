@@ -13,7 +13,7 @@ class Api::Professors::LosController < ApplicationController
     lo = Lo.new(lo_params)
 
     if lo.save
-      lo.image.attach(lo_params[:image]) if lo_params[:image].present?
+      lo.attach_image(lo_params[:image])
       image_url = lo.image.attached? ? url_for(lo.image) : nil
       render json: { message: success_create_message, lo: lo, image_url: image_url }, status: :created
     else

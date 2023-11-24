@@ -87,7 +87,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_24_001419) do
     t.bigint "exercise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "display_mode", default: "sequencial"
     t.integer "tips_count"
     t.integer "tips_display_mode", default: 0
     t.index ["exercise_id"], name: "index_solution_steps_on_exercise_id"
