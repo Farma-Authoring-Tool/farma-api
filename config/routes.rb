@@ -27,7 +27,7 @@ Rails.application.routes.draw do
             resources :solution_steps do
               post 'reorder', on: :collection
               post 'duplicate', on: :member
-              patch 'config_tip_display_mode', on: :member
+
               resources :tips do
                 post 'reorder', on: :collection
                 post 'duplicate', on: :member

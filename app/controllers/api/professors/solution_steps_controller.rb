@@ -55,21 +55,10 @@ class Api::Professors::SolutionStepsController < ApplicationController
     render json: { message: success_reorder_message(model: SolutionStep) }, status: :ok
   end
 
-  def config_tip_display_mode
-    if @solution_step.config_display_mode(params[:mode])
-      render json: { message: feminine_success_update_message(model: SolutionStep) }, status: :ok
-    else
-      render json: {
-        message: resource_not_found_message,
-        errors: @solution_step.errors.full_messages
-      }, status: :unprocessable_entity
-    end
-  end
-
   private
 
   def solution_steps_params
-    params.require(:solutionStep).permit(:title, :description, :response, :decimal_digits, :public)
+    params.require(:solution_step).permit(:title, :description, :response, :decimal_digits, :public, :tips_display_mode)
   end
 
   def find_solution_step

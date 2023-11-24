@@ -1,6 +1,11 @@
 class SolutionStep < ApplicationRecord
   include Duplicate
 
+  enum :tips_display_mode,
+       [:by_number_of_errors, :sequentially, :all_at_once],
+       default: :by_number_of_errors,
+       prefix: :tips
+
   belongs_to :exercise, counter_cache: true
   has_many :tips, dependent: :destroy
 
@@ -9,15 +14,6 @@ class SolutionStep < ApplicationRecord
   validates :public, inclusion: { in: [true, false] }
 
   before_create :set_position
-  enum display_mode: { sequencial: 'sequencial', todas: 'todas' }
-
-  def config_display_mode(mode)
-    if SolutionStep.display_modes.include?(mode)
-      update(display_mode: mode)
-    else
-      false
-    end
-  end
 
   def duplicate
     SolutionStepDuplicator.new(self).perform

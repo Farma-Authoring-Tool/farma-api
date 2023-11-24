@@ -5,6 +5,7 @@ class SolutionStepTest < ActiveSupport::TestCase
     should validate_presence_of(:title)
     should validate_uniqueness_of(:title)
     should validate_presence_of(:description)
+
     should allow_value(true).for(:public)
     should allow_value(false).for(:public)
     should_not allow_value(nil).for(:public)
@@ -15,6 +16,12 @@ class SolutionStepTest < ActiveSupport::TestCase
     should belong_to(:exercise)
     should have_many(:tips)
     should have_many(:tips).dependent(:destroy)
+  end
+
+  context 'enums' do
+    should define_enum_for(:tips_display_mode)
+      .with_values([:by_number_of_errors, :sequentially, :all_at_once])
+      .with_prefix(:tips)
   end
 
   context 'duplicating a solution step' do
@@ -64,25 +71,28 @@ class SolutionStepTest < ActiveSupport::TestCase
       @solution_step = FactoryBot.create(:solution_step)
     end
 
-    should 'set display mode to sequencial' do
-      @solution_step.config_display_mode('sequencial')
+    should 'have the default display mode' do
+      assert_predicate @solution_step, :tips_by_number_of_errors?
+    end
 
-      assert_equal 'sequencial', @solution_step.display_mode
+    should 'set display mode to sequencial' do
+      @solution_step.update(tips_display_mode: :sequentially)
+
+      assert_predicate @solution_step, :tips_sequentially?
     end
 
     should 'set display mode to todas' do
-      @solution_step.config_display_mode('todas')
+      @solution_step.update(tips_display_mode: :all_at_once)
 
-      assert_equal 'todas', @solution_step.display_mode
+      assert_predicate @solution_step, :tips_all_at_once?
     end
 
     should 'not set display mode to an invalid value' do
-      original_mode = @solution_step.display_mode
+      assert_raises(ArgumentError) do
+        @solution_step.update(tips_display_mode: :not_exists)
+      end
 
-      result = @solution_step.config_display_mode('invalid_mode')
-
-      assert_not result
-      assert_equal original_mode, @solution_step.reload.display_mode
+      assert_predicate @solution_step, :tips_by_number_of_errors?
     end
   end
 end
