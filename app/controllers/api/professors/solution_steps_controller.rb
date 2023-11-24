@@ -1,7 +1,7 @@
 class Api::Professors::SolutionStepsController < ApplicationController
   include FindResources
 
-  before_action :find_solution_step, except: [:create, :index]
+  before_action :find_solution_step, except: [:create, :index, :reorder]
 
   def index
     render json: @exercise.solution_steps
@@ -48,6 +48,11 @@ class Api::Professors::SolutionStepsController < ApplicationController
     duplicated_solution_step = @solution_step.duplicate
     render json: { message: feminine_success_duplicate_message(model: SolutionStep),
                    solution_step: duplicated_solution_step }, status: :created
+  end
+
+  def reorder
+    @exercise.reorder_solution_steps(params[:solution_steps_ids])
+    render json: { message: success_reorder_message(model: SolutionStep) }, status: :ok
   end
 
   private
