@@ -17,6 +17,7 @@ class Api::Professors::LosControllerCreateTest < ActionDispatch::IntegrationTest
   #   }, as: :json
   
   #   assert_response :created
+  #   lo = Lo.order(:created_at).last
   #   assert lo.image.attached?
   # end
 
