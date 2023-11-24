@@ -17,6 +17,9 @@ pt-BR:
       duplicate:
         m: "%{entity} duplicado com sucesso!"
         f: "%{entity} duplicada com sucesso!"
+      reorder:
+        m: "%{entity} reordenado com sucesso!"
+        f: "%{entity} reordenada com sucesso!"
       resource:
         not_found: "Recurso %{entity} não encontrado!"
       errors: "Alguns erros foram encontrados, por favor verifique:"

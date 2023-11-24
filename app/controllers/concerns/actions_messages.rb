@@ -41,6 +41,14 @@ module ActionsMessages
     success_duplicate_message(gender: 'f', model: model)
   end
 
+  def success_reorder_message(gender: 'm', model: nil)
+    I18n.t("messages.actions.reorder.#{gender}", entity: model_human(model))
+  end
+
+  def feminine_success_reorder_message(model: nil)
+    success_reorder_message(gender: 'f', model: model)
+  end
+
   def destroy_bond_message(model: nil)
     I18n.t('messages.actions.destroy.bond', entity: model_human(model))
   end

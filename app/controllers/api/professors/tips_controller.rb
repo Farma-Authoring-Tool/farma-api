@@ -1,7 +1,7 @@
 class Api::Professors::TipsController < ApplicationController
   include FindResources
 
-  before_action :find_tip, except: [:create, :index]
+  before_action :find_tip, except: [:create, :index, :reorder]
 
   def index
     render json: @solution_step.tips
@@ -45,6 +45,11 @@ class Api::Professors::TipsController < ApplicationController
   def duplicate
     duplicated_tip = @tip.duplicate
     render json: { message: feminine_success_duplicate_message(model: Tip), tip: duplicated_tip }, status: :created
+  end
+
+  def reorder
+    @solution_step.reorder_tips(params[:tips_ids])
+    render json: { message: feminine_success_reorder_message(model: Tip) }, status: :ok
   end
 
   private
