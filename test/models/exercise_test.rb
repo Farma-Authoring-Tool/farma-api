@@ -44,4 +44,23 @@ class ExerciseTest < ActiveSupport::TestCase
       end
     end
   end
+
+  context 'reordering solution steps' do
+    setup do
+      @exercise = FactoryBot.create(:exercise)
+      @solution_steps = FactoryBot.create_list(:solution_step, 3, exercise: @exercise)
+    end
+
+    should 'correctly reorder solution steps' do
+      new_order_ids = @solution_steps.shuffle.map(&:id)
+
+      @exercise.reorder_solution_steps(new_order_ids)
+
+      new_order_ids.each_with_index do |id, index|
+        step = SolutionStep.find(id)
+
+        assert_equal index + 1, step.position, "SolutionStep with ID #{id} should be at position #{index + 1}"
+      end
+    end
+  end
 end

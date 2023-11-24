@@ -14,6 +14,14 @@ class Exercise < ApplicationRecord
     ExerciseDuplicator.new(self).perform
   end
 
+  def reorder_solution_steps(steps_ids)
+    transaction do
+      steps_ids.each_with_index do |id, index|
+        solution_steps.find(id).update(position: index + 1)
+      end
+    end
+  end
+
   private
 
   def set_position
