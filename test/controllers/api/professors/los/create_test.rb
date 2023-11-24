@@ -11,11 +11,11 @@ class Api::Professors::LosControllerCreateTest < ActionDispatch::IntegrationTest
   # test "can create Lo with image" do
   #   lo_attributes = FactoryBot.attributes_for(:lo)
   #   image = fixture_file_upload('image.png', 'image/png')
-  
-  #   post api_professors_los_path, params: { 
+
+  #   post api_professors_los_path, params: {
   #     lo: lo_attributes.merge(image: image)
   #   }, as: :json
-  
+
   #   assert_response :created
   #   lo = Lo.order(:created_at).last
   #   assert lo.image.attached?
