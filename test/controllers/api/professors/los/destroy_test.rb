@@ -24,11 +24,11 @@ class Api::Professors::LosControllerDestroyTest < ActionDispatch::IntegrationTes
       should 'be unsuccessfully' do
         delete api_professors_lo_path(-1), as: :json
 
-        assert_response :unprocessable_entity
+        assert_response :not_found
         assert_equal RESPONSE::Type::JSON, response.content_type
         data = response.parsed_body
 
-        assert_equal unsuccess_destroy_message(model: Lo), data['message']
+        assert_equal resource_not_found_message(model: Lo), data['message']
       end
     end
   end

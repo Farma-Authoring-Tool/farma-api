@@ -8,10 +8,7 @@ class Tip < ApplicationRecord
   before_create :set_position
 
   def duplicate
-    copy = dup
-    copy.description = dup_value_for_attribute(:description)
-    copy.save!
-    copy
+    TipDuplicator.new(self).perform
   end
 
   private

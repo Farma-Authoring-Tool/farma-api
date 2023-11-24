@@ -1,7 +1,7 @@
 class SolutionStep < ApplicationRecord
   include Duplicate
 
-  belongs_to :exercise
+  belongs_to :exercise, counter_cache: true
   has_many :tips, dependent: :destroy
 
   validates :title, :description, presence: true
@@ -11,18 +11,7 @@ class SolutionStep < ApplicationRecord
   before_create :set_position
 
   def duplicate
-    duplicated_solution_step = dup
-    duplicated_solution_step.title = dup_value_for_attribute(:title)
-    duplicated_solution_step.tips_count = 0
-    duplicated_solution_step.save!
-
-    tips.each do |tip|
-      duplicated_tip = tip.duplicate
-      duplicated_tip.solution_step = duplicated_solution_step
-      duplicated_tip.save!
-    end
-
-    duplicated_solution_step
+    SolutionStepDuplicator.new(self).perform
   end
 
   private

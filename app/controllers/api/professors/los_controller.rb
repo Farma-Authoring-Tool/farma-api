@@ -1,10 +1,12 @@
 class Api::Professors::LosController < ApplicationController
+  before_action :find_lo, except: [:create, :index]
+
   def index
     render json: Lo.all
   end
 
   def show
-    render json: Lo.find(params[:id])
+    render json: @lo
   end
 
   def create
@@ -18,36 +20,32 @@ class Api::Professors::LosController < ApplicationController
   end
 
   def update
-    lo = Lo.find(params[:id])
-
-    if lo.update(lo_params)
-      render json: { message: success_update_message, lo: lo }, status: :accepted
+    if @lo.update(lo_params)
+      render json: { message: success_update_message, lo: @lo }, status: :accepted
     else
-      render json: { message: error_message, lo: lo, errors: lo.errors }, status: :unprocessable_entity
+      render json: { message: error_message, lo: @lo, errors: @lo.errors }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    Lo.find(params[:id]).destroy
+    @lo.destroy
     render json: { message: success_destroy_message }, status: :accepted
-  rescue StandardError
-    render json: { message: unsuccess_destroy_message }, status: :unprocessable_entity
   end
 
   def duplicate
-    lo = Lo.find_by(id: params[:id])
-
-    if lo
-      duplicated_lo = lo.duplicate
-      render json: { message: success_duplicate_message(model: Lo), lo: duplicated_lo }, status: :created
-    else
-      render json: { message: resource_not_found_message(model: Lo) }, status: :not_found
-    end
+    duplicated_lo = @lo.duplicate
+    render json: { message: success_duplicate_message(model: Lo), lo: duplicated_lo }, status: :created
   end
 
   private
 
   def lo_params
     params.require(:lo).permit(:title, :description)
+  end
+
+  def find_lo
+    @lo = Lo.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end
