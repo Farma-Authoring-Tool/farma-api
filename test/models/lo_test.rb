@@ -15,7 +15,7 @@ class LoTest < ActiveSupport::TestCase
 
   context 'duplicating an lo' do
     setup do
-      @lo = FactoryBot.create(:lo, title: 'Original Lo')
+      @lo = FactoryBot.create(:lo)
       @introductions = FactoryBot.create_list(:introduction, 2, lo: @lo)
       @exercises = FactoryBot.create_list(:exercise, 2, lo: @lo)
       @exercises.each do |exercise|
@@ -38,7 +38,7 @@ class LoTest < ActiveSupport::TestCase
       assert_equal @exercises.size, duplicated_lo.exercises.size
 
       @exercises.zip(duplicated_lo.exercises).each do |original, duplicate|
-        assert_equal original.solution_step.size, duplicate.solution_steps.size
+        assert_equal original.solution_steps.size, duplicate.solution_steps.size
       end
     end
   end

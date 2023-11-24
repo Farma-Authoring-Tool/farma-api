@@ -2,7 +2,7 @@ class Exercise < ApplicationRecord
   include Duplicate
 
   belongs_to :lo
-  has_many :solution_steps, dependent: :destroy
+  has_many :solution_steps, dependent: :destroy, counter_cache: true
 
   validates :title, :description, presence: true
   validates :title, uniqueness: true

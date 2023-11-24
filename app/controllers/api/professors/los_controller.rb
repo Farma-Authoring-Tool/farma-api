@@ -35,9 +35,14 @@ class Api::Professors::LosController < ApplicationController
   end
 
   def duplicate
-    duplicated_lo = @lo.duplicate
-    render json: { message: feminine_success_duplicate_message(model: Lo),
-                   lo: duplicated_lo }, status: :created
+    lo = Lo.find_by(id: params[:id])
+
+    if lo
+      duplicated_lo = lo.duplicate
+      render json: { message: success_duplicate_message(model: Lo), lo: duplicated_lo }, status: :created
+    else
+      render json: { message: resource_not_found_message(model: Lo) }, status: :not_found
+    end
   end
 
   private

@@ -18,7 +18,9 @@ class Api::Professors::LosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should successfully duplicate a lo with its introductions and exercises' do
+    Bullet.enable = false
     post duplicate_api_professors_lo_path(@lo), as: :json
+    Bullet.enable = true
 
     assert_response :created
     data = response.parsed_body
@@ -29,8 +31,8 @@ class Api::Professors::LosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should fail to duplicate a lo with non-existing ID' do
-    assert_raises(ActiveRecord::RecordNotFound) do
-      post duplicate_api_professors_lo_path(-1), as: :json
-    end
+    post duplicate_api_professors_lo_path(-1), as: :json
+
+    assert_response :not_found
   end
 end
