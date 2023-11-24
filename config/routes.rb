@@ -16,9 +16,12 @@ Rails.application.routes.draw do
       namespace :professors do
         resources :los do
           post 'duplicate', on: :member
+          post 'sort_pages', on: :member
+
           resources :introductions do
             post 'duplicate', on: :member
           end
+
           resources :exercises do
             post 'duplicate', on: :member
             resources :solution_steps do

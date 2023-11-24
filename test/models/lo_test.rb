@@ -1,5 +1,11 @@
 require 'test_helper'
 class LoTest < ActiveSupport::TestCase
+  setup do
+    @lo = FactoryBot.create(:lo)
+    @introductions = FactoryBot.create_list(:introduction, 2, lo: @lo)
+    @exercises = FactoryBot.create_list(:exercise, 3, lo: @lo)
+  end
+
   context 'validations' do
     should validate_presence_of(:title)
     should validate_presence_of(:description)
@@ -41,5 +47,23 @@ class LoTest < ActiveSupport::TestCase
         assert_equal original.solution_steps.size, duplicate.solution_steps.size
       end
     end
+  end
+
+  test '#pages' do
+    pages = (@introductions + @exercises).sort_by(&:position)
+
+    assert_equal @lo.pages.pluck(:id), pages.pluck(:id)
+  end
+
+  test 'should correctly reorder items within a learning object' do
+    pages = @exercises + @introductions
+    pages = pages.shuffle
+    new_order = pages.map do |page|
+      { id: page.id, class: page.class.to_s }
+    end
+
+    @lo.pages.sort_by!(new_order)
+
+    assert_equal @lo.pages.pluck(:id), pages.pluck(:id)
   end
 end

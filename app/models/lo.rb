@@ -10,4 +10,8 @@ class Lo < ApplicationRecord
   def duplicate
     LoDuplicator.new(self).perform
   end
+
+  def pages
+    @pages ||= Logics::Lo::Pages.new(self)
+  end
 end
