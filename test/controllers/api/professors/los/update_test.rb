@@ -10,13 +10,14 @@ class Api::Professors::LosControllerUpdateTest < ActionDispatch::IntegrationTest
 
     context 'with valid params' do
       should 'be successfully' do
-        lo_attributes = { title: 'new description', description: 'new description' }
+        new_image = fixture_file_upload('test/fixtures/farma.png', 'image/png')
+        lo_attributes = { title: 'Updated Title', description: 'Updated description', image: new_image }
 
-        put api_professors_lo_path(@lo),
-            params: { lo: lo_attributes }, as: :json
+        put api_professors_lo_path(@lo), params: { lo: lo_attributes }, as: :json
 
         assert_response :accepted
         assert_equal RESPONSE::Type::JSON, response.content_type
+
         data = response.parsed_body
 
         assert_equal success_update_message(model: Lo), data['message']

@@ -6,6 +6,14 @@ class LoTest < ActiveSupport::TestCase
     @exercises = FactoryBot.create_list(:exercise, 3, lo: @lo)
   end
 
+  test 'image attachment' do
+    file_path = Rails.root.join('test/fixtures/farma.png')
+    @lo.attach_image(Rack::Test::UploadedFile.new(file_path, 'image/png'))
+
+    assert_predicate(@lo.image, :attached?)
+    assert_equal 'farma.png', @lo.image.filename.to_s
+  end
+
   context 'validations' do
     should validate_presence_of(:title)
     should validate_presence_of(:description)
