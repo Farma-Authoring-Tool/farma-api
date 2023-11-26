@@ -28,7 +28,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '401':
-          description: Falha na autenticação, e-mail ou senha incorretos
+          description: e-mail ou senha incorretos
           content:
             application/json:
               schema:
@@ -64,7 +64,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '422':
-          description: Erro de validação
+          description: e-mail já está em uso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "E-mail já está em uso."
   /logout:
     post:
       summary: Realiza o logout do usuário
@@ -102,6 +110,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Lo'
+        '401':
+          description: Signature has expired
     post:
       summary: Cria um novo objeto de aprendizagem
       requestBody:
@@ -117,8 +127,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Lo'
+        '401':
+          description: Signature has expired
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                          enum: [já está em uso]
+                          example: já está em uso
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          enum: [não pode ficar em branco]
+                          example: não pode ficar em branco
+                    required:
+                      - title
+                      - description
   /api/professors/los/{id}:
     get:
       summary: Obtém um objeto de aprendizagem pelo ID
@@ -135,8 +170,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Lo'
-        '404':
-          description: Objeto de aprendizagem não encontrado
+        '401':
+          description: Signature has expired
+        '422':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                          enum: [já está em uso]
+                          example: já está em uso
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          enum: [não pode ficar em branco]
+                          example: não pode ficar em branco
+                    required:
+                      - title
+                      - description
+        
     put:
       summary: Atualiza um objeto de aprendizagem
       parameters:
@@ -154,10 +215,35 @@ paths:
       responses:
         '202':
           description: Objeto de aprendizagem atualizado
+        '401':
+          description: Signature has expired
         '404':
           description: Objeto de aprendizagem não encontrado
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                          enum: [já está em uso]
+                          example: já está em uso
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          enum: [não pode ficar em branco]
+                          example: não pode ficar em branco
+                    required:
+                      - title
+                      - description
     delete:
       summary: Remove um objeto de aprendizagem
       parameters:
@@ -183,8 +269,11 @@ paths:
       responses:
         '201':
           description: Objeto de aprendizagem duplicado
+        '401':
+          description: Signature has expired
         '404':
           description: Objeto de aprendizagem não encontrado
+
   /api/professors/los/sort_pages:
     post:
       summary: Reordena os objetos de aprendizagem
@@ -207,6 +296,8 @@ paths:
       responses:
         '200':
           description: Objetos de aprendizagem reordenados
+        '401':
+          description: Signature has expired
 
   /api/professors/los/{lo_id}/introductions:
     get:
@@ -226,6 +317,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Introduction'
+        '401':
+          description: Signature has expired
     post:
       summary: Cria uma nova introdução para um objeto de aprendizagem
       parameters:
@@ -247,8 +340,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Introduction'
+        '401':
+          description: Signature has expired
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Alguns erros foram encontrados, por favor verifique."
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                          example: "já está em uso"
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
   /api/professors/los/{lo_id}/introductions/{id}:
     get:
       summary: Obtém uma introdução pelo ID
@@ -270,6 +386,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Introduction'
+        '401':
+          description: Signature has expired
         '404':
           description: Introdução não encontrada
     put:
@@ -294,10 +412,33 @@ paths:
       responses:
         '202':
           description: Introdução atualizada
+        '401':
+          description: Signature has expired
         '404':
           description: Introdução não encontrada
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Alguns erros foram encontrados, por favor verifique."
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                          example: "já está em uso"
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
     delete:
       summary: Remove uma introdução
       parameters:
@@ -314,6 +455,8 @@ paths:
       responses:
         '200':
           description: Introdução removida
+        '401':
+          description: Signature has expired
         '404':
           description: Introdução não encontrada
   /api/professors/los/{lo_id}/introductions/{id}/duplicate:
@@ -339,6 +482,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Introduction'
+        '401':
+          description: Signature has expired
         '404':
           description: Introdução ou objeto de aprendizagem não encontrado
 
@@ -360,6 +505,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Exercise'
+        '401':
+          description: Signature has expired
 
     post:
       summary: Cria um novo exercício para um objeto de aprendizagem
@@ -382,8 +529,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Exercise'
+        '401':
+          description: Signature has expired
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Alguns erros foram encontrados, por favor verifique."
+                  exercise:
+                    $ref: '#/components/schemas/Exercise'
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
   /api/professors/los/{lo_id}/exercises/{id}:
     get:
       summary: Obtém um exercício pelo ID
@@ -405,6 +577,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Exercise'
+        '401':
+          description: Signature has expired
         '404':
           description: Exercício não encontrado
 
@@ -430,10 +604,35 @@ paths:
       responses:
         '202':
           description: Exercício atualizado
+        '401':
+          description: Signature has expired
         '404':
           description: Exercício não encontrado
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Alguns erros foram encontrados, por favor verifique."
+                  exercise:
+                    $ref: '#/components/schemas/Exercise'
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
 
     delete:
       summary: Remove um exercício
@@ -451,8 +650,10 @@ paths:
       responses:
         '200':
           description: Exercício removido
+        '401':
+          description: Signature has expired
         '404':
-          description: Exercício não encontr
+          description: Exercício não encontrado
   /api/professors/los/{lo_id}/exercises/{id}/duplicate:
     post:
       summary: Duplica um exercício
@@ -470,6 +671,8 @@ paths:
       responses:
         '201':
           description: Exercício duplicado
+        '401':
+          description: Signature has expired
         '404':
           description: Exercício não encontrado
 
@@ -502,6 +705,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SolutionStep'
+        '401':
+          description: Signature has expired
 
     post:
       summary: Cria um novo passo de solução para um exercício
@@ -524,8 +729,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SolutionStep'
+        '401':
+          description: Signature has expired
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Alguns erros foram encontrados, por favor verifique."
+                  solutionStep:
+                    $ref: '#/components/schemas/SolutionStep'
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
   /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{id}:
     parameters:
       - in: path
@@ -563,6 +793,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SolutionStep'
+        '401':
+          description: Signature has expired
         '404':
           description: Passo de solução não encontrado
 
@@ -588,10 +820,35 @@ paths:
       responses:
         '202':
           description: Passo de solução atualizado
+        '401':
+          description: Signature has expired
         '404':
           description: Passo de solução não encontrado
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Alguns erros foram encontrados, por favor verifique."
+                  solutionStep:
+                    $ref: '#/components/schemas/SolutionStep'
+                  errors:
+                    type: object
+                    properties:
+                      title:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
 
     delete:
       summary: Remove um passo de solução
@@ -609,6 +866,8 @@ paths:
       responses:
         '200':
           description: Passo de solução removido
+        '401':
+          description: Signature has expired
         '404':
           description: Passo de solução não encontrado
   /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{id}/duplicate:
@@ -644,6 +903,8 @@ paths:
       responses:
         '201':
           description: Passo de solução duplicado
+        '401':
+          description: Signature has expired
         '404':
           description: Passo de solução não encontrado
   /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/reorder:
@@ -681,6 +942,8 @@ paths:
       responses:
         '200':
           description: Passos de solução reordenados com sucesso
+        '401':
+          description: Signature has expired
         '404':
           description: Exercício não encontrado
   
@@ -718,6 +981,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Tip'
+        '401':
+          description: Signature has expired
 
     post:
       summary: Cria uma nova dica para um passo de solução
@@ -740,8 +1005,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Tip'
+        '401':
+          description: Signature has expired
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Alguns erros foram encontrados, por favor verifique."
+                  tip:
+                    $ref: '#/components/schemas/Tip'
+                  errors:
+                    type: object
+                    properties:
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
+
   /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{solution_step_id}/tips/{id}:
     parameters:
       - in: path
@@ -784,6 +1070,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Tip'
+        '401':
+          description: Signature has expired
         '404':
           description: Dica não encontrada
 
@@ -809,10 +1097,30 @@ paths:
       responses:
         '202':
           description: Dica atualizada
+        '401':
+          description: Signature has expired
         '404':
           description: Dica não encontrada
         '422':
           description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Alguns erros foram encontrados, por favor verifique."
+                  tip:
+                    $ref: '#/components/schemas/Tip'
+                  errors:
+                    type: object
+                    properties:
+                      description:
+                        type: array
+                        items:
+                          type: string
+                          example: "não pode ficar em branco"
 
     delete:
       summary: Remove uma dica
@@ -830,6 +1138,8 @@ paths:
       responses:
         '200':
           description: Dica removida
+        '401':
+          description: Signature has expired
         '404':
           description: Dica não encontrada      
   /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{solution_step_id}/tips/{id}/duplicate:
@@ -874,6 +1184,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Tip'
+        '401':
+          description: Signature has expired
         '404':
           description: Dica ou passo de solução não encontrado
   /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{solution_step_id}/tips/reorder:
@@ -916,6 +1228,8 @@ paths:
       responses:
         '200':
           description: Dicas reordenadas com sucesso
+        '401':
+          description: Signature has expired
         '404':
           description: Passo de solução não encontrado
 
@@ -924,13 +1238,22 @@ components:
   schemas:
     Lo:
       type: object
+      required:
+        - title
+        - description
       properties:
         id:
           type: integer
         title:
           type: string
+          minLength: 1
         description:
           type: string
+          minLength: 1
+        image:
+          type: string
+          format: binary
+          description: Imagem representativa do objeto de aprendizagem
         exercises_count:
           type: integer
           description: Cache de quantos exercíos existem nesse objeto de aprendizagem
@@ -946,13 +1269,18 @@ components:
   
     Introduction:
       type: object
+      required:
+        - title
+        - description
       properties:
         id:
           type: integer
         title:
           type: string
+          minLength: 1
         description:
           type: string
+          minLength: 1
         public:
           type: boolean
         position:
@@ -969,13 +1297,18 @@ components:
     
     Exercise:
       type: object
+      required:
+        - title
+        - description
       properties:
         id:
           type: integer
         title:
           type: string
+          minLength: 1
         description:
           type: string
+          minLength: 1
         public:
           type: boolean
         position:
@@ -995,13 +1328,18 @@ components:
           
     SolutionStep:
       type: object
+      required:
+        - title
+        - description
       properties:
         id:
           type: integer
         title:
           type: string
+          minLength: 1
         description:
           type: string
+          minLength: 1
         response:
           type: string
         decimal_digits:
@@ -1028,11 +1366,14 @@ components:
           
     Tip:
       type: object
+      required:
+        - description
       properties:
         id:
           type: integer
         description:
           type: string
+          minLength: 1
         number_attempts:
           type: integer
         position:
