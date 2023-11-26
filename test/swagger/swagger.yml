@@ -1,0 +1,1066 @@
+openapi: 3.0.0
+info:
+  title: FARMA API
+  version: 1.0.0
+paths:
+  /login:
+    post:
+      summary: Realiza o login do usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+      responses:
+        '200':
+          description: Login bem-sucedido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Falha na autenticação, e-mail ou senha incorretos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "E-mail ou senha incorretos."
+  /signup:
+    post:
+      summary: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+                    name:
+                      type: string
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Erro de validação
+  /logout:
+    post:
+      summary: Realiza o logout do usuário
+      responses:
+        '200':
+          description: Logout realizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuário deslogado com sucesso"
+        '401':
+          description: Não autorizado - Usuário não está logado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuário não está logado ou a sessão expirou"
+
+  /api/professors/los:
+    get:
+      summary: Lista todos os objetos de aprendizagem (LOs)
+      responses:
+        '200':
+          description: Lista de objetos de aprendizagem
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lo'
+    post:
+      summary: Cria um novo objeto de aprendizagem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lo'
+      responses:
+        '201':
+          description: Objeto de aprendizagem criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lo'
+        '422':
+          description: Erro de validação
+  /api/professors/los/{id}:
+    get:
+      summary: Obtém um objeto de aprendizagem pelo ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalhes do objeto de aprendizagem
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lo'
+        '404':
+          description: Objeto de aprendizagem não encontrado
+    put:
+      summary: Atualiza um objeto de aprendizagem
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lo'
+      responses:
+        '202':
+          description: Objeto de aprendizagem atualizado
+        '404':
+          description: Objeto de aprendizagem não encontrado
+        '422':
+          description: Erro de validação
+    delete:
+      summary: Remove um objeto de aprendizagem
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Objeto de aprendizagem removido
+        '404':
+          description: Objeto de aprendizagem não encontrado
+  /api/professors/los/{id}/duplicate:
+    post:
+      summary: Duplica um objeto de aprendizagem
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Objeto de aprendizagem duplicado
+        '404':
+          description: Objeto de aprendizagem não encontrado
+  /api/professors/los/sort_pages:
+    post:
+      summary: Reordena os objetos de aprendizagem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      class:
+                        type: string
+      responses:
+        '200':
+          description: Objetos de aprendizagem reordenados
+
+  /api/professors/los/{lo_id}/introductions:
+    get:
+      summary: Lista todas as introduções de um objeto de aprendizagem
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de introduções
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Introduction'
+    post:
+      summary: Cria uma nova introdução para um objeto de aprendizagem
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Introduction'
+      responses:
+        '201':
+          description: Introdução criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Introduction'
+        '422':
+          description: Erro de validação
+  /api/professors/los/{lo_id}/introductions/{id}:
+    get:
+      summary: Obtém uma introdução pelo ID
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalhes da introdução
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Introduction'
+        '404':
+          description: Introdução não encontrada
+    put:
+      summary: Atualiza uma introdução
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Introduction'
+      responses:
+        '202':
+          description: Introdução atualizada
+        '404':
+          description: Introdução não encontrada
+        '422':
+          description: Erro de validação
+    delete:
+      summary: Remove uma introdução
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Introdução removida
+        '404':
+          description: Introdução não encontrada
+  /api/professors/los/{lo_id}/introductions/{id}/duplicate:
+    post:
+      summary: Duplica uma introdução de um objeto de aprendizagem
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+          description: ID do objeto de aprendizagem ao qual a introdução pertence
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID da introdução a ser duplicada
+      responses:
+        '201':
+          description: Introdução duplicada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Introduction'
+        '404':
+          description: Introdução ou objeto de aprendizagem não encontrado
+
+  /api/professors/los/{lo_id}/exercises:
+    get:
+      summary: Lista todos os exercícios de um objeto de aprendizagem
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de exercícios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Exercise'
+
+    post:
+      summary: Cria um novo exercício para um objeto de aprendizagem
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Exercise'
+      responses:
+        '201':
+          description: Exercício criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
+        '422':
+          description: Erro de validação
+  /api/professors/los/{lo_id}/exercises/{id}:
+    get:
+      summary: Obtém um exercício pelo ID
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalhes do exercício
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
+        '404':
+          description: Exercício não encontrado
+
+    put:
+      summary: Atualiza um exercício
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Exercise'
+      responses:
+        '202':
+          description: Exercício atualizado
+        '404':
+          description: Exercício não encontrado
+        '422':
+          description: Erro de validação
+
+    delete:
+      summary: Remove um exercício
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Exercício removido
+        '404':
+          description: Exercício não encontr
+  /api/professors/los/{lo_id}/exercises/{id}/duplicate:
+    post:
+      summary: Duplica um exercício
+      parameters:
+        - in: path
+          name: lo_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Exercício duplicado
+        '404':
+          description: Exercício não encontrado
+
+  /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps:
+    parameters:
+      - in: path
+        name: lo_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: exercise_id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Lista todos os passos de solução de um exercício
+      parameters:
+        - in: path
+          name: exercise_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de passos de solução
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SolutionStep'
+
+    post:
+      summary: Cria um novo passo de solução para um exercício
+      parameters:
+        - in: path
+          name: exercise_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionStep'
+      responses:
+        '201':
+          description: Passo de solução criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionStep'
+        '422':
+          description: Erro de validação
+  /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{id}:
+    parameters:
+      - in: path
+        name: lo_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: exercise_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Obtém um passo de solução pelo ID
+      parameters:
+        - in: path
+          name: exercise_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalhes do passo de solução
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionStep'
+        '404':
+          description: Passo de solução não encontrado
+
+    put:
+      summary: Atualiza um passo de solução
+      parameters:
+        - in: path
+          name: exercise_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionStep'
+      responses:
+        '202':
+          description: Passo de solução atualizado
+        '404':
+          description: Passo de solução não encontrado
+        '422':
+          description: Erro de validação
+
+    delete:
+      summary: Remove um passo de solução
+      parameters:
+        - in: path
+          name: exercise_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Passo de solução removido
+        '404':
+          description: Passo de solução não encontrado
+  /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{id}/duplicate:
+    parameters:
+      - in: path
+        name: lo_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: exercise_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Duplica um passo de solução
+      parameters:
+        - in: path
+          name: exercise_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Passo de solução duplicado
+        '404':
+          description: Passo de solução não encontrado
+  /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/reorder:
+    parameters:
+      - in: path
+        name: lo_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: exercise_id
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Reordena os passos de solução de um exercício
+      parameters:
+        - in: path
+          name: exercise_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                solution_steps_ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: Lista ordenada dos IDs dos passos de solução para definir a nova ordem
+      responses:
+        '200':
+          description: Passos de solução reordenados com sucesso
+        '404':
+          description: Exercício não encontrado
+  
+  /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{solution_step_id}/tips:
+    parameters:
+      - in: path
+        name: lo_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: exercise_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: solution_step_id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Lista todas as dicas de um passo de solução
+      parameters:
+        - in: path
+          name: solution_step_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de dicas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tip'
+
+    post:
+      summary: Cria uma nova dica para um passo de solução
+      parameters:
+        - in: path
+          name: solution_step_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tip'
+      responses:
+        '201':
+          description: Dica criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tip'
+        '422':
+          description: Erro de validação
+  /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{solution_step_id}/tips/{id}:
+    parameters:
+      - in: path
+        name: lo_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: exercise_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: solution_step_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Obtém uma dica pelo ID
+      parameters:
+        - in: path
+          name: solution_step_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalhes da dica
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tip'
+        '404':
+          description: Dica não encontrada
+
+    put:
+      summary: Atualiza uma dica
+      parameters:
+        - in: path
+          name: solution_step_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tip'
+      responses:
+        '202':
+          description: Dica atualizada
+        '404':
+          description: Dica não encontrada
+        '422':
+          description: Erro de validação
+
+    delete:
+      summary: Remove uma dica
+      parameters:
+        - in: path
+          name: solution_step_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dica removida
+        '404':
+          description: Dica não encontrada      
+  /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{solution_step_id}/tips/{id}/duplicate:
+    parameters:
+      - in: path
+        name: lo_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: exercise_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: solution_step_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Duplica uma dica de um passo de solução
+      parameters:
+        - in: path
+          name: solution_step_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Dica duplicada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tip'
+        '404':
+          description: Dica ou passo de solução não encontrado
+  /api/professors/los/{lo_id}/exercises/{exercise_id}/solution_steps/{solution_step_id}/tips/reorder:
+    parameters:
+      - in: path
+        name: lo_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: exercise_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: solution_step_id
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Reordena as dicas de um passo de solução
+      parameters:
+        - in: path
+          name: solution_step_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tips_ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: Lista ordenada dos IDs das dicas para definir a nova ordem
+      responses:
+        '200':
+          description: Dicas reordenadas com sucesso
+        '404':
+          description: Passo de solução não encontrado
+
+
+components:
+  schemas:
+    Lo:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        exercises_count:
+          type: integer
+          description: Cache de quantos exercíos existem nesse objeto de aprendizagem
+        introductions_count:
+          type: integer
+          description: Cache de quantas introduções existem nesse objeto de aprendizagem
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+  
+    Introduction:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        public:
+          type: boolean
+        position:
+          type: integer
+        lo_id:
+          type: integer
+          description: ID do objeto de aprendizagem ao qual esta introdução pertence
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    
+    Exercise:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        public:
+          type: boolean
+        position:
+          type: integer
+        solution_steps_count:
+          type: integer
+          description: Cache de quantos passos de solução existem nesse exercício
+        lo_id:
+          type: integer
+          description: ID do objeto de aprendizagem ao qual esta introdução pertence
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          
+    SolutionStep:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        response:
+          type: string
+        decimal_digits:
+          type: integer
+        public:
+          type: boolean
+        tips_display_mode:
+          type: string
+          description: Maneira que as dicas devem ser exibidas, Ex. Sequencial
+        position:
+          type: integer
+        tips_count:
+          type: integer
+          description: Cache de quantas dicas existem nesse passos de solução
+        exercise_id:
+          type: integer
+          description: ID do exercício ao qual este passo de solução pertence
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          
+    Tip:
+      type: object
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+        number_attempts:
+          type: integer
+        position:
+          type: integer
+        exercise_id:
+          type: integer
+          description: ID do passo de solução ao qual esta dica pertence
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        jti:
+          type: string
