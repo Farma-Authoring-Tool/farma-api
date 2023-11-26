@@ -76,6 +76,8 @@ paths:
   /logout:
     post:
       summary: Realiza o logout do usuário
+      security:
+       - bearerAuth: []
       responses:
         '200':
           description: Logout realizado com sucesso
@@ -101,6 +103,8 @@ paths:
   /api/professors/los:
     get:
       summary: Lista todos os objetos de aprendizagem (LOs)
+      security:
+       - bearerAuth: []
       responses:
         '200':
           description: Lista de objetos de aprendizagem
@@ -114,6 +118,8 @@ paths:
           description: Signature has expired
     post:
       summary: Cria um novo objeto de aprendizagem
+      security:
+       - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -157,6 +163,8 @@ paths:
   /api/professors/los/{id}:
     get:
       summary: Obtém um objeto de aprendizagem pelo ID
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -200,6 +208,8 @@ paths:
         
     put:
       summary: Atualiza um objeto de aprendizagem
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -246,6 +256,8 @@ paths:
                       - description
     delete:
       summary: Remove um objeto de aprendizagem
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -260,6 +272,8 @@ paths:
   /api/professors/los/{id}/duplicate:
     post:
       summary: Duplica um objeto de aprendizagem
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -277,6 +291,8 @@ paths:
   /api/professors/los/sort_pages:
     post:
       summary: Reordena os objetos de aprendizagem
+      security:
+       - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -302,6 +318,8 @@ paths:
   /api/professors/los/{lo_id}/introductions:
     get:
       summary: Lista todas as introduções de um objeto de aprendizagem
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -321,6 +339,8 @@ paths:
           description: Signature has expired
     post:
       summary: Cria uma nova introdução para um objeto de aprendizagem
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -368,6 +388,8 @@ paths:
   /api/professors/los/{lo_id}/introductions/{id}:
     get:
       summary: Obtém uma introdução pelo ID
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -392,6 +414,8 @@ paths:
           description: Introdução não encontrada
     put:
       summary: Atualiza uma introdução
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -441,6 +465,8 @@ paths:
                           example: "não pode ficar em branco"
     delete:
       summary: Remove uma introdução
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -462,6 +488,8 @@ paths:
   /api/professors/los/{lo_id}/introductions/{id}/duplicate:
     post:
       summary: Duplica uma introdução de um objeto de aprendizagem
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -490,6 +518,8 @@ paths:
   /api/professors/los/{lo_id}/exercises:
     get:
       summary: Lista todos os exercícios de um objeto de aprendizagem
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -510,6 +540,8 @@ paths:
 
     post:
       summary: Cria um novo exercício para um objeto de aprendizagem
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -559,6 +591,8 @@ paths:
   /api/professors/los/{lo_id}/exercises/{id}:
     get:
       summary: Obtém um exercício pelo ID
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -584,6 +618,8 @@ paths:
 
     put:
       summary: Atualiza um exercício
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -636,6 +672,8 @@ paths:
 
     delete:
       summary: Remove um exercício
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -657,6 +695,8 @@ paths:
   /api/professors/los/{lo_id}/exercises/{id}/duplicate:
     post:
       summary: Duplica um exercício
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: lo_id
@@ -690,6 +730,8 @@ paths:
           type: integer
     get:
       summary: Lista todos os passos de solução de um exercício
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: exercise_id
@@ -710,6 +752,8 @@ paths:
 
     post:
       summary: Cria um novo passo de solução para um exercício
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: exercise_id
@@ -775,6 +819,8 @@ paths:
           type: integer
     get:
       summary: Obtém um passo de solução pelo ID
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: exercise_id
@@ -800,6 +846,8 @@ paths:
 
     put:
       summary: Atualiza um passo de solução
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: exercise_id
@@ -852,6 +900,8 @@ paths:
 
     delete:
       summary: Remove um passo de solução
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: exercise_id
@@ -889,6 +939,8 @@ paths:
           type: integer
     post:
       summary: Duplica um passo de solução
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: exercise_id
@@ -921,6 +973,8 @@ paths:
           type: integer
     post:
       summary: Reordena os passos de solução de um exercício
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: exercise_id
@@ -966,6 +1020,8 @@ paths:
           type: integer
     get:
       summary: Lista todas as dicas de um passo de solução
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: solution_step_id
@@ -986,6 +1042,8 @@ paths:
 
     post:
       summary: Cria uma nova dica para um passo de solução
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: solution_step_id
@@ -1052,6 +1110,8 @@ paths:
           type: integer
     get:
       summary: Obtém uma dica pelo ID
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: solution_step_id
@@ -1077,6 +1137,8 @@ paths:
 
     put:
       summary: Atualiza uma dica
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: solution_step_id
@@ -1124,6 +1186,8 @@ paths:
 
     delete:
       summary: Remove uma dica
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: solution_step_id
@@ -1166,6 +1230,8 @@ paths:
           type: integer
     post:
       summary: Duplica uma dica de um passo de solução
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: solution_step_id
@@ -1207,6 +1273,8 @@ paths:
           type: integer
     post:
       summary: Reordena as dicas de um passo de solução
+      security:
+       - bearerAuth: []
       parameters:
         - in: path
           name: solution_step_id
@@ -1235,6 +1303,13 @@ paths:
 
 
 components:
+  securitySchemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+        description: Bearer TOKEN
+
   schemas:
     Lo:
       type: object
@@ -1405,3 +1480,4 @@ components:
           format: date-time
         jti:
           type: string
+ 
