@@ -4,7 +4,6 @@ class SolutionStepTest < ActiveSupport::TestCase
   context 'validations' do
     should validate_presence_of(:title)
     should validate_uniqueness_of(:title)
-    should validate_presence_of(:description)
 
     should allow_value(true).for(:public)
     should allow_value(false).for(:public)
@@ -38,12 +37,12 @@ class SolutionStepTest < ActiveSupport::TestCase
       assert_equal "Cópia 1 - #{@solution_step.title}", duplicated_step.title
     end
 
-    should 'duplicate associated tip with a modified description' do
+    should 'duplicate associated tip with a modified title' do
       duplicated_step = @solution_step.duplicate
       duplicated_tip = duplicated_step.tips.first
 
       assert_equal @solution_step.tips.size, duplicated_step.tips.size
-      assert_equal "Cópia 1 - #{@tip.description}", duplicated_tip.description
+      assert_equal "Cópia 1 - #{@tip.title}", duplicated_tip.title
     end
   end
 
