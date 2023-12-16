@@ -25,12 +25,12 @@ class Api::Professors::SolutionStepsControllerCreateTest < ActionDispatch::Integ
         solution_step = SolutionStep.last
 
         assert_equal success_create_message(model: solution_step), data['message']
-        assert_equal solution_step_attributes[:title], data['solutionStep']['title']
-        assert_equal solution_step_attributes[:description], data['solutionStep']['description']
-        assert_equal solution_step_attributes[:response], data['solutionStep']['response']
-        assert_equal solution_step_attributes[:decimal_digits], data['solutionStep']['decimal_digits']
-        assert_equal solution_step_attributes[:public], data['solutionStep']['public']
-        assert_not_nil data['solutionStep']['id']
+        assert_equal solution_step_attributes[:title], data['solution_step']['title']
+        assert_equal solution_step_attributes[:description], data['solution_step']['description']
+        assert_equal solution_step_attributes[:response], data['solution_step']['response']
+        assert_equal solution_step_attributes[:decimal_digits], data['solution_step']['decimal_digits']
+        assert_equal solution_step_attributes[:public], data['solution_step']['public']
+        assert_not_nil data['solution_step']['id']
       end
     end
 
