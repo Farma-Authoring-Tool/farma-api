@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_24_000538) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_22_022635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answers", force: :cascade do |t|
+    t.string "response", null: false
+    t.boolean "correct", null: false
+    t.integer "attempt_number", null: false
+    t.bigint "user_id", null: false
+    t.bigint "solution_step_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["solution_step_id"], name: "index_answers_on_solution_step_id"
+    t.index ["user_id"], name: "index_answers_on_user_id"
+  end
 
   create_table "exercises", force: :cascade do |t|
     t.string "title"
@@ -27,6 +39,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_24_000538) do
     t.index ["title"], name: "index_exercises_on_title", unique: true
   end
 
+  create_table "exercises_visualizations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "exercise_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exercise_id"], name: "index_exercises_visualizations_on_exercise_id"
+    t.index ["user_id", "exercise_id"], name: "index_exercises_visualizations_on_user_id_and_exercise_id", unique: true
+    t.index ["user_id"], name: "index_exercises_visualizations_on_user_id"
+  end
+
   create_table "introductions", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -37,6 +59,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_24_000538) do
     t.datetime "updated_at", null: false
     t.index ["lo_id"], name: "index_introductions_on_lo_id"
     t.index ["title"], name: "index_introductions_on_title", unique: true
+  end
+
+  create_table "introductions_visualizations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "introduction_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["introduction_id"], name: "index_introductions_visualizations_on_introduction_id"
+    t.index ["user_id", "introduction_id"], name: "index_user_introduction_visualizations", unique: true
+    t.index ["user_id"], name: "index_introductions_visualizations_on_user_id"
   end
 
   create_table "los", force: :cascade do |t|
@@ -65,6 +97,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_24_000538) do
     t.index ["title"], name: "index_solution_steps_on_title", unique: true
   end
 
+  create_table "solution_steps_visualizations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "solution_step_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["solution_step_id"], name: "index_solution_steps_visualizations_on_solution_step_id"
+    t.index ["user_id", "solution_step_id"], name: "index_user_solution_steps_visualizations", unique: true
+    t.index ["user_id"], name: "index_solution_steps_visualizations_on_user_id"
+  end
+
   create_table "tips", force: :cascade do |t|
     t.text "description"
     t.integer "number_attempts"
@@ -73,6 +115,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_24_000538) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["solution_step_id"], name: "index_tips_on_solution_step_id"
+  end
+
+  create_table "tips_visualizations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "tip_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tip_id"], name: "index_tips_visualizations_on_tip_id"
+    t.index ["user_id", "tip_id"], name: "index_tips_visualizations_on_user_id_and_tip_id", unique: true
+    t.index ["user_id"], name: "index_tips_visualizations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -90,4 +142,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_24_000538) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "answers", "solution_steps"
+  add_foreign_key "answers", "users"
+  add_foreign_key "exercises_visualizations", "exercises"
+  add_foreign_key "exercises_visualizations", "users"
+  add_foreign_key "introductions_visualizations", "introductions"
+  add_foreign_key "introductions_visualizations", "users"
+  add_foreign_key "solution_steps_visualizations", "solution_steps"
+  add_foreign_key "solution_steps_visualizations", "users"
+  add_foreign_key "tips_visualizations", "tips"
+  add_foreign_key "tips_visualizations", "users"
 end
