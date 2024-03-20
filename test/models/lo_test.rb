@@ -17,6 +17,7 @@ class LoTest < ActiveSupport::TestCase
     should have_many(:introductions).dependent(:destroy)
     should have_many(:exercises)
     should have_many(:exercises).dependent(:destroy)
+    should belong_to(:teacher).class_name('User')
   end
 
   context 'duplicating an lo' do

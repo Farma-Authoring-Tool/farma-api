@@ -28,5 +28,7 @@ module Farma
     config.time_zone = 'America/Sao_Paulo'
 
     config.api_only = true
+
+    config.autoload_paths << Rails.root.join('app/controllers/api/dtos').to_s
   end
 end

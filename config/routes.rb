@@ -13,6 +13,9 @@ Rails.application.routes.draw do
 
   authenticate :user do
     namespace :api do
+      resources :los do
+        get 'show', on: :member
+      end
       namespace :professors do
         resources :los do
           post 'duplicate', on: :member

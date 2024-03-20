@@ -11,6 +11,7 @@ class Api::Professors::LosController < ApplicationController
 
   def create
     lo = Lo.new(lo_params)
+    lo.teacher_id = current_user.id
 
     if lo.save
       render json: { message: success_create_message, lo: lo }, status: :created
