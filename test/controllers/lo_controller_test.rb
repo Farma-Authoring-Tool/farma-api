@@ -24,7 +24,7 @@ class LoControllerTest < ActionDispatch::IntegrationTest
     assert_equal lo_detail_json, data
   end
 
-  test 'should return lo belonging to the logged in professor' do
+  test 'should return lo belonging to the logged as teacher' do
     sign_in @teacher
 
     get api_lo_path(@lo_teacher), as: :json
