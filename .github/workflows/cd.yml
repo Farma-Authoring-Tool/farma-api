@@ -36,7 +36,8 @@ jobs:
           username: ${{ vars.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ${{ vars.REMOTE_TARGET }}
-            echo $CR_PAT | docker login ghcr.io -u marczalTSIGP --password-stdin
-            docker compose pull api
-            docker compose up -d --no-deps
+            echo 'Deploy paused'
+            # cd ${{ vars.REMOTE_TARGET }}
+            # echo $CR_PAT | docker login ghcr.io -u marczalTSIGP --password-stdin
+            # docker compose pull api
+            # docker compose up -d --no-deps
