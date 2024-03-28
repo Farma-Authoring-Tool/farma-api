@@ -21,7 +21,7 @@ class Api::Professors::SolutionStepsControllerTipsDisplayModeTest < ActionDispat
         data = response.parsed_body
 
         assert_equal success_update_message(model: @solution_step), data['message']
-        assert_equal 'all_at_once', data['solutionStep']['tips_display_mode']
+        assert_equal 'all_at_once', data['solution_step']['tips_display_mode']
       end
     end
   end

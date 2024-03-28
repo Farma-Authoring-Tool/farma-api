@@ -5,8 +5,4 @@ class User < ApplicationRecord
          jwt_revocation_strategy: self
 
   has_many :los, dependent: :destroy
-
-  def teacher?
-    is_teacher
-  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_12_015855) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_15_225712) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,9 +46,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_12_015855) do
     t.datetime "updated_at", null: false
     t.integer "introductions_count"
     t.integer "exercises_count"
-    t.bigint "teacher_id"
-    t.index ["teacher_id"], name: "index_los_on_teacher_id"
+    t.bigint "user_id", null: false
     t.index ["title"], name: "index_los_on_title", unique: true
+    t.index ["user_id"], name: "index_los_on_user_id"
   end
 
   create_table "solution_steps", force: :cascade do |t|
@@ -74,7 +74,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_12_015855) do
     t.bigint "solution_step_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title"
     t.index ["solution_step_id"], name: "index_tips_on_solution_step_id"
+    t.index ["title"], name: "index_tips_on_title", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -93,5 +95,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_12_015855) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "los", "users", column: "teacher_id"
+  add_foreign_key "los", "users"
 end
