@@ -35,13 +35,19 @@ Style/SymbolArray:
 Style/HashSyntax:
   EnforcedShorthandSyntax: either
 
+Style/HashTransformValues:
+  Exclude:
+    - "test/support/pretty_diff.rb"
+
 Metrics/BlockLength:
   AllowedMethods: ["context"]
   Exclude:
     - "config/environments/development.rb"
     - "config/routes.rb"
     - "config/environments/devise.rb"
+    - "test/controllers/**/*"
 
 Naming/MethodParameterName:
   Exclude:
     - "app/models/logics/lo/pages.rb"
+    - "app/resources/los/view_lo_resource.rb"

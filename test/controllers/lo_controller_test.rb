@@ -2,47 +2,61 @@ require 'test_helper'
 
 class LoControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @teacher = FactoryBot.create(:user, is_teacher: true)
-    @student = FactoryBot.create(:user)
-
-    @lo = FactoryBot.create(:lo)
-    @lo_teacher = FactoryBot.create(:lo, teacher_id: @teacher.id)
+    @lo = create(:lo, introductions_count: 1, exercises_count: 1)
+    @user = @lo.user
+    @team = 1 # TODO: This is fake data for now
   end
 
-  test 'should show lo to user logged as student' do
-    sign_in @student
+  test 'should return lo belonging to the logged as user' do
+    sign_in @user
 
-    get api_lo_path(@lo), as: :json
+    get api_view_team_lo_path(@team, @lo), as: :json
 
     assert_response :success
     assert_equal RESPONSE::Type::JSON, response.content_type
     data = response.parsed_body
 
-    lo_detail_dto = LoDetailDto.new(@lo, @lo.pages.all)
-    lo_detail_json = lo_detail_dto.as_json
+    page = @lo.pages.first
+    other_page = @lo.pages.second
+    expected_data = {
+      id: @lo.id,
+      title: @lo.title,
+      description: @lo.description,
+      pages: [
+        {
+          type: page.class.name,
+          title: page.title,
+          position: page.position,
+          status: :viewed
+        },
+        {
+          type: other_page.class.name,
+          title: other_page.title,
+          position: other_page.position,
+          status: :not_viewed,
+          solution_steps: [] # TODO: Test solution steps returns and tips
+        }
+      ],
+      page: {
+        type: page.class.name,
+        title: page.title,
+        position: page.position,
+        status: :viewed
+      },
+      progress: {
+        completed: 75,
+        explored: 80,
+        unexplored: 20
+      }
+    }
 
-    assert_equal lo_detail_json, data
+    assert_equal expected_data.as_json, data
   end
 
-  test 'should return lo belonging to the logged as teacher' do
-    sign_in @teacher
+  test 'should not return lo if it does not belong to the logged in user' do
+    sign_in create(:user)
 
-    get api_lo_path(@lo_teacher), as: :json
-
-    assert_response :success
-    assert_equal RESPONSE::Type::JSON, response.content_type
-    data = response.parsed_body
-
-    lo_detail_dto = LoDetailDto.new(@lo_teacher, @lo_teacher.pages.all)
-    lo_detail_json = lo_detail_dto.as_json
-
-    assert_equal lo_detail_json, data
-  end
-
-  test 'should not return lo if it does not belong to the logged in teacher' do
-    sign_in @teacher
-
-    get api_lo_path(@lo), as: :json
+    get api_view_team_lo_path(@team, @lo), as: :json
 
     assert_response :not_found
   end

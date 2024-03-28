@@ -29,6 +29,6 @@ module Farma
 
     config.api_only = true
 
-    config.autoload_paths << Rails.root.join('app/controllers/api/dtos').to_s
+    config.autoload_paths += Dir[Rails.root.join('app/resources/**')]
   end
 end
