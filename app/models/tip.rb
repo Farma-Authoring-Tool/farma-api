@@ -3,7 +3,8 @@ class Tip < ApplicationRecord
 
   belongs_to :solution_step, counter_cache: true
 
-  validates :description, presence: true
+  validates :title, :description, presence: true
+  validates :title, uniqueness: true
 
   before_create :set_position
 

@@ -55,7 +55,7 @@ class Api::Professors::TipsController < ApplicationController
   private
 
   def tips_params
-    params.require(:tip).permit(:description, :number_attempts)
+    params.require(:tip).permit(:title, :description, :number_attempts)
   end
 
   def find_tip
