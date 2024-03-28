@@ -15,11 +15,11 @@ class Api::Professors::SolutionStepsController < ApplicationController
     solution_step = @exercise.solution_steps.new(solution_steps_params)
 
     if solution_step.save
-      render json: { message: success_create_message, solutionStep: solution_step }, status: :created
+      render json: { message: success_create_message, solution_step: solution_step }, status: :created
     else
       render json: {
         message: error_message,
-        solutionStep: solution_step,
+        solution_step: solution_step,
         errors: solution_step.errors
       }, status: :unprocessable_entity
     end
@@ -27,11 +27,11 @@ class Api::Professors::SolutionStepsController < ApplicationController
 
   def update
     if @solution_step.update(solution_steps_params)
-      render json: { message: success_update_message, solutionStep: @solution_step }, status: :accepted
+      render json: { message: success_update_message, solution_step: @solution_step }, status: :accepted
     else
       render json: {
         message: error_message,
-        solutionStep: @solution_step,
+        solution_step: @solution_step,
         errors: @solution_step.errors
       }, status: :unprocessable_entity
     end
