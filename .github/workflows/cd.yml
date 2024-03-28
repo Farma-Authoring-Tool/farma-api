@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u marczalTSIGP --password-stdin
       - name: Pull image to use as a cache
