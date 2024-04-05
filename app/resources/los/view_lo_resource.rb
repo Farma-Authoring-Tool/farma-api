@@ -27,6 +27,7 @@ class ViewLoResource
       type: introduction.class.name,
       title: introduction.title,
       position: introduction.position,
+      description: introduction.description,
       status: :viewed # TODO: This is fake data for now
     }
   end
@@ -36,6 +37,7 @@ class ViewLoResource
       type: exercise.class.name,
       title: exercise.title,
       position: exercise.position,
+      description: exercise.description,
       status: :not_viewed, # TODO: This is fake data for now
       solution_steps: exercise.solution_steps.map do |solution_step|
                         solution_step_data(solution_step)
