@@ -1,5 +1,6 @@
 require 'support/simplecov'
 require 'support/bullet'
+require 'support/pretty_diff'
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
@@ -9,12 +10,11 @@ class ActiveSupport::TestCase
   include BulletHelper
   include ActionsMessages
   include Devise::Test::IntegrationHelpers
+  include FactoryBot::Syntax::Methods
+  include MiniTestPrettyDiff
 
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
-
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
 
   # Add more helper methods to be used by all tests here...
   parallelize_setup do |worker|
@@ -24,6 +24,8 @@ class ActiveSupport::TestCase
   parallelize_teardown do |_worker|
     SimpleCov.result if ENV['COVERAGE']
   end
+
+  require 'support/pretty_diff'
 end
 
 Shoulda::Matchers.configure do |config|

@@ -28,5 +28,7 @@ module Farma
     config.time_zone = 'America/Sao_Paulo'
 
     config.api_only = true
+
+    config.autoload_paths += Dir[Rails.root.join('app/resources/**')]
   end
 end

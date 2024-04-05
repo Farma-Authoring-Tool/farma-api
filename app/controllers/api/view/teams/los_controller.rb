@@ -1,0 +1,15 @@
+class Api::View::Teams::LosController < ApplicationController
+  before_action :find_lo
+
+  def show
+    render json: ViewLoResource.new(@lo)
+  end
+
+  def find_lo
+    # TODO: Get los from the user and team that current_user is enrolled in
+    @lo = current_user.los.find_by(id: params[:id])
+    return unless @lo.nil?
+
+    render json: { message: resource_not_found_message(model: 'Lo') }, status: :not_found
+  end
+end
