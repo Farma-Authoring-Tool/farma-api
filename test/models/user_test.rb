@@ -3,6 +3,10 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   include Devise::Test::IntegrationHelpers
 
+  context 'associations' do
+    should have_many(:teams).through(:users_teams)
+  end
+
   context 'validations' do
     should validate_presence_of(:email)
     should validate_uniqueness_of(:email).case_insensitive
