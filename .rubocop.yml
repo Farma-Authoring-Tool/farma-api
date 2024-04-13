@@ -50,4 +50,4 @@ Metrics/BlockLength:
 Naming/MethodParameterName:
   Exclude:
     - "app/models/logics/lo/pages.rb"
-    - "app/resources/los/view_lo_resource.rb"
+    - "app/resources/los/**.rb"
