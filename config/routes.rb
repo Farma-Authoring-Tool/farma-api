@@ -44,4 +44,10 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  namespace :api do
+    namespace :view do
+      get 'guests/los/:id', to: 'guests/lo#show', as: :guest_lo
+    end
+  end
 end
