@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_15_225712) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_10_002934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,9 +46,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_225712) do
     t.datetime "updated_at", null: false
     t.integer "introductions_count"
     t.integer "exercises_count"
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.index ["title"], name: "index_los_on_title", unique: true
     t.index ["user_id"], name: "index_los_on_user_id"
+  end
+
+  create_table "los_teams", id: false, force: :cascade do |t|
+    t.bigint "team_id"
+    t.bigint "lo_id"
+    t.index ["lo_id"], name: "index_los_teams_on_lo_id"
+    t.index ["team_id"], name: "index_los_teams_on_team_id"
   end
 
   create_table "solution_steps", force: :cascade do |t|
@@ -65,6 +72,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_225712) do
     t.integer "tips_display_mode", default: 0
     t.index ["exercise_id"], name: "index_solution_steps_on_exercise_id"
     t.index ["title"], name: "index_solution_steps_on_title", unique: true
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name"
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["code"], name: "index_teams_on_code", unique: true
+    t.index ["name"], name: "index_teams_on_name", unique: true
+    t.index ["user_id"], name: "index_teams_on_user_id"
   end
 
   create_table "tips", force: :cascade do |t|
@@ -94,5 +112,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_225712) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "users_teams", id: false, force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "team_id"
+    t.index ["team_id"], name: "index_users_teams_on_team_id"
+    t.index ["user_id"], name: "index_users_teams_on_user_id"
+  end
+
   add_foreign_key "los", "users"
+  add_foreign_key "los_teams", "los"
+  add_foreign_key "los_teams", "teams"
+  add_foreign_key "teams", "users"
+  add_foreign_key "users_teams", "teams"
+  add_foreign_key "users_teams", "users"
 end

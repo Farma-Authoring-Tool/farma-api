@@ -17,6 +17,8 @@ class LoTest < ActiveSupport::TestCase
     should have_many(:introductions).dependent(:destroy)
     should have_many(:exercises)
     should have_many(:exercises).dependent(:destroy)
+    should have_many(:los_teams).dependent(:delete_all)
+    should have_many(:teams).through(:los_teams)
     should belong_to(:user)
   end
 

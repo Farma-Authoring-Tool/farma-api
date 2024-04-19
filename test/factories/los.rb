@@ -12,6 +12,7 @@ FactoryBot.define do
     after(:create) do |lo, evaluator|
       create_list(:introduction, evaluator.introductions_count, lo: lo)
       create_list(:exercise, evaluator.exercises_count, lo: lo)
+      create(:los_team, lo: lo)
     end
   end
 end

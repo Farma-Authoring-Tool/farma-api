@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       # Routes to visualizations lo ids
       namespace :view do
         get 'teams/:team_id/los/:id', to: 'teams/los#show', as: :team_lo
+        get 'professors/los/:id', to: 'professors/lo#show', as: :professor_lo
       end
     end
   end

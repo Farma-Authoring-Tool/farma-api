@@ -5,8 +5,10 @@ class LoControllerTest < ActionDispatch::IntegrationTest
     @exercise = create(:exercise, solution_steps_count: 1)
     @lo = create(:lo, introductions_count: 1, exercises_count: 1)
     @lo.exercises = [@exercise]
-    @user = @lo.user
-    @team = 1 # TODO: This is fake data for now
+    @user = create(:user)
+    @team = create(:team)
+    @team.users << @user
+    @team.los << @lo
   end
 
   test 'should return lo belonging to the logged as user' do
