@@ -24,10 +24,10 @@ class Api::View::Teams::PageController < ApplicationController
   def find_pages
     teams = current_user.teams&.find_by(id: params[:team_id])
     return render json: { message: resource_not_found_message(model: 'Team') }, status: :not_found unless teams
-  
+
     los = teams.los&.find_by(id: params[:id])
     return render json: { message: resource_not_found_message(model: 'Lo') }, status: :not_found unless los
-  
+
     los.pages&.all
   end
 end

@@ -19,15 +19,14 @@ class PageControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal RESPONSE::Type::JSON, response.content_type
     data = response.parsed_body
-
     page = @lo.pages.first
-    other_page = @lo.pages.second
+
     expected_data = {
-        type: page.class.name,
-        title: page.title,
-        position: page.position,
-        description: page.description,
-        status: :viewed
+      type: page.class.name,
+      title: page.title,
+      position: page.position,
+      description: page.description,
+      status: :viewed
     }
 
     assert_equal expected_data.as_json, data
@@ -44,18 +43,18 @@ class PageControllerTest < ActionDispatch::IntegrationTest
     page = @lo.pages.second
 
     expected_data = {
-        type: page.class.name,
-        title: page.title,
-        position: page.position,
-        description: page.description,
-        status: :not_viewed,
-        solution_steps: [
-          {
-            attempts: 6,
-            position: page.solution_steps.first.position,
-            status: :viewed
-          }
-        ]
+      type: page.class.name,
+      title: page.title,
+      position: page.position,
+      description: page.description,
+      status: :not_viewed,
+      solution_steps: [
+        {
+          attempts: 6,
+          position: page.solution_steps.first.position,
+          status: :viewed
+        }
+      ]
     }
 
     assert_equal expected_data.as_json, data
