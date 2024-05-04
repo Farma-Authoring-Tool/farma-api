@@ -9,18 +9,18 @@ class PageControllerTest < ActionDispatch::IntegrationTest
     @team = create(:team)
     @team.users << @user
     @team.los << @lo
-    @page = 1
   end
 
   test 'should return lo introduction page belonging to the logged as user' do
     sign_in @user
-    get api_view_team_lo_page_path(@team, @lo, @page), as: :json
+    page_number = 1
+    get api_view_team_lo_page_path(@team, @lo, page_number), as: :json
 
     assert_response :success
     assert_equal RESPONSE::Type::JSON, response.content_type
     data = response.parsed_body
-    page = @lo.pages.first
 
+    page = @lo.pages.first
     expected_data = {
       type: page.class.name,
       title: page.title,
@@ -34,8 +34,9 @@ class PageControllerTest < ActionDispatch::IntegrationTest
 
   test 'should return lo exercise page belonging to the logged as user' do
     sign_in @user
-    @page = 2
-    get api_view_team_lo_page_path(@team, @lo, @page), as: :json
+    page_number = 2
+
+    get api_view_team_lo_page_path(@team, @lo, page_number), as: :json
 
     assert_response :success
     assert_equal RESPONSE::Type::JSON, response.content_type
@@ -62,18 +63,27 @@ class PageControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not return lo page if it does not exist' do
     sign_in @user
-    @unvalid_page = 10
+    unvalid_page_number = 10
 
-    get api_view_team_lo_page_path(@team, @lo, @unvalid_page), as: :json
+    get api_view_team_lo_page_path(@team, @lo, unvalid_page_number), as: :json
 
     assert_response :not_found
   end
 
   test 'should not return lo if it does not belong to the logged in user' do
     sign_in create(:user)
+    page_number = 1
 
-    get api_view_team_lo_page_path(@team, @lo, @page), as: :json
+    get api_view_team_lo_page_path(@team, @lo, page_number), as: :json
 
     assert_response :not_found
+  end
+
+  test 'should not return lo if user is not logged in' do
+    page_number = 1
+
+    get api_view_team_lo_page_path(@team, @lo, page_number), as: :json
+
+    assert_response :unauthorized
   end
 end

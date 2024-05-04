@@ -1,33 +1,20 @@
 class Api::View::Teams::PageController < ApplicationController
-  before_action :find_page
+  include ResourcesByCurrentUserTeams
+
+  before_action :set_page
 
   def show
-    render json: (
-      if @page.instance_of?(Introduction)
-        IntroductionPageResource.new(@page)
-      else
-        ExercisePageResource.new(@page)
-      end
-    )
-  end
-
-  def find_page
-    pages = find_pages
-    @page = pages[params[:page].to_i - 1]
-    return unless @page.nil?
-
-    render json: { message: 'Página não encontrada!' }, status: :not_found
+    render json: PageResource.to(@page)
   end
 
   private
 
-  def find_pages
-    teams = current_user.teams&.find_by(id: params[:team_id])
-    return render json: { message: resource_not_found_message(model: 'Team') }, status: :not_found unless teams
+  def set_page
+    lo = lo(params[:team_id], params[:id])
+    @page = lo.pages.page(params[:page])
 
-    los = teams.los&.find_by(id: params[:id])
-    return render json: { message: resource_not_found_message(model: 'Lo') }, status: :not_found unless los
-
-    los.pages&.all
+    render json: { message: resource_not_found_message(model: :page) }, status: :not_found unless @page
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end

@@ -4,6 +4,21 @@ pt-BR:
       lo:
         one: Objeto de Aprendizagem
         other: Objetos de Aprendizagem
+      introduction:
+        one: Introdução
+        other: Introduções
+      exercise:
+        one: Exercício
+        other: Exercícios
+      solution_step:
+        one: Passo da Solução
+        other: Passos da Solução
+      tip:
+        one: Dica
+        other: Dicas
+      page:
+        one: Página
+        other: Páginas
     attributes:
       attribute_commons: &commons
         created_at: Criado em

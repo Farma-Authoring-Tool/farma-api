@@ -64,8 +64,10 @@ module ActionsMessages
   private
 
   def model_human(model)
-    model ||= controller_name.classify.constantize
-    model = model.constantize if model.is_a?(String)
-    model.model_name.human
+    model = model.constantize if model.is_a?(String) && Object.const_defined?(model)
+    return model.model_name.human if model.respond_to?(:model_name)
+
+    model ||= controller_name.singularize.downcase
+    I18n.t("activerecord.models.#{model}", count: 1)
   end
 end
