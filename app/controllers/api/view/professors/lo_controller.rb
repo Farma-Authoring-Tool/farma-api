@@ -9,6 +9,6 @@ class Api::View::Professors::LoController < ApplicationController
     @lo = current_user.los.find_by(id: params[:id])
     return unless @lo.nil?
 
-    render json: { message: resource_not_found_message(model: 'Lo') }, status: :not_found
+    render json: { message: resource_not_found_message(model: Lo) }, status: :not_found
   end
 end

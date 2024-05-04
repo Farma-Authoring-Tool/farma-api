@@ -51,3 +51,4 @@ Naming/MethodParameterName:
   Exclude:
     - "app/models/logics/lo/pages.rb"
     - "app/resources/los/**.rb"
+    - "app/resources/pages/**.rb"

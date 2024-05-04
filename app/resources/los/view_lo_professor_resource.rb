@@ -2,7 +2,7 @@ class ViewLoProfessorResource
   attr_reader :id, :title, :description, :page, :pages, :progress
 
   def initialize(lo, page = 1)
-    @id = lo.id # aqui
+    @id = lo.id
     @title = lo.title
     @description = lo.description
     @pages = map_pages(lo.pages.all)
