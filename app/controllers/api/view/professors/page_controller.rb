@@ -1,30 +1,16 @@
 class Api::View::Professors::PageController < ApplicationController
-  before_action :find_page
+  before_action :set_page
 
   def show
-    render json: (
-      if @page.instance_of?(Introduction)
-        IntroductionPageResource.new(@page)
-      else
-        ExercisePageResource.new(@page)
-      end
-    )
+    render json: PageResource.to(@page, :professor)
   end
 
-  def find_page
-    pages = find_pages
-    @page = pages[params[:page].to_i - 1]
-    return unless @page.nil?
+  def set_page
+    lo = current_user.los.find(params[:id])
+    @page = lo.pages.page(params[:page])
 
-    render json: { message: 'Página não encontrada!' }, status: :not_found
-  end
-
-  private
-
-  def find_pages
-    los = current_user.los&.find_by(id: params[:id])
-    return render json: { message: resource_not_found_message(model: 'Lo') }, status: :not_found unless los
-
-    los.pages&.all
+    render json: { message: resource_not_found_message(model: :page) }, status: :not_found unless @page
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
 end

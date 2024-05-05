@@ -1,11 +1,8 @@
-class IntroductionPageResource
-  attr_reader :type, :title, :position, :description, :status
+class IntroductionPageResource < PageResource
+  attr_reader :status
 
   def initialize(introduction)
-    @type = introduction.class.name
-    @title = introduction.title
-    @position = introduction.position
-    @description = introduction.description
+    super(introduction)
     @status = :viewed
   end
 end

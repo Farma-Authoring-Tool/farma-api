@@ -51,6 +51,8 @@ class PageControllerTest < ActionDispatch::IntegrationTest
       status: :not_viewed,
       solution_steps: [
         {
+          title: page.solution_steps.first.title,
+          description: page.solution_steps.first.description,
           attempts: 6,
           position: page.solution_steps.first.position,
           status: :viewed
