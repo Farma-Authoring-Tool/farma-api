@@ -1,4 +1,4 @@
-namespace :dev do
+namespace :db do
   desc 'Populate local'
 
   task populate: :environment do

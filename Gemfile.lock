@@ -130,6 +130,8 @@ GEM
     factory_bot_rails (6.4.0)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
+    faker (3.3.1)
+      i18n (>= 1.8.11, < 2)
     flay (2.13.1)
       erubi (~> 1.10)
       path_expander (~> 1.0)
@@ -335,6 +337,7 @@ DEPENDENCIES
   devise
   devise-jwt
   factory_bot_rails
+  faker (~> 3.3)
   pg (~> 1.1)
   puma (~> 5.0)
   rack-cors

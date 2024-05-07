@@ -47,3 +47,5 @@ group :test do
   gem 'shoulda-context', '~> 2.0'
   gem 'shoulda-matchers', '~> 4.3.0'
 end
+
+gem 'faker', '~> 3.3'
