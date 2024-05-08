@@ -75,7 +75,7 @@ class LoTest < ActiveSupport::TestCase
       pages = pages.sort_by(&:position)
 
       pages.each_with_index do |page, index|
-        assert_equal @lo.pages.page(index + 1), page
+        assert_equal @lo.pages.page(index + 1).content, page
       end
 
       assert_nil(@lo.pages.page(pages.size + 1))

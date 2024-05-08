@@ -4,7 +4,7 @@ class Api::View::Teams::PageController < ApplicationController
   before_action :set_page
 
   def show
-    render json: PageResource.to(@page, :student)
+    render json: @page.resource
   end
 
   private

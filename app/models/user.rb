@@ -5,6 +5,9 @@ class User < ApplicationRecord
          jwt_revocation_strategy: self
 
   has_many :los, dependent: :destroy
+
   has_many :users_teams, dependent: :destroy
   has_many :teams, through: :users_teams
+
+  has_many :created_teams, class_name: 'Team', dependent: :destroy
 end

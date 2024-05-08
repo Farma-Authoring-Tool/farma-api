@@ -21,6 +21,7 @@ class ProfessorPageControllerTest < ActionDispatch::IntegrationTest
     expected_data = {
       type: page.class.name,
       title: page.title,
+      status: :viewed,
       position: page.position,
       description: page.description
     }
@@ -43,11 +44,14 @@ class ProfessorPageControllerTest < ActionDispatch::IntegrationTest
       title: page.title,
       position: page.position,
       description: page.description,
+      status: :not_viewed,
       solution_steps: [
         {
           title: page.solution_steps.first.title,
           description: page.solution_steps.first.description,
-          position: page.solution_steps.first.position
+          position: page.solution_steps.first.position,
+          status: :viewed,
+          attempts: 6
         }
       ]
     }
