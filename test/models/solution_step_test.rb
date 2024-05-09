@@ -14,6 +14,7 @@ class SolutionStepTest < ActiveSupport::TestCase
   context 'relationships' do
     should belong_to(:exercise)
     should have_many(:tips)
+    should have_many(:solution_steps_visualizations)
     should have_many(:tips).dependent(:destroy)
   end
 
