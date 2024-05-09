@@ -1,16 +1,12 @@
-class Api::View::Teams::PageController < ApplicationController
-  include ResourcesByCurrentUserTeams
-
+class Api::View::Professors::PageController < ApplicationController
   before_action :set_page
 
   def show
     render json: @page.resource
   end
 
-  private
-
   def set_page
-    lo = lo(params[:team_id], params[:id])
+    lo = current_user.los.find(params[:id])
     @page = lo.pages.page(params[:page])
 
     render json: { message: resource_not_found_message(model: :page) }, status: :not_found unless @page
