@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PageControllerTest < ActionDispatch::IntegrationTest
+class GuestPageControllerTest < ActionDispatch::IntegrationTest
   def setup
     @exercise = create(:exercise, solution_steps_count: 1)
     @lo = create(:lo, introductions_count: 1, exercises_count: 1)
@@ -46,7 +46,9 @@ class PageControllerTest < ActionDispatch::IntegrationTest
         {
           attempts: 6,
           position: page.solution_steps.first.position,
-          status: :viewed
+          status: :viewed,
+          title: page.solution_steps.first.title,
+          description: page.solution_steps.first.description
         }
       ]
     }
