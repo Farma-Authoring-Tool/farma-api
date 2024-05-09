@@ -20,8 +20,10 @@ module Logics::Lo
       all.at(index.to_i)
     end
 
-    def page(page)
-      get(page.to_i - 1)
+    def page(page_number)
+      get(page_number.to_i - 1).tap do |page|
+        return Page.new(page) if page.present?
+      end
     end
 
     def method_missing(method, *, &)

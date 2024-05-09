@@ -1,11 +1,12 @@
 FactoryBot.define do
-  factory :user do
+  factory :user, aliases: [:creator] do
     sequence(:email) { |n| "fulano#{n}@example.com" }
-    password { 'abc123' }
+    password { '123456' }
 
-    after(:create) do |user, _evaluator|
-      team = create(:team)
-      create(:users_team, user: user, team: team)
+    trait :with_onwer_team do
+      after(:create) do |user|
+        create(:team, creator: user)
+      end
     end
   end
 end

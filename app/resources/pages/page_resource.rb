@@ -1,9 +1,10 @@
 class PageResource
-  def self.to(page)
-    if page.instance_of?(Introduction)
-      IntroductionPageResource.new(page)
-    else
-      ExercisePageResource.new(page)
-    end
+  attr_reader :type, :title, :position, :description
+
+  def initialize(page)
+    @type = page.class.name
+    @title = page.title
+    @position = page.position
+    @description = page.description
   end
 end
