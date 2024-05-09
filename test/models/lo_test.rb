@@ -52,10 +52,34 @@ class LoTest < ActiveSupport::TestCase
     end
   end
 
-  test '#pages' do
-    pages = (@introductions + @exercises).sort_by(&:position)
+  context '#pages' do
+    should 'return all pages' do
+      pages = (@introductions + @exercises).sort_by(&:position)
 
-    assert_equal @lo.pages.pluck(:id), pages.pluck(:id)
+      assert_equal @lo.pages.pluck(:id), pages.pluck(:id)
+    end
+
+    should 'get page by index' do
+      pages = @introductions + @exercises
+      pages = pages.sort_by(&:position)
+
+      pages.each_with_index do |page, index|
+        assert_equal @lo.pages.get(index), page
+      end
+
+      assert_nil(@lo.pages.get(pages.size))
+    end
+
+    should 'get page by page number' do
+      pages = @introductions + @exercises
+      pages = pages.sort_by(&:position)
+
+      pages.each_with_index do |page, index|
+        assert_equal @lo.pages.page(index + 1), page
+      end
+
+      assert_nil(@lo.pages.page(pages.size + 1))
+    end
   end
 
   test 'should correctly reorder items within a learning object' do

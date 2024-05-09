@@ -16,6 +16,14 @@ module Logics::Lo
       end
     end
 
+    def get(index)
+      all.at(index.to_i)
+    end
+
+    def page(page)
+      get(page.to_i - 1)
+    end
+
     def method_missing(method, *, &)
       if all.respond_to?(method)
         all.send(method, *, &)
