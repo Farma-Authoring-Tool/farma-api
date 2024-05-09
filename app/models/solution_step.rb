@@ -8,6 +8,7 @@ class SolutionStep < ApplicationRecord
 
   belongs_to :exercise, counter_cache: true
   has_many :tips, dependent: :destroy
+  has_many :solution_steps_visualizations, class_name: 'SolutionStepsVisualization', dependent: :destroy
 
   validates :title, :description, presence: true
   validates :title, uniqueness: true

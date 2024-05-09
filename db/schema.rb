@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_10_002934) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_09_002552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,6 +74,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_10_002934) do
     t.index ["title"], name: "index_solution_steps_on_title", unique: true
   end
 
+  create_table "solution_steps_visualizations", force: :cascade do |t|
+    t.bigint "solution_step_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["solution_step_id", "user_id"], name: "idx_on_solution_step_id_user_id_872b5c0de6", unique: true
+    t.index ["solution_step_id"], name: "index_solution_steps_visualizations_on_solution_step_id"
+    t.index ["user_id"], name: "index_solution_steps_visualizations_on_user_id"
+  end
+
   create_table "teams", force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -122,6 +132,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_10_002934) do
   add_foreign_key "los", "users"
   add_foreign_key "los_teams", "los"
   add_foreign_key "los_teams", "teams"
+  add_foreign_key "solution_steps_visualizations", "solution_steps"
+  add_foreign_key "solution_steps_visualizations", "users"
   add_foreign_key "teams", "users"
   add_foreign_key "users_teams", "teams"
   add_foreign_key "users_teams", "users"
