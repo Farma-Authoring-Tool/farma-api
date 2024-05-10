@@ -7,7 +7,7 @@ class LoGuestControllerTest < ActionDispatch::IntegrationTest
     @lo.exercises = [@exercise]
   end
 
-  test 'should return lo belonging to the logged as user' do
+  test 'should return lo' do
     get api_view_guest_lo_path(@lo), as: :json
 
     assert_response :success
@@ -52,7 +52,7 @@ class LoGuestControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected_data.as_json, data
   end
 
-  test 'should not return lo if it does not belong to the logged in user' do
+  test 'should not return lo if it does not exists' do
     non_existent_lo_id = 9999
     get api_view_guest_lo_path(non_existent_lo_id), as: :json
 
