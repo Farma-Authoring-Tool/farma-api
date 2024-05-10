@@ -4,14 +4,8 @@ class Api::View::Teams::SolutionStepController < ApplicationController
   before_action :set_solution_step
 
   def view
-    existing_visualization = SolutionStepsVisualization.find_by(solution_step: @solution_step, user: current_user)
-
-    if existing_visualization
-      render json: existing_visualization, status: :ok
-    else
-      visualization = SolutionStepsVisualization.create(solution_step: @solution_step, user: current_user)
-      render json: visualization, status: :ok
-    end
+    visualization = SolutionStepsVisualization.find_or_create_by(solution_step: @solution_step, user: current_user)
+    render json: visualization, status: :ok
   end
 
   private
