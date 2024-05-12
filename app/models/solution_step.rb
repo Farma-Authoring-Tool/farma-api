@@ -20,6 +20,10 @@ class SolutionStep < ApplicationRecord
     SolutionStepDuplicator.new(self).perform
   end
 
+  def visualizations
+    solution_steps_visualizations
+  end
+
   def reorder_tips(tips_ids)
     transaction do
       tips_ids.each_with_index do |id, index|

@@ -17,8 +17,8 @@ module ResourcesByCurrentUserTeams
     lo.exercises.find(exercise_id)
   end
 
-  def solution_step(team_id, lo_id, exercise_id, solution_step_id)
-    exercise = exercise(team_id, lo_id, exercise_id)
-    exercise.solution_steps.find(solution_step_id)
+  def find_solution_step_by(params)
+    exercise = exercise(params[:team_id], params[:lo_id], params[:exercise_id])
+    exercise.solution_steps.find(params[:solution_step_id])
   end
 end
