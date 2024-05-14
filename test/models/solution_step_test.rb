@@ -14,6 +14,7 @@ class SolutionStepTest < ActiveSupport::TestCase
   context 'relationships' do
     should belong_to(:exercise)
     should have_many(:tips)
+    should have_many(:solution_steps_visualizations)
     should have_many(:tips).dependent(:destroy)
   end
 
@@ -62,6 +63,17 @@ class SolutionStepTest < ActiveSupport::TestCase
 
         assert_equal index + 1, tip.position, "Tip with ID #{id} should be at position #{index + 1}"
       end
+    end
+  end
+
+  context 'visualizations' do
+    setup do
+      @solution_step = FactoryBot.create(:solution_step)
+      @visualization = FactoryBot.create(:solution_steps_visualization, solution_step: @solution_step)
+    end
+
+    should 'return solution step visualizations' do
+      assert_equal @solution_step.visualizations.first, @visualization
     end
   end
 
