@@ -16,10 +16,12 @@ namespace :populate do
                                    description: Faker::Lorem.paragraph,
                                    public: true)
 
-    exercise.solution_steps.create(title: 'Passo 1',
-                                   description: Faker::Lorem.paragraph,
-                                   response: 'x',
-                                   decimal_digits: 2,
-                                   public: true)
+    solution_step = exercise.solution_steps.create(title: 'Passo 1',
+                                                   description: Faker::Lorem.paragraph,
+                                                   response: 'x',
+                                                   decimal_digits: 2,
+                                                   public: true)
+
+    solution_step.tips.create(title: 'Dica inicial', description: 'É multiplo de 3')
   end
 end

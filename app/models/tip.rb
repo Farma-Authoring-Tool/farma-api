@@ -2,6 +2,7 @@ class Tip < ApplicationRecord
   include Duplicate
 
   belongs_to :solution_step, counter_cache: true
+  has_many :tips_visualizations, dependent: :destroy
 
   validates :title, :description, presence: true
   validates :title, uniqueness: true
@@ -10,6 +11,10 @@ class Tip < ApplicationRecord
 
   def duplicate
     TipDuplicator.new(self).perform
+  end
+
+  def visualizations
+    tips_visualizations
   end
 
   private

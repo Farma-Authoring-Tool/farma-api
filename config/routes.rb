@@ -43,6 +43,8 @@ Rails.application.routes.draw do
         get 'teams/:team_id/los/:id/page/:page', to: 'teams/page#show', as: :team_lo_page
         post 'teams/:team_id/los/:lo_id/exercises/:exercise_id/solution_steps/:solution_step_id/view',
              to: 'teams/solution_step#view', as: :team_solution_step_view
+        post 'teams/:team_id/los/:lo_id/exercises/:exercise_id/solution_steps/:solution_step_id/answer',
+             to: 'teams/solution_step#respond', as: :team_solution_step_respond
         get 'professors/los/:id', to: 'professors/lo#show', as: :professor_lo
         get 'professors/los/:id/page/:page', to: 'professors/page#show', as: :professor_lo_page
       end

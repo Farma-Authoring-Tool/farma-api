@@ -8,6 +8,22 @@ class Api::View::Teams::SolutionStepController < ApplicationController
     render json: visualization, status: :ok
   end
 
+  def respond
+    user_answer = params.require(:answer)
+
+    solution_step_already_right = @solution_step.answers.find_by(correct: true, user: current_user)
+    render json: solution_step_already_right, status: :ok if solution_step_already_right
+
+    answer = @solution_step.answers.create(
+      response: user_answer,
+      user: current_user,
+      attempt_number: @solution_step.answers.count + 1,
+      correct: user_answer == @solution_step.response
+    )
+
+    render json: AnswerResource.new(answer), status: :created
+  end
+
   private
 
   def set_solution_step
