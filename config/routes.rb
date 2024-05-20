@@ -45,6 +45,8 @@ Rails.application.routes.draw do
              to: 'teams/solution_step#view', as: :team_solution_step_view
         post 'teams/:team_id/los/:lo_id/exercises/:exercise_id/solution_steps/:solution_step_id/answer',
              to: 'teams/solution_step#respond', as: :team_solution_step_respond
+        get 'teams/:team_id/los/:lo_id/exercises/:exercise_id/solution_steps/:solution_step_id/tips/request',
+            to: 'teams/tip#get_tips', as: :team_tips_request
         get 'professors/los/:id', to: 'professors/lo#show', as: :professor_lo
         get 'professors/los/:id/page/:page', to: 'professors/page#show', as: :professor_lo_page
       end
