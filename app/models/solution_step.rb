@@ -33,6 +33,15 @@ class SolutionStep < ApplicationRecord
     end
   end
 
+  def add_answer(answer, user)
+    answers.create(
+      response: answer,
+      user: user,
+      attempt_number: answers.count + 1,
+      correct: answer == response
+    )
+  end
+
   private
 
   def set_position

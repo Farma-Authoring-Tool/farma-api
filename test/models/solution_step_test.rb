@@ -107,4 +107,25 @@ class SolutionStepTest < ActiveSupport::TestCase
       assert_predicate @solution_step, :tips_by_number_of_errors?
     end
   end
+
+  context 'adding an answer' do
+    setup do
+      @solution_step = FactoryBot.create(:solution_step, response: 'correct_answer')
+      @user = FactoryBot.create(:user)
+    end
+
+    should 'create a correct answer' do
+      answer = @solution_step.add_answer('correct_answer', @user)
+
+      assert answer.correct
+      assert_equal 1, answer.attempt_number
+    end
+
+    should 'create an incorrect answer' do
+      answer = @solution_step.add_answer('wrong_answer', @user)
+
+      assert_not answer.correct
+      assert_equal 1, answer.attempt_number
+    end
+  end
 end
