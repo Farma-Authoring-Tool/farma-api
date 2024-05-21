@@ -108,21 +108,21 @@ class SolutionStepTest < ActiveSupport::TestCase
     end
   end
 
-  context 'adding an answer' do
+  context 'create an answer' do
     setup do
       @solution_step = FactoryBot.create(:solution_step, response: 'correct_answer')
       @user = FactoryBot.create(:user)
     end
 
     should 'create a correct answer' do
-      answer = @solution_step.add_answer('correct_answer', @user)
+      answer = @solution_step.answers.create(response: 'correct_answer', user: @user)
 
       assert answer.correct
       assert_equal 1, answer.attempt_number
     end
 
     should 'create an incorrect answer' do
-      answer = @solution_step.add_answer('wrong_answer', @user)
+      answer = @solution_step.answers.create(response: 'wrong_answer', user: @user)
 
       assert_not answer.correct
       assert_equal 1, answer.attempt_number
