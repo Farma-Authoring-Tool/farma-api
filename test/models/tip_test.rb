@@ -7,6 +7,7 @@ class TipTest < ActiveSupport::TestCase
 
   context 'relationships' do
     should belong_to(:solution_step)
+    should have_many(:tips_visualizations)
   end
 
   context 'duplicate' do

@@ -17,7 +17,6 @@ class SolutionStepControllerTest < ActionDispatch::IntegrationTest
 
     post api_view_team_solution_step_view_path(@team, @lo, @exercise, @solution_step), as: :json
 
-    response.parsed_body
     data = response.parsed_body
 
     assert_response :success
@@ -65,6 +64,37 @@ class SolutionStepControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:user)
 
     post api_view_team_solution_step_view_path(@team, @lo, @exercise, @solution_step), as: :json
+
+    assert_response :not_found
+  end
+
+  test 'should be able to send an answer to solution step' do
+    sign_in @user
+
+    params = { answer: 'Valor x' }
+
+    post api_view_team_solution_step_respond_path(@team, @lo, @exercise, @solution_step), params: params, as: :json
+
+    data = response.parsed_body
+    expected_data = {
+      correct: false,
+      response_history: @solution_step.answers,
+      tips_viewed: [],
+      tip_available: false
+    }
+
+    assert_response :success
+    assert_equal expected_data.as_json, data
+  end
+
+  test 'should not be able to send an answer to solution step if solution step not exists' do
+    sign_in @user
+    invalid_solution_step = 999
+
+    params = { answer: 'Valor x' }
+
+    post api_view_team_solution_step_respond_path(@team, @lo, @exercise, invalid_solution_step), params: params,
+                                                                                                 as: :json
 
     assert_response :not_found
   end

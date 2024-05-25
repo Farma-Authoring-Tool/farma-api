@@ -15,6 +15,7 @@ class SolutionStepTest < ActiveSupport::TestCase
     should belong_to(:exercise)
     should have_many(:tips)
     should have_many(:solution_steps_visualizations)
+    should have_many(:answers)
     should have_many(:tips).dependent(:destroy)
   end
 
@@ -104,6 +105,28 @@ class SolutionStepTest < ActiveSupport::TestCase
       end
 
       assert_predicate @solution_step, :tips_by_number_of_errors?
+    end
+  end
+
+  context 'create an answer' do
+    setup do
+      @solution_step = FactoryBot.create(:solution_step, response: 'correct_answer')
+      @team = FactoryBot.create(:team)
+      @user = FactoryBot.create(:user, teams: [@team])
+    end
+
+    should 'create a correct answer' do
+      answer = @solution_step.answers.create(response: 'correct_answer', user: @user, team: @team)
+
+      assert answer.correct
+      assert_equal 1, answer.attempt_number
+    end
+
+    should 'create an incorrect answer' do
+      answer = @solution_step.answers.create(response: 'wrong_answer', user: @user, team: @team)
+
+      assert_not answer.correct
+      assert_equal 1, answer.attempt_number
     end
   end
 end
