@@ -17,6 +17,14 @@ class Tip < ApplicationRecord
     tips_visualizations
   end
 
+  def view(user, team)
+    tips_visualizations.create(user: user, team: team)
+  end
+
+  def viewed?(user, team)
+    tips_visualizations.exists?(user_id: user.id, team_id: team.id)
+  end
+
   private
 
   def set_position

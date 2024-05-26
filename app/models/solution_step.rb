@@ -33,6 +33,13 @@ class SolutionStep < ApplicationRecord
     end
   end
 
+  def unviewed_tip(user, team)
+    tips.each do |tip|
+      return tip unless tip.viewed?(user, team)
+    end
+    nil
+  end
+
   private
 
   def set_position
