@@ -23,5 +23,11 @@ namespace :populate do
                                                    public: true)
 
     solution_step.tips.create(title: 'Dica inicial', description: 'É multiplo de 3')
+    solution_step.tips.create(title: 'Dica 2', description: 'É um número par')
+    solution_step.tips.create(title: 'Dica 3', description: 'Pense em fatores')
+
+    solution_step.tips.each_with_index do |tip, index|
+      tip.update(position: tip.position + index)
+    end
   end
 end
