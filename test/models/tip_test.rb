@@ -33,4 +33,28 @@ class TipTest < ActiveSupport::TestCase
       assert_match(/Cópia 3 - /, @tip.duplicate.title)
     end
   end
+
+  context 'viewing a tip' do
+    setup do
+      @user = FactoryBot.create(:user)
+      @team = FactoryBot.create(:team)
+      @tip = FactoryBot.create(:tip)
+    end
+
+    should 'mark a tip as viewed' do
+      @tip.view(@user, @team)
+
+      assert @tip.viewed?(@user, @team)
+    end
+
+    should 'not mark a tip as viewed if not viewed' do
+      assert_not @tip.viewed?(@user, @team)
+    end
+
+    should 'create a tips_visualization record when viewing a tip' do
+      assert_difference 'TipsVisualization.count', 1 do
+        @tip.view(@user, @team)
+      end
+    end
+  end
 end
