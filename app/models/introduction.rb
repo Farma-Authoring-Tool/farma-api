@@ -7,6 +7,8 @@ class Introduction < ApplicationRecord
   validates :title, uniqueness: true
   validates :public, inclusion: { in: [true, false] }
 
+  has_many :introductions_visualizations, dependent: :destroy
+
   before_create :set_position
 
   def duplicate
@@ -16,6 +18,18 @@ class Introduction < ApplicationRecord
 
     copy.update(position: position)
     copy
+  end
+
+  def visualizations
+    introductions_visualizations
+  end
+
+  def status(user, team = nil)
+    if visualizations.where(user: user, team: team).empty?
+      :not_viewed
+    else
+      :viewed
+    end
   end
 
   private

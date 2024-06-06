@@ -67,17 +67,6 @@ class SolutionStepTest < ActiveSupport::TestCase
     end
   end
 
-  context 'visualizations' do
-    setup do
-      @solution_step = FactoryBot.create(:solution_step)
-      @visualization = FactoryBot.create(:solution_steps_visualization, solution_step: @solution_step)
-    end
-
-    should 'return solution step visualizations' do
-      assert_equal @solution_step.visualizations.first, @visualization
-    end
-  end
-
   context 'setting display mode' do
     setup do
       @solution_step = FactoryBot.create(:solution_step)

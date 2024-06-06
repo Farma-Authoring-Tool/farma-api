@@ -18,4 +18,8 @@ class Lo < ApplicationRecord
   def pages
     @pages ||= Logics::Lo::Pages.new(self)
   end
+
+  def progress
+    @progress ||= Logics::Lo::Progress.new(self)
+  end
 end

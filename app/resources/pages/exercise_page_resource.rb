@@ -1,23 +1,23 @@
 class ExercisePageResource < PageResource
   attr_reader :solution_steps, :status
 
-  def initialize(exercise)
+  def initialize(exercise, user, team)
     super(exercise)
-    @status = :not_viewed
+    @status = exercise.status(user, team)
     @solution_steps = exercise.solution_steps.map do |solution_step|
-      solution_step_data(solution_step)
+      solution_step_data(solution_step, user, team)
     end
   end
 
   private
 
-  def solution_step_data(solution_step)
+  def solution_step_data(solution_step, user, team)
     {
       position: solution_step.position,
       title: solution_step.title,
       description: solution_step.description,
-      status: :viewed, # TODO: This is fake data for now
-      attempts: 6
+      status: solution_step.status(user, team),
+      attempts: solution_step.answers.where(user: user, team: team).count
     }
   end
 end

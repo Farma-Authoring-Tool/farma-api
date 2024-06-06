@@ -4,6 +4,8 @@ class Exercise < ApplicationRecord
   belongs_to :lo, counter_cache: true
   has_many :solution_steps, dependent: :destroy
 
+  has_many :exercises_visualizations, dependent: :destroy
+
   validates :title, :description, presence: true
   validates :title, uniqueness: true
   validates :public, inclusion: { in: [true, false] }
@@ -19,6 +21,18 @@ class Exercise < ApplicationRecord
       steps_ids.each_with_index do |id, index|
         solution_steps.find(id).update(position: index + 1)
       end
+    end
+  end
+
+  def visualizations
+    exercises_visualizations
+  end
+
+  def status(user, team = nil)
+    if visualizations.where(user: user, team: team).empty?
+      :not_viewed
+    else
+      :viewed
     end
   end
 

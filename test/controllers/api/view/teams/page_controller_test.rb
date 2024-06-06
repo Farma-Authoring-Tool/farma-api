@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PageControllerTest < ActionDispatch::IntegrationTest
+class Api::View::Teams::PageControllerTest < ActionDispatch::IntegrationTest
   def setup
     @exercise = create(:exercise, solution_steps_count: 1)
     @lo = create(:lo, introductions_count: 1, exercises_count: 1)
@@ -26,7 +26,7 @@ class PageControllerTest < ActionDispatch::IntegrationTest
       title: page.title,
       position: page.position,
       description: page.description,
-      status: :viewed
+      status: page.status(@user, @team)
     }
 
     assert_equal expected_data.as_json, data
@@ -48,14 +48,14 @@ class PageControllerTest < ActionDispatch::IntegrationTest
       title: page.title,
       position: page.position,
       description: page.description,
-      status: :not_viewed,
+      status: page.status(@user, @team),
       solution_steps: [
         {
           title: page.solution_steps.first.title,
           description: page.solution_steps.first.description,
-          attempts: 6,
+          attempts: page.solution_steps.first.answers.where(user: @user, team: @team).count,
           position: page.solution_steps.first.position,
-          status: :viewed
+          status: page.solution_steps.first.status(@user, @team)
         }
       ]
     }
