@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SolutionStepControllerTest < ActionDispatch::IntegrationTest
+class Api::View::Teams::SolutionStepControllerTest < ActionDispatch::IntegrationTest
   def setup
     @exercise = create(:exercise, solution_steps_count: 1)
     @lo = create(:lo, introductions_count: 1, exercises_count: 1)

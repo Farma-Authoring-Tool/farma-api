@@ -25,6 +25,14 @@ class SolutionStep < ApplicationRecord
     solution_steps_visualizations
   end
 
+  def status(user, team)
+    if visualizations.where(user: user, team: team).empty?
+      :not_viewed
+    else
+      :viewed
+    end
+  end
+
   def reorder_tips(tips_ids)
     transaction do
       tips_ids.each_with_index do |id, index|

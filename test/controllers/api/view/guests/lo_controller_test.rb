@@ -1,17 +1,14 @@
 require 'test_helper'
 
-class LosControllerTest < ActionDispatch::IntegrationTest
+class Api::View::Guests::LoControllerTest < ActionDispatch::IntegrationTest
   def setup
     @exercise = create(:exercise, solution_steps_count: 1)
     @lo = create(:lo, introductions_count: 1, exercises_count: 1)
     @lo.exercises = [@exercise]
-    @user = @lo.user
   end
 
-  test 'should return lo belonging to the logged as professor' do
-    sign_in @user
-
-    get api_view_professor_lo_path(@lo), as: :json
+  test 'should return lo' do
+    get api_view_guest_lo_path(@lo), as: :json
 
     assert_response :success
     assert_equal RESPONSE::Type::JSON, response.content_type
@@ -55,10 +52,9 @@ class LosControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected_data.as_json, data
   end
 
-  test 'should not return lo if it does not belong to the logged in professor' do
-    sign_in create(:user)
-
-    get api_view_professor_lo_path(@lo), as: :json
+  test 'should not return lo if it does not exists' do
+    non_existent_lo_id = 9999
+    get api_view_guest_lo_path(non_existent_lo_id), as: :json
 
     assert_response :not_found
   end

@@ -2,7 +2,7 @@ class Api::View::Professors::PageController < ApplicationController
   before_action :set_page
 
   def show
-    render json: @page.resource
+    render json: @page.resource(current_user)
   end
 
   def set_page

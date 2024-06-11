@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_15_022807) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_06_015135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "answers", force: :cascade do |t|
     t.bigint "solution_step_id", null: false
     t.bigint "user_id", null: false
-    t.bigint "team_id", null: false
+    t.bigint "team_id"
     t.string "response", null: false
     t.boolean "correct", default: false, null: false
     t.integer "attempt_number", null: false
@@ -41,6 +41,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_022807) do
     t.index ["title"], name: "index_exercises_on_title", unique: true
   end
 
+  create_table "exercises_visualizations", force: :cascade do |t|
+    t.bigint "exercise_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exercise_id"], name: "index_exercises_visualizations_on_exercise_id"
+    t.index ["team_id"], name: "index_exercises_visualizations_on_team_id"
+    t.index ["user_id"], name: "index_exercises_visualizations_on_user_id"
+  end
+
   create_table "introductions", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -51,6 +62,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_022807) do
     t.datetime "updated_at", null: false
     t.index ["lo_id"], name: "index_introductions_on_lo_id"
     t.index ["title"], name: "index_introductions_on_title", unique: true
+  end
+
+  create_table "introductions_visualizations", force: :cascade do |t|
+    t.bigint "introduction_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["introduction_id"], name: "index_introductions_visualizations_on_introduction_id"
+    t.index ["team_id"], name: "index_introductions_visualizations_on_team_id"
+    t.index ["user_id"], name: "index_introductions_visualizations_on_user_id"
   end
 
   create_table "los", force: :cascade do |t|
@@ -93,8 +115,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_022807) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["solution_step_id", "user_id"], name: "idx_on_solution_step_id_user_id_872b5c0de6", unique: true
+    t.bigint "team_id"
     t.index ["solution_step_id"], name: "index_solution_steps_visualizations_on_solution_step_id"
+    t.index ["team_id"], name: "index_solution_steps_visualizations_on_team_id"
     t.index ["user_id"], name: "index_solution_steps_visualizations_on_user_id"
   end
 
@@ -124,11 +147,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_022807) do
   create_table "tips_visualizations", force: :cascade do |t|
     t.bigint "tip_id", null: false
     t.bigint "user_id", null: false
-    t.bigint "team_id", null: false
+    t.bigint "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_tips_visualizations_on_team_id"
-    t.index ["tip_id", "user_id", "team_id"], name: "index_tips_visualizations_on_tip_id_and_user_id_and_team_id", unique: true
     t.index ["tip_id"], name: "index_tips_visualizations_on_tip_id"
     t.index ["user_id"], name: "index_tips_visualizations_on_user_id"
   end
@@ -143,6 +165,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_022807) do
     t.datetime "updated_at", null: false
     t.string "jti"
     t.string "name"
+    t.boolean "guest", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -158,10 +181,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_022807) do
   add_foreign_key "answers", "solution_steps"
   add_foreign_key "answers", "teams"
   add_foreign_key "answers", "users"
+  add_foreign_key "exercises_visualizations", "exercises"
+  add_foreign_key "exercises_visualizations", "teams"
+  add_foreign_key "exercises_visualizations", "users"
+  add_foreign_key "introductions_visualizations", "introductions"
+  add_foreign_key "introductions_visualizations", "teams"
+  add_foreign_key "introductions_visualizations", "users"
   add_foreign_key "los", "users"
   add_foreign_key "los_teams", "los"
   add_foreign_key "los_teams", "teams"
   add_foreign_key "solution_steps_visualizations", "solution_steps"
+  add_foreign_key "solution_steps_visualizations", "teams"
   add_foreign_key "solution_steps_visualizations", "users"
   add_foreign_key "teams", "users"
   add_foreign_key "tips_visualizations", "teams"

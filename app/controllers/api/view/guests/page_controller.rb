@@ -2,7 +2,7 @@ class Api::View::Guests::PageController < ApplicationController
   before_action :set_page
 
   def show
-    render json: @page.resource
+    render json: @page.resource(current_user)
   end
 
   private
@@ -14,5 +14,11 @@ class Api::View::Guests::PageController < ApplicationController
     render json: { message: resource_not_found_message(model: :page) }, status: :not_found unless @page
   rescue ActiveRecord::RecordNotFound => e
     render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
+  end
+
+  def current_user
+    @user = User.new_guest
+    @user.save
+    @user
   end
 end

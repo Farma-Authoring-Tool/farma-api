@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LoControllerTest < ActionDispatch::IntegrationTest
+class Api::View::Teams::LoControllerTest < ActionDispatch::IntegrationTest
   def setup
     @exercise = create(:exercise, solution_steps_count: 1)
     @lo = create(:lo, introductions_count: 1, exercises_count: 1)
@@ -32,19 +32,19 @@ class LoControllerTest < ActionDispatch::IntegrationTest
           title: page.title,
           position: page.position,
           description: page.description,
-          status: :viewed
+          status: page.status(@user, @team)
         },
         {
           type: other_page.class.name,
           title: other_page.title,
           position: other_page.position,
           description: other_page.description,
-          status: :not_viewed,
+          status: other_page.status(@user, @team),
           solution_steps: [
             {
-              attempts: 6,
+              attempts: other_page.solution_steps.first.answers.count,
               position: other_page.solution_steps.first.position,
-              status: :viewed
+              status: other_page.solution_steps.first.status(@user, @team)
             }
           ]
         }
@@ -57,9 +57,9 @@ class LoControllerTest < ActionDispatch::IntegrationTest
         status: :viewed
       },
       progress: {
-        completed: 75,
-        explored: 80,
-        unexplored: 20
+        completed: @lo.progress.completed(@user, @team),
+        explored: @lo.progress.explored(@user, @team),
+        unexplored: @lo.progress.unexplored(@user, @team)
       }
     }
 

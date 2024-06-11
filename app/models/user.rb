@@ -10,4 +10,12 @@ class User < ApplicationRecord
   has_many :teams, through: :users_teams
 
   has_many :created_teams, class_name: 'Team', dependent: :destroy
+
+  def self.new_guest
+    new do |u|
+      u.guest = true
+      u.email = 'guest@guest.com'
+      u.password = 'guest_user'
+    end
+  end
 end
