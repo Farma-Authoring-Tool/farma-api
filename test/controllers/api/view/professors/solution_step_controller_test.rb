@@ -39,4 +39,51 @@ class Api::View::Professors::SolutionStepControllerTest < ActionDispatch::Integr
 
     assert_response :not_found
   end
+
+  test 'should confirm view in a solution step' do
+    sign_in @user
+
+    post api_view_professor_solution_step_view_path(@lo, @exercise, @solution_step), as: :json
+
+    data = response.parsed_body
+
+    assert_response :success
+    assert_equal @user.id, data['user_id']
+    assert_equal @solution_step.id, data['solution_step_id']
+  end
+
+  test 'should not confirm view in a solution step if lo not exists' do
+    sign_in @user
+    invalid_lo = 99
+
+    post api_view_professor_solution_step_view_path(invalid_lo, @exercise, @solution_step), as: :json
+
+    assert_response :not_found
+  end
+
+  test 'should not confirm view in a solution step if exercise not exists to the team' do
+    sign_in @user
+    invalid_exercise = 99
+
+    post api_view_professor_solution_step_view_path(@lo, invalid_exercise, @solution_step), as: :json
+
+    assert_response :not_found
+  end
+
+  test 'should not confirm view in a solution step if solution step not exists' do
+    sign_in @user
+    invalid_solution_step = 99
+
+    post api_view_professor_solution_step_view_path(@lo, @exercise, invalid_solution_step), as: :json
+
+    assert_response :not_found
+  end
+
+  test 'should not confirm view in a solution step' do
+    sign_in create(:user)
+
+    post api_view_professor_solution_step_view_path(@lo, @exercise, @solution_step), as: :json
+
+    assert_response :not_found
+  end
 end
