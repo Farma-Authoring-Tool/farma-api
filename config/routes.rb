@@ -49,6 +49,8 @@ Rails.application.routes.draw do
             to: 'teams/tip#available_tip', as: :team_tips_request
         get 'professors/los/:id', to: 'professors/lo#show', as: :professor_lo
         get 'professors/los/:id/page/:page', to: 'professors/page#show', as: :professor_lo_page
+        post 'professors/los/:id/exercises/:exercise_id/solution_steps/:solution_step_id/answer',
+             to: 'professors/solution_step#respond', as: :professor_solution_step_respond
       end
     end
   end

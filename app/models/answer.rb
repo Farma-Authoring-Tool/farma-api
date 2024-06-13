@@ -1,7 +1,7 @@
 class Answer < ApplicationRecord
   belongs_to :solution_step
   belongs_to :user
-  belongs_to :team
+  belongs_to :team, optional: true
 
   before_create :evaluate, :set_attempt_number
 
