@@ -42,6 +42,8 @@ class Api::View::Teams::LoControllerTest < ActionDispatch::IntegrationTest
           status: other_page.status(@user, @team),
           solution_steps: [
             {
+              title: other_page.solution_steps.first.title,
+              description: other_page.solution_steps.first.description,
               attempts: other_page.solution_steps.first.answers.count,
               position: other_page.solution_steps.first.position,
               status: other_page.solution_steps.first.status(@user, @team)

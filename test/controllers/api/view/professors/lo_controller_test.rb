@@ -28,18 +28,22 @@ class Api::View::Professors::LoControllerTest < ActionDispatch::IntegrationTest
           type: page.class.name,
           title: page.title,
           position: page.position,
-          description: page.description
+          description: page.description,
+          status: page.status(@user, nil)
         },
         {
           type: other_page.class.name,
           title: other_page.title,
           position: other_page.position,
           description: other_page.description,
+          status: other_page.status(@user, nil),
           solution_steps: [
             {
+              attempts: other_page.solution_steps.first.answers.where(user: @user, team: nil).count,
               position: other_page.solution_steps.first.position,
               title: other_page.solution_steps.first.title,
-              description: other_page.solution_steps.first.description
+              description: other_page.solution_steps.first.description,
+              status: other_page.solution_steps.first.status(@user, nil)
             }
           ]
         }
@@ -48,7 +52,13 @@ class Api::View::Professors::LoControllerTest < ActionDispatch::IntegrationTest
         type: page.class.name,
         title: page.title,
         position: page.position,
-        description: page.description
+        description: page.description,
+        status: :viewed
+      },
+      progress: {
+        completed: @lo.progress.completed(@user, nil),
+        explored: @lo.progress.explored(@user, nil),
+        unexplored: @lo.progress.unexplored(@user, nil)
       }
     }
 
