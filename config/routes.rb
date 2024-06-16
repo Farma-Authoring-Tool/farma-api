@@ -54,6 +54,8 @@ Rails.application.routes.draw do
         get 'professors/los/:id/exercises/:exercise_id/solution_steps/:solution_step_id/tips/request',
             to: 'professors/tip#available_tip', as: :professor_tips_request
         get 'guests/los/:id/page/:page', to: 'guests/page#show', as: :guest_lo_page
+        get 'professors/los/:id/exercises/:exercise_id/solution_steps/:solution_step_id/tips/request',
+            to: 'professors/tip#available_tip', as: :professor_tips_request
       end
     end
   end
