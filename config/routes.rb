@@ -56,6 +56,8 @@ Rails.application.routes.draw do
         get 'guests/los/:id/page/:page', to: 'guests/page#show', as: :guest_lo_page
         get 'professors/los/:id/exercises/:exercise_id/solution_steps/:solution_step_id/tips/request',
             to: 'professors/tip#available_tip', as: :professor_tips_request
+        post 'professors/los/:id/exercises/:exercise_id/solution_steps/:solution_step_id/view',
+             to: 'professors/solution_step#view', as: :professor_solution_step_view
       end
     end
   end
