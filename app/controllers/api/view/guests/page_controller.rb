@@ -15,10 +15,4 @@ class Api::View::Guests::PageController < ApplicationController
   rescue ActiveRecord::RecordNotFound => e
     render json: { message: resource_not_found_message(model: e.model) }, status: :not_found
   end
-
-  def current_user
-    @user = User.new_guest
-    @user.save
-    @user
-  end
 end
