@@ -17,12 +17,14 @@ class Tip < ApplicationRecord
     tips_visualizations
   end
 
-  def view(user, team)
+  def view(user, team = nil)
     tips_visualizations.create(user: user, team: team)
   end
 
-  def viewed?(user, team)
-    tips_visualizations.exists?(user_id: user.id, team_id: team.id)
+  def viewed?(user, team = nil)
+    query = { user_id: user.id }
+    query[:team_id] = team.id if team
+    tips_visualizations.exists?(query)
   end
 
   private
