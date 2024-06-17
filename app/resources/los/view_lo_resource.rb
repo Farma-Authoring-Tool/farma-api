@@ -47,6 +47,8 @@ class ViewLoResource
 
   def solution_step_data(solution_step, user, team)
     {
+      title: solution_step.title,
+      description: solution_step.description,
       position: solution_step.position,
       status: solution_step.status(user, team),
       attempts: solution_step.answers.where(user: user, team: team).count

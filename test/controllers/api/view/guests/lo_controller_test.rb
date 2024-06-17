@@ -25,18 +25,22 @@ class Api::View::Guests::LoControllerTest < ActionDispatch::IntegrationTest
           type: page.class.name,
           title: page.title,
           position: page.position,
-          description: page.description
+          description: page.description,
+          status: :viewed
         },
         {
           type: other_page.class.name,
           title: other_page.title,
           position: other_page.position,
           description: other_page.description,
+          status: :not_viewed,
           solution_steps: [
             {
+              attempts: 0,
               position: other_page.solution_steps.first.position,
               title: other_page.solution_steps.first.title,
-              description: other_page.solution_steps.first.description
+              description: other_page.solution_steps.first.description,
+              status: :not_viewed
             }
           ]
         }
@@ -45,7 +49,13 @@ class Api::View::Guests::LoControllerTest < ActionDispatch::IntegrationTest
         type: page.class.name,
         title: page.title,
         position: page.position,
-        description: page.description
+        description: page.description,
+        status: :viewed
+      },
+      progress: {
+        completed: 33.33333333333333,
+        explored: 33.33333333333333,
+        unexplored: 66.66666666666666
       }
     }
 

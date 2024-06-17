@@ -1,6 +1,7 @@
 class Api::View::Guests::LoController < ApplicationController
-  before_action :find_lo
-  before_action :set_or_create_user
+  include ResourcesByGuest
+
+  before_action :find_lo, :set_or_create_user, :view_page
 
   def show
     token = generate_jwt_token(@current_user)
@@ -19,28 +20,17 @@ class Api::View::Guests::LoController < ApplicationController
 
   def set_or_create_user
     token = request.headers['Authorization']&.split('Bearer ')&.last
-    @current_user = decode_jwt_token(token) if token
+    decoded_token = decode_jwt_token(token) if token
+
+    if (decoded_token)
+      @current_user = User.find_by(id: decoded_token['sub'])
+    end
 
     @current_user ||= User.new_guest.tap(&:save)
   end
 
-  def generate_jwt_token(user)
-    payload = {
-      sub: user.id.to_s,
-      scp: 'user',
-      aud: nil,
-      iat: Time.now.to_i,
-      exp: 30.minutes.from_now.to_i
-    }
-
-    JWT.encode(payload, Rails.application.credentials.fetch(:secret_key_base), 'HS256')
-  end
-
-  def decode_jwt_token(token)
-    decoded_token = JWT.decode(token, Rails.application.credentials.fetch(:secret_key_base), true, { algorithm: 'HS256' })
-    user_id = decoded_token[0]['sub']
-    User.find_by(id: user_id)
-  rescue JWT::DecodeError
-    nil
+  def view_page
+    page = @lo.pages.first
+    page.visualizations.find_or_create_by(user: current_user, team: nil)
   end
 end

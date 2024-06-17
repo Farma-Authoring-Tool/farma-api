@@ -6,9 +6,12 @@ class Api::View::Guests::PageControllerTest < ActionDispatch::IntegrationTest
     @lo = create(:lo, introductions_count: 1, exercises_count: 1)
     @lo.exercises = [@exercise]
     @page = 1
+    @user = create(:user)
+    @user.guest = true
   end
 
   test 'should return lo introduction page' do
+    sign_in @user
     get api_view_guest_lo_page_path(@lo, @page), as: :json
 
     assert_response :success
@@ -21,13 +24,14 @@ class Api::View::Guests::PageControllerTest < ActionDispatch::IntegrationTest
       title: page.title,
       position: page.position,
       description: page.description,
-      status: :not_viewed
+      status: :viewed
     }
 
     assert_equal expected_data.as_json, data
   end
 
   test 'should return lo exercise page' do
+    sign_in @user
     @page = 2
     get api_view_guest_lo_page_path(@lo, @page), as: :json
 
@@ -41,7 +45,7 @@ class Api::View::Guests::PageControllerTest < ActionDispatch::IntegrationTest
       title: page.title,
       position: page.position,
       description: page.description,
-      status: :not_viewed,
+      status: :viewed,
       solution_steps: [
         {
           attempts: 0,
@@ -57,6 +61,7 @@ class Api::View::Guests::PageControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not return lo page if it does not exist' do
+    sign_in @user
     @unvalid_page = 10
 
     get api_view_guest_lo_page_path(@lo, @unvalid_page), as: :json
@@ -65,6 +70,7 @@ class Api::View::Guests::PageControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not return lo if it does not exists' do
+    sign_in @user
     non_existent_lo_id = 9999
     get api_view_guest_lo_page_path(non_existent_lo_id, @page), as: :json
 
