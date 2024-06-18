@@ -2,9 +2,10 @@ require 'test_helper'
 
 class Api::View::Guests::PageControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @exercise = create(:exercise, solution_steps_count: 1)
-    @lo = create(:lo, introductions_count: 1, exercises_count: 1)
-    @lo.exercises = [@exercise]
+    @lo = create(:lo)
+    @introduction = create(:introduction, lo: @lo)
+    @exercise = create(:exercise, solution_steps_count: 1, lo: @lo)
+
     @page = 1
   end
 
