@@ -4,8 +4,7 @@ class Api::View::Guests::LoController < ApplicationController
   before_action :find_lo, :set_or_create_user, :view_page
 
   def show
-    token = generate_jwt_token(@current_user)
-    response.set_header('Authorization', "Bearer #{token}")
+    response.set_header('Authorization', "Bearer #{@token}")
     render json: ViewLoResource.new(@lo, @current_user, nil)
   end
 
@@ -22,11 +21,13 @@ class Api::View::Guests::LoController < ApplicationController
     token = request.headers['Authorization']&.split('Bearer ')&.last
     decoded_token = decode_jwt_token(token) if token
 
-    if (decoded_token)
+    if decoded_token
       @current_user = User.find_by(id: decoded_token['sub'])
+      @token = token
+    else
+      @current_user ||= User.new_guest.tap(&:save)
+      @token = generate_jwt_token(@current_user)
     end
-
-    @current_user ||= User.new_guest.tap(&:save)
   end
 
   def view_page

@@ -21,7 +21,7 @@ class Introduction < ApplicationRecord
   end
 
   def visualizations
-    introductions_visualizations
+    introductions_visualizations.includes(:user)
   end
 
   def status(user, team = nil)
