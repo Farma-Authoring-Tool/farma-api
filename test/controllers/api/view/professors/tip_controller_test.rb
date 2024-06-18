@@ -2,9 +2,10 @@ require 'test_helper'
 
 class Api::View::Professors::TipControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @exercise = create(:exercise, solution_steps_count: 1)
-    @lo = create(:lo, introductions_count: 1, exercises_count: 1)
-    @lo.exercises = [@exercise]
+    @lo = create(:lo)
+    @introduction = create(:introduction, lo: @lo)
+    @exercise = create(:exercise, solution_steps_count: 1, lo: @lo)
+
     @user = @lo.user
     @solution_step = @exercise.solution_steps.first
     @tip = create(:tip)
