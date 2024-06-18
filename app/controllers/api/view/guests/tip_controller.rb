@@ -11,7 +11,7 @@ class Api::View::Guests::TipController < ApplicationController
   private
 
   def set_solution_step
-    lo = current_user.los.find(params[:id])
+    lo = Lo.find(params[:id])
     exercise = lo.exercises.find(params[:exercise_id])
     @solution_step = exercise.solution_steps.find(params[:solution_step_id])
   rescue ActiveRecord::RecordNotFound => e

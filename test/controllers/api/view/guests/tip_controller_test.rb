@@ -5,8 +5,8 @@ class Api::View::Guests::TipControllerTest < ActionDispatch::IntegrationTest
     @lo = create(:lo)
     @introduction = create(:introduction, lo: @lo)
     @exercise = create(:exercise, solution_steps_count: 1, lo: @lo)
-
-    @user = @lo.user
+    @user = create(:user)
+    @user.guest = true
     @solution_step = @exercise.solution_steps.first
     @tip = create(:tip)
     @solution_step.tips << @tip
