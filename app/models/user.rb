@@ -14,7 +14,7 @@ class User < ApplicationRecord
   def self.new_guest
     new do |u|
       u.guest = true
-      u.email = 'guest@guest.com'
+      u.email = "guest_#{SecureRandom.uuid}@guest.com"
       u.password = 'guest_user'
     end
   end
