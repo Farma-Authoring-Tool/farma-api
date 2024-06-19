@@ -1,0 +1,2 @@
+ ./run test \
+ test/controllers/api/view/guests/guest_page_controller_test.rb

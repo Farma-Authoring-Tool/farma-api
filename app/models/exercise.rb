@@ -25,7 +25,7 @@ class Exercise < ApplicationRecord
   end
 
   def visualizations
-    exercises_visualizations
+    exercises_visualizations.includes(:user)
   end
 
   def status(user, team = nil)

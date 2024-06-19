@@ -55,6 +55,7 @@ Rails.application.routes.draw do
             to: 'professors/tip#available_tip', as: :professor_tips_request
         post 'professors/los/:id/exercises/:exercise_id/solution_steps/:solution_step_id/view',
              to: 'professors/solution_step#view', as: :professor_solution_step_view
+        get 'guests/los/:id/page/:page', to: 'guests/page#show', as: :guest_lo_page
       end
     end
   end
@@ -62,7 +63,6 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :view do
       get 'guests/los/:id', to: 'guests/lo#show', as: :guest_lo
-      get 'guests/los/:id/page/:page', to: 'guests/page#show', as: :guest_lo_page
     end
   end
 end
