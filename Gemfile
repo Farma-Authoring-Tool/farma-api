@@ -24,6 +24,8 @@ gem 'devise-jwt'
 gem 'rack-cors'
 gem 'rails-i18n', '~> 7.0.0' # For 7.0.0
 
+gem 'whenever'
+
 group :development do
   gem 'brakeman'
   gem 'rubocop', require: false
