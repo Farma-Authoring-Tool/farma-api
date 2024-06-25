@@ -22,15 +22,15 @@ class SolutionStep < ApplicationRecord
   end
 
   def visualizations
-    solution_steps_visualizations
+    solution_steps_visualizations.includes(:user)
   end
 
   def status(user, team)
-    if visualizations.where(user: user, team: team).empty?
-      :not_viewed
-    else
-      :viewed
-    end
+    return :not_viewed if visualizations.where(user: user, team: team).empty?
+    return :correct if answers.where(user: user, team: team, correct: true).any?
+    return :incorrect if answers.where(user: user, team: team, correct: false).any?
+
+    :viewed
   end
 
   def reorder_tips(tips_ids)

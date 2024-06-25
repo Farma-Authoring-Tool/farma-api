@@ -6,6 +6,12 @@ class Api::View::Guests::SolutionStepController < ApplicationController
     render json: visualization, status: :ok
   end
 
+  def respond
+    user_answer = params.require(:answer)
+    answer = @solution_step.answers.create(user: current_user, response: user_answer, team: nil)
+    render json: AnswerResource.new(answer), status: :created
+  end
+
   private
 
   def set_solution_step

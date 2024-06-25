@@ -61,6 +61,8 @@ Rails.application.routes.draw do
         get 'guests/los/:id/page/:page', to: 'guests/page#show', as: :guest_lo_page
         post 'guests/los/:id/exercises/:exercise_id/solution_steps/:solution_step_id/view',
              to: 'guests/solution_step#view', as: :guest_solution_step_view
+        post 'guests/los/:id/exercises/:exercise_id/solution_steps/:solution_step_id/answer',
+             to: 'guests/solution_step#respond', as: :guest_solution_step_respond
       end
     end
   end
