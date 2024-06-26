@@ -52,7 +52,9 @@ module Logics
 
       def completed_solution_steps(user, team = nil)
         solution_steps = extract_solution_steps(@pages)
-        completed_steps = solution_steps.select { |step| step.answers.any?(&:correct) }
+        completed_steps = solution_steps.select do |step|
+          step.answers.any? { |answer| answer.correct && answer.user == user && (team.nil? || answer.team == team) }
+        end
         filter_visualizations(completed_steps.flat_map(&:visualizations), user, team)
       end
 
